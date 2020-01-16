@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CooKit.Views;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +11,7 @@ namespace CooKit
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new AppShell();
         }
 
         protected override void OnStart()
