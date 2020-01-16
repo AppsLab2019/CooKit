@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace CooKit.Models.Recipes
 {
@@ -8,10 +9,11 @@ namespace CooKit.Models.Recipes
     {
 
         string Name { get; }
-
         int Difficulty { get; }
-
         int TimeNeeded { get; }
+
+        ImageSource HeaderImage { get; }
+        string Description { get; }
 
     }
 }

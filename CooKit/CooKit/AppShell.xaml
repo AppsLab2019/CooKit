@@ -3,4 +3,44 @@
        xmlns:v="clr-namespace:CooKit.Views"
        x:Class="CooKit.AppShell">
 
+    <FlyoutItem Title="Home">
+
+        <Tab Title="Home">
+            <ShellContent>
+                <v:TestView />
+            </ShellContent>
+        </Tab>
+
+        <Tab Title="Categories">
+            <ShellContent>
+                <v:TestView />
+            </ShellContent>
+        </Tab>
+
+        <Tab Title="Favorites">
+            <ShellContent>
+                <v:TestView />
+            </ShellContent>
+        </Tab>
+
+        <Tab Title="History">
+            <ShellContent>
+                <v:TestView />
+            </ShellContent>
+        </Tab>
+
+    </FlyoutItem>
+
+    <FlyoutItem Title="Profile">
+
+    </FlyoutItem>
+
+    <FlyoutItem Title="Settings">
+
+    </FlyoutItem>
+
+    <FlyoutItem Title="Help">
+
+    </FlyoutItem>
+
 </Shell>

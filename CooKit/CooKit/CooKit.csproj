@@ -12,20 +12,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\Recipes\RecipeIntroductionPage.xaml.cs">
-      <DependentUpon>RecipeIntroductionPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Update="AppShell.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Recipes\RecipeIntroductionPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\TestView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\Recipes\" />
+    <Folder Include="Views\Recipes\" />
   </ItemGroup>
 </Project>
