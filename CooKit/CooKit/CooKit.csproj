@@ -9,10 +9,14 @@
     <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
+    <PackageReference Include="Xamarin.Forms.PancakeView" Version="1.3.7" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="AppShell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RecipePreview.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\TestView.xaml">
@@ -22,6 +26,11 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\Recipes\" />
-    <Folder Include="Views\Recipes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\RecipePreview.xaml.cs">
+      <DependentUpon>RecipePreview.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.RecipePreview">
+
+    <ContentView.Content>
+        <pv:PancakeView CornerRadius="60, 60, 60, 60">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <pv:PancakeView CornerRadius="60, 60, 60, 60"
+                                HorizontalOptions="FillAndExpand"
+                                Grid.Row="0">
+                    <Image Source="{Binding Image, Source={x:Reference this}}"/>
+                </pv:PancakeView>
+
+                <Label Grid.Row="2"
+                       Text="{Binding Text, Source={x:Reference this}}"/>
+
+            </Grid>
+
+        </pv:PancakeView>
+    </ContentView.Content>
+
+</ContentView>
