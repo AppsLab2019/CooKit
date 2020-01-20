@@ -13,7 +13,6 @@ namespace CooKit.Models.Recipes
         int TimeNeeded { get; }
 
         ImageSource HeaderImage { get; }
-        string Description { get; }
 
     }
 }

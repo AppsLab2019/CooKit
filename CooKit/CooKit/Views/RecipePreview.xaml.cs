@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,37 +10,48 @@ using Xamarin.Forms.Xaml;
 
 namespace CooKit.Views
 {
-    [XamlCompilation(XamlCompilationOptions.Skip)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecipePreview
     {
 
-        public static readonly BindableProperty ImageProperty = BindableProperty.Create(
-            propertyName: nameof(Image),
-            returnType: typeof(ImageSource),
-            declaringType: typeof(ImageSource)
-        );
-
-        public ImageSource Image
-        {
-            get => (ImageSource) GetValue(ImageProperty);
-            set => SetValue(ImageProperty, value);
-        }
-
-        public static readonly BindableProperty NameProperty = BindableProperty.Create(
-            propertyName: nameof(Name),
-            returnType: typeof(string),
-            declaringType: typeof(string)
-        );
-
+        private string name_;
         public string Name
         {
-            get => (string) GetValue(NameProperty);
-            set => SetValue(NameProperty, value);
+            get => name_;
+            set
+            {
+                if (name_ == value)
+                    return;
+
+                name_ = value;
+                NameLabel.Text = name_;
+            }
+        }
+
+        private ImageSource image_;
+        public ImageSource Image
+        {
+            get => image_;
+            set
+            {
+                if (image_ == value)
+                    return;
+
+                image_ = value;
+                ImageImage.Source = image_;
+            }
         }
 
         public RecipePreview()
         {
             InitializeComponent();
         }
+
+        public RecipePreview([NotNull] string name, [NotNull] ImageSource image) : base()
+        {
+            Name = name;
+            Image = image;
+        }
+
     }
 }

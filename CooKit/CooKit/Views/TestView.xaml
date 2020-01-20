@@ -7,16 +7,10 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.TestView">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollView>
 
-        <Image Grid.Row="1"
-               WidthRequest="600"
-               Source=""/>
-    </Grid>
+        <StackLayout Padding="20" x:Name="Layout"/>
+
+    </ScrollView>
 
 </ContentPage>

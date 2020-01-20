@@ -8,27 +8,33 @@
              x:Class="CooKit.Views.RecipePreview">
 
     <ContentView.Content>
-        <pv:PancakeView CornerRadius="60, 60, 60, 60">
+        <pv:PancakeView CornerRadius="30"
+                        HasShadow="True"
+                        Elevation="10"
+                        Margin="0,0,0,20">
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+            <AbsoluteLayout>
+                <Image x:Name="ImageImage"
+                       Aspect="AspectFill"
+                       AbsoluteLayout.LayoutFlags="All"
+                       AbsoluteLayout.LayoutBounds="0,0,1,1"/>
 
-                <pv:PancakeView CornerRadius="60, 60, 60, 60"
-                                HorizontalOptions="FillAndExpand"
-                                Grid.Row="0">
-                    <Image Source="{Binding Image, Source={x:Reference this}}"/>
-                </pv:PancakeView>
+                <Grid AbsoluteLayout.LayoutFlags="All"
+                      AbsoluteLayout.LayoutBounds="0,0,1,1">
 
-                <Label Grid.Row="2"
-                       Text="{Binding Text, Source={x:Reference this}}"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="92*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="3*"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Label Grid.Row="1"
+                           FontSize="Medium"
+                           Margin="20,0,0,0"
+                           x:Name="NameLabel"/>
 
-            </Grid>
-
+                </Grid>
+            </AbsoluteLayout>
         </pv:PancakeView>
     </ContentView.Content>
 
