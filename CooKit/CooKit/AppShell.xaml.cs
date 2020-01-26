@@ -1,8 +1,6 @@
-﻿using Xamarin.Forms;
-
-namespace CooKit
+﻿namespace CooKit
 {
-    public partial class AppShell : Shell
+    public partial class AppShell
     {
         public AppShell()
         {

@@ -7,35 +7,34 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipePreview">
 
-    <ContentView.Content>
-        <pv:PancakeView CornerRadius="30"
-                        HasShadow="True"
-                        Elevation="10"
-                        Margin="0,0,0,20">
+    <pv:PancakeView CornerRadius="30"
+                    HasShadow="True"
+                    Elevation="10">
 
-            <AbsoluteLayout>
-                <Image x:Name="ImageImage"
-                       Aspect="AspectFill"
-                       AbsoluteLayout.LayoutFlags="All"
-                       AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+        <AbsoluteLayout>
+            <Image x:Name="BackgroundImage"
+                         Aspect="AspectFill"
+                         Source="{Binding Image}"
+                         AbsoluteLayout.LayoutFlags="All"
+                         AbsoluteLayout.LayoutBounds="0,0,1,1"/>
 
-                <Grid AbsoluteLayout.LayoutFlags="All"
-                      AbsoluteLayout.LayoutBounds="0,0,1,1">
+            <Grid AbsoluteLayout.LayoutFlags="All"
+                  AbsoluteLayout.LayoutBounds="0,0,1,1">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="92*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="3*"/>
-                    </Grid.RowDefinitions>
-                    
-                    <Label Grid.Row="1"
-                           FontSize="Medium"
-                           Margin="20,0,0,0"
-                           x:Name="NameLabel"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="92*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
 
-                </Grid>
-            </AbsoluteLayout>
-        </pv:PancakeView>
-    </ContentView.Content>
+                <Label Grid.Row="1"
+                       FontSize="Medium"
+                       Margin="20,0,0,0"
+                       Text="{Binding Name}"
+                       x:Name="NameLabel"/>
+
+            </Grid>
+        </AbsoluteLayout>
+    </pv:PancakeView>
 
 </ContentView>

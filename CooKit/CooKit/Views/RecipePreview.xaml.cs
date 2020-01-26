@@ -1,11 +1,4 @@
-﻿using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace CooKit.Views
@@ -14,32 +7,22 @@ namespace CooKit.Views
     public partial class RecipePreview
     {
 
-        private string name_;
-        public string Name
-        {
-            get => name_;
-            set
-            {
-                if (name_ == value)
-                    return;
+        public static readonly BindableProperty ImageProperty =
+            BindableProperty.Create("Image", typeof(ImageSource), typeof(RecipePreview));
 
-                name_ = value;
-                NameLabel.Text = name_;
-            }
-        }
+        public static readonly BindableProperty NameProperty =
+            BindableProperty.Create("Name", typeof(string), typeof(RecipePreview));
 
-        private ImageSource image_;
         public ImageSource Image
         {
-            get => image_;
-            set
-            {
-                if (image_ == value)
-                    return;
+            get => (ImageSource) GetValue(ImageProperty);
+            set => SetValue(ImageProperty, value);
+        }
 
-                image_ = value;
-                ImageImage.Source = image_;
-            }
+        public string Name
+        {
+            get => (string) GetValue(NameProperty);
+            set => SetValue(NameProperty, value);
         }
 
         public RecipePreview()
@@ -47,11 +30,15 @@ namespace CooKit.Views
             InitializeComponent();
         }
 
-        public RecipePreview([NotNull] string name, [NotNull] ImageSource image) : base()
+        protected override void OnBindingContextChanged()
         {
-            Name = name;
-            Image = image;
-        }
+            base.OnBindingContextChanged();
 
+            if (BindingContext == null) 
+                return;
+
+            BackgroundImage.Source = Image;
+            NameLabel.Text = Name;
+        }
     }
 }

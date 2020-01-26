@@ -7,10 +7,17 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.TestView">
 
-    <ScrollView>
-
-        <StackLayout Padding="20" x:Name="Layout"/>
-
-    </ScrollView>
+    <CollectionView x:Name="RecipeView"
+                    SelectionMode="Single"
+                    SelectionChanged="OnSelectionChanged">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <views:RecipePreview Image="{Binding Image}" 
+                                     Name="{Binding Name}"
+                                     HeightRequest="200"
+                                     Padding="20,20,20,0"/>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
 
 </ContentPage>
