@@ -7,9 +7,7 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.TestView">
 
-    <CollectionView x:Name="RecipeView"
-                    SelectionMode="Single"
-                    SelectionChanged="OnSelectionChanged">
+    <CollectionView x:Name="RecipeView">
         <CollectionView.ItemTemplate>
             <DataTemplate>
                 <views:RecipePreview Image="{Binding Image}" 

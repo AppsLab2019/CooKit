@@ -7,7 +7,7 @@
 
         <Tab Title="Home">
             <ShellContent>
-                <v:TestView />
+                <v:MainPage />
             </ShellContent>
         </Tab>
 
