@@ -13,7 +13,7 @@
 
         <Tab Title="Categories">
             <ShellContent>
-                <v:TestView />
+                <v:RecipeIntroduction />
             </ShellContent>
         </Tab>
 

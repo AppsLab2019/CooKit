@@ -3,16 +3,93 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:v="clr-namespace:CooKit.Views;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeIntroduction">
 
     <ContentPage.Content>
-        <StackLayout>
-            <pv:PancakeView>
-                <Image Source="{Binding Image}"
-                       Aspect="AspectFill"/>
-            </pv:PancakeView>
-        </StackLayout>
+        <AbsoluteLayout>
+            <Image AbsoluteLayout.LayoutBounds="0,0,1,0.4"
+                   AbsoluteLayout.LayoutFlags="All"
+                   Source="food.png"
+                   Aspect="AspectFill"
+                   VerticalOptions="Start"/>
+
+            <Frame AbsoluteLayout.LayoutBounds="0,1,1,0.65"
+                   AbsoluteLayout.LayoutFlags="All"
+                   CornerRadius="35"
+                   HasShadow="False">
+                <StackLayout Padding="8">
+                    <StackLayout Orientation="Horizontal"
+                                 HeightRequest="32">
+                        <Label Text="Food name!"
+                               FontSize="22"/>
+
+                        <CollectionView HeightRequest="22"
+                                        ItemsLayout="HorizontalList"
+                                        HorizontalOptions="End">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Icon}"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+
+                            <CollectionView.ItemsSource>
+                                <x:Array Type="{x:Type v:TemporaryPictogram}">
+                                    <v:TemporaryPictogram Icon="breakfast.png"/>
+                                </x:Array>
+                            </CollectionView.ItemsSource>
+                        </CollectionView>
+                    </StackLayout>
+
+                    <BoxView HeightRequest="2"
+                                 WidthRequest="800"
+                                 Color="LightGray"
+                                 Margin="10"/>
+
+                    <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas non sapien ante. Curabitur sit amet ullamcorper quam, euismod pharetra sem. Pellentesque turpis massa, egestas at dignissim et, sagittis a erat. Nulla quis blandit arcu, ac lobortis ligula. Nam lectus ante, vehicula et nisl auctor, pretium vehicula arcu."/>
+
+                    <BoxView HeightRequest="2"
+                                 WidthRequest="800"
+                                 Color="LightGray"
+                                 Margin="10"/>
+
+                    <ListView>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image Source="{Binding Icon}"
+                                                   HeightRequest="32"
+                                                   WidthRequest="32"
+                                                   Aspect="AspectFill"/>
+
+                                        <Label Text="{Binding Name}"
+                                                   VerticalOptions="Center"
+                                                   Margin="10,0,0,0"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+
+                        <ListView.ItemsSource>
+                            <x:Array Type="{x:Type v:TemporaryIngredientInfo}">
+                                <v:TemporaryIngredientInfo Name="Test"
+                                                               Icon="food.jpg"/>
+
+                                <v:TemporaryIngredientInfo Name="Test"
+                                                               Icon="food.jpg"/>
+
+                                <v:TemporaryIngredientInfo Name="Test"
+                                                               Icon="food.jpg"/>
+
+                                <v:TemporaryIngredientInfo Name="Test"
+                                                               Icon="food.jpg"/>
+                            </x:Array>
+                        </ListView.ItemsSource>
+                    </ListView>
+                </StackLayout>
+            </Frame>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

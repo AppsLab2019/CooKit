@@ -23,7 +23,7 @@ namespace CooKit.ViewModels
             _currentIndex = 0;
 
             LoadRecipes();
-            ThresholdReachedCommand = new Command(() => LoadRecipes());
+            ThresholdReachedCommand = new Command(LoadRecipes);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
