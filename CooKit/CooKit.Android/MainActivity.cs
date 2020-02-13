@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using PanCardView.Droid;
 using Xamarin.Forms;
 
 namespace CooKit.Droid
@@ -21,6 +22,8 @@ namespace CooKit.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
+
+            CardsViewRenderer.Preserve();
 
             LoadApplication(new App());
         }

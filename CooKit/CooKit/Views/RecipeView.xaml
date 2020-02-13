@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:v="clr-namespace:CooKit.Views"
+             xmlns:cv="clr-namespace:PanCardView;assembly=PanCardView"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeView"
              Shell.NavBarIsVisible="False">
@@ -29,8 +30,8 @@
                              Color="LightGray"
                              Margin="10"/>
 
-                    <CarouselView>
-                        <CarouselView.ItemTemplate>
+                    <cv:CardsView>
+                        <cv:CardsView.ItemTemplate>
                             <DataTemplate>
                                 <StackLayout>
                                     <Frame HasShadow="True"
@@ -44,15 +45,15 @@
                                     </Frame>
                                 </StackLayout>
                             </DataTemplate>
-                        </CarouselView.ItemTemplate>
-                        
-                        <CarouselView.ItemsSource>
+                        </cv:CardsView.ItemTemplate>
+
+                        <cv:CardsView.ItemsSource>
                             <x:Array Type="{x:Type v:TemporaryRecipeStep}">
                                 <v:TemporaryRecipeStep Value="Boil an egg!"/>
                                 <v:TemporaryRecipeStep Value="Eat the egg!"/>
                             </x:Array>
-                        </CarouselView.ItemsSource>
-                    </CarouselView>
+                        </cv:CardsView.ItemsSource>
+                    </cv:CardsView>
                 </StackLayout>
             </Frame>
         </AbsoluteLayout>
