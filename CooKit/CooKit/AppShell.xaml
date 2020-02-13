@@ -6,32 +6,12 @@
     <FlyoutItem Title="Home">
 
         <Tab Title="Home">
-            <ShellContent>
-                <v:MainPage />
-            </ShellContent>
+            <ShellContent ContentTemplate="{DataTemplate v:MainPage}"/>
         </Tab>
 
-        <Tab Title="Categories">
-            <ShellContent>
-                <v:RecipeIntroduction />
-            </ShellContent>
+        <Tab Title="Temporary">
+            <ShellContent ContentTemplate="{DataTemplate v:RecipeView}"/>
         </Tab>
-
-        <Tab Title="Favorites">
-            <ShellContent>
-                <v:RecipeView />
-            </ShellContent>
-        </Tab>
-
-        <Tab Title="History">
-            <ShellContent>
-                <v:TestView />
-            </ShellContent>
-        </Tab>
-
-    </FlyoutItem>
-
-    <FlyoutItem Title="Profile">
 
     </FlyoutItem>
 

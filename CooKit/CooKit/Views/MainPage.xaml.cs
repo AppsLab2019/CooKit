@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace CooKit.Views
@@ -10,6 +11,6 @@ namespace CooKit.Views
             InitializeComponent();
 
         private void OnRecipeTapped(object sender, EventArgs e) =>
-            throw new NotImplementedException();
+            Shell.Current.GoToAsync("introduction");
     }
 }

@@ -11,8 +11,8 @@ namespace CooKit.ViewModels
     {
 
         public readonly IRecipeStore RecipeStore;
-        public ObservableCollection<IRecipe> Recipes { get; private set; }
-        public ICommand ThresholdReachedCommand { get; private set; }
+        public ObservableCollection<IRecipe> Recipes { get; }
+        public ICommand ThresholdReachedCommand { get; }
 
         private int _currentIndex;
 

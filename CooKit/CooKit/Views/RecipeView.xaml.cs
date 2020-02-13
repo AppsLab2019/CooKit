@@ -5,10 +5,8 @@ namespace CooKit.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecipeView
     {
-        public RecipeView()
-        {
+        public RecipeView() => 
             InitializeComponent();
-        }
     }
 
     public sealed class TemporaryRecipeStep

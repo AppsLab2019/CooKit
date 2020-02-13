@@ -39,7 +39,6 @@
                                 <Label AbsoluteLayout.LayoutBounds="0.1,0.9,0.9,0.1"
                                        AbsoluteLayout.LayoutFlags="All"
                                        FontSize="Medium"
-                                       Margin="20,0,0,0"
                                        Text="{Binding Name}"/>
                             </AbsoluteLayout>
                         </pv:PancakeView>
