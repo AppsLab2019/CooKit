@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:v="clr-namespace:CooKit.Views;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.RecipeIntroduction">
+             x:Class="CooKit.Views.RecipeIntroduction"
+             Shell.NavBarIsVisible="False">
 
     <ContentPage.Content>
         <AbsoluteLayout>
@@ -20,8 +21,8 @@
                    CornerRadius="35"
                    HasShadow="False">
                 <StackLayout Padding="8">
-                    <StackLayout Orientation="Horizontal"
-                                 HeightRequest="32">
+                    <StackLayout HeightRequest="32"
+                                 Orientation="Horizontal">
                         <Label Text="Food name!"
                                FontSize="22"/>
 

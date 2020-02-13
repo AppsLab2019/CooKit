@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="clr-namespace:CooKit.Views"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.RecipeView"
+             Shell.NavBarIsVisible="False">
+
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <Image AbsoluteLayout.LayoutBounds="0,0,1,0.4"
+                   AbsoluteLayout.LayoutFlags="All"
+                   Source="food.png"
+                   Aspect="AspectFill"
+                   VerticalOptions="Start"/>
+
+            <Frame AbsoluteLayout.LayoutBounds="0,1,1,0.65"
+                   AbsoluteLayout.LayoutFlags="All"
+                   CornerRadius="35"
+                   HasShadow="False">
+                <StackLayout Padding="8">
+                    <Label Text="Food name!"
+                           FontSize="22"/>
+
+                    <BoxView HeightRequest="2"
+                             WidthRequest="800"
+                             Color="LightGray"
+                             Margin="10"/>
+
+                    <CarouselView>
+                        <CarouselView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout>
+                                    <Frame HasShadow="True"
+                                           CornerRadius="10"
+                                           HeightRequest="300"
+                                           WidthRequest="300"
+                                           Margin="20">
+                                        <Label Text="{Binding Value}"
+                                               HorizontalOptions="Center"
+                                               VerticalOptions="Center"/>
+                                    </Frame>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CarouselView.ItemTemplate>
+                        
+                        <CarouselView.ItemsSource>
+                            <x:Array Type="{x:Type v:TemporaryRecipeStep}">
+                                <v:TemporaryRecipeStep Value="Boil an egg!"/>
+                                <v:TemporaryRecipeStep Value="Eat the egg!"/>
+                            </x:Array>
+                        </CarouselView.ItemsSource>
+                    </CarouselView>
+                </StackLayout>
+            </Frame>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -19,7 +19,7 @@
 
         <Tab Title="Favorites">
             <ShellContent>
-                <v:TestView />
+                <v:RecipeView />
             </ShellContent>
         </Tab>
 
