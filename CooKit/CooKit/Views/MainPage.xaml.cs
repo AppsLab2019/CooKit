@@ -11,6 +11,6 @@ namespace CooKit.Views
             InitializeComponent();
 
         private void OnRecipeTapped(object sender, EventArgs e) =>
-            Shell.Current.GoToAsync("introduction");
+            Shell.Current.GoToAsync("recipeIntroduction");
     }
 }

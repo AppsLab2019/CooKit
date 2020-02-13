@@ -4,15 +4,7 @@
        x:Class="CooKit.AppShell">
 
     <FlyoutItem Title="Home">
-
-        <Tab Title="Home">
-            <ShellContent ContentTemplate="{DataTemplate v:MainPage}"/>
-        </Tab>
-
-        <Tab Title="Temporary">
-            <ShellContent ContentTemplate="{DataTemplate v:RecipeView}"/>
-        </Tab>
-
+        <ShellContent ContentTemplate="{DataTemplate v:MainPage}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Settings">

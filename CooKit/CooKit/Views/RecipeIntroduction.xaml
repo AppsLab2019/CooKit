@@ -55,7 +55,7 @@
                              Color="LightGray"
                              Margin="10"/>
 
-                    <ListView>
+                    <ListView SelectionMode="None">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
@@ -91,6 +91,11 @@
                     </ListView>
                 </StackLayout>
             </Frame>
+
+            <Button AbsoluteLayout.LayoutBounds="0.95,0.95,56,56"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    CornerRadius="32"
+                    Clicked="OnCookButtonClicked"/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace CooKit.Views
@@ -8,6 +9,10 @@ namespace CooKit.Views
     {
         public RecipeIntroduction() => 
             InitializeComponent();
+
+        // TODO: move this to view model
+        private void OnCookButtonClicked(object sender, EventArgs e) =>
+            Shell.Current.GoToAsync("recipeView");
     }
 
     // TODO: remove this
