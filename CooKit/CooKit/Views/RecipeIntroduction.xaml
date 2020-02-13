@@ -44,16 +44,16 @@
                     </StackLayout>
 
                     <BoxView HeightRequest="2"
-                                 WidthRequest="800"
-                                 Color="LightGray"
-                                 Margin="10"/>
+                             WidthRequest="800"
+                             Color="LightGray"
+                             Margin="10"/>
 
                     <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas non sapien ante. Curabitur sit amet ullamcorper quam, euismod pharetra sem. Pellentesque turpis massa, egestas at dignissim et, sagittis a erat. Nulla quis blandit arcu, ac lobortis ligula. Nam lectus ante, vehicula et nisl auctor, pretium vehicula arcu."/>
 
                     <BoxView HeightRequest="2"
-                                 WidthRequest="800"
-                                 Color="LightGray"
-                                 Margin="10"/>
+                             WidthRequest="800"
+                             Color="LightGray"
+                             Margin="10"/>
 
                     <ListView>
                         <ListView.ItemTemplate>
@@ -61,13 +61,13 @@
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal">
                                         <Image Source="{Binding Icon}"
-                                                   HeightRequest="32"
-                                                   WidthRequest="32"
-                                                   Aspect="AspectFill"/>
+                                               HeightRequest="32"
+                                               WidthRequest="32"
+                                               Aspect="AspectFill"/>
 
                                         <Label Text="{Binding Name}"
-                                                   VerticalOptions="Center"
-                                                   Margin="10,0,0,0"/>
+                                               VerticalOptions="Center"
+                                               Margin="10,0,0,0"/>
                                     </StackLayout>
                                 </ViewCell>
                             </DataTemplate>
@@ -76,16 +76,16 @@
                         <ListView.ItemsSource>
                             <x:Array Type="{x:Type v:TemporaryIngredientInfo}">
                                 <v:TemporaryIngredientInfo Name="Test"
-                                                               Icon="food.jpg"/>
+                                                           Icon="food.jpg"/>
 
                                 <v:TemporaryIngredientInfo Name="Test"
-                                                               Icon="food.jpg"/>
+                                                           Icon="food.jpg"/>
 
                                 <v:TemporaryIngredientInfo Name="Test"
-                                                               Icon="food.jpg"/>
+                                                           Icon="food.jpg"/>
 
                                 <v:TemporaryIngredientInfo Name="Test"
-                                                               Icon="food.jpg"/>
+                                                           Icon="food.jpg"/>
                             </x:Array>
                         </ListView.ItemsSource>
                     </ListView>
