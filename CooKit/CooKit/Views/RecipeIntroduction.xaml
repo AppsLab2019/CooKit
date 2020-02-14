@@ -3,65 +3,88 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:v="clr-namespace:CooKit.Views;assembly=CooKit"
+             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
+             xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeIntroduction"
              Shell.NavBarIsVisible="False">
+
+    <ContentPage.BindingContext>
+        <vm:RecipeViewModel />
+    </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <AbsoluteLayout>
             <Image AbsoluteLayout.LayoutBounds="0,0,1,0.4"
                    AbsoluteLayout.LayoutFlags="All"
-                   Source="food.png"
+                   Source="{Binding MainImage}"
                    Aspect="AspectFill"
                    VerticalOptions="Start"/>
+
+            <Button AbsoluteLayout.LayoutBounds="0,0,64,64"
+                    AbsoluteLayout.LayoutFlags="PositionProportional"
+                    BackgroundColor="Transparent"
+                    ImageSource="breakfast.png"
+                    Command="{Binding BackCommand}"/>
 
             <Frame AbsoluteLayout.LayoutBounds="0,1,1,0.65"
                    AbsoluteLayout.LayoutFlags="All"
                    CornerRadius="35"
                    HasShadow="False">
-                <StackLayout Padding="8">
-                    <StackLayout HeightRequest="32"
-                                 Orientation="Horizontal">
-                        <Label Text="Food name!"
-                               FontSize="22"/>
 
-                        <CollectionView HeightRequest="22"
-                                        ItemsLayout="HorizontalList"
-                                        HorizontalOptions="End">
+                <StackLayout Padding="8">
+                    <Grid HeightRequest="32">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                               FontSize="22"
+                               Text="{Binding Name}"/>
+
+                        <CollectionView Grid.Column="1"
+                                        ItemsSource="{Binding Pictograms}">
+
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="4"
+                                                   Orientation="Horizontal"/>
+                            </CollectionView.ItemsLayout>
+
                             <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Image Source="{Binding Icon}"/>
+                                <DataTemplate x:DataType="ImageSource">
+                                    <Image Source="{Binding}"/>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
-
-                            <CollectionView.ItemsSource>
-                                <x:Array Type="{x:Type v:TemporaryPictogram}">
-                                    <v:TemporaryPictogram Icon="breakfast.png"/>
-                                </x:Array>
-                            </CollectionView.ItemsSource>
                         </CollectionView>
-                    </StackLayout>
+                    </Grid>
 
                     <BoxView HeightRequest="2"
                              WidthRequest="800"
                              Color="LightGray"
                              Margin="10"/>
 
-                    <Label Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas non sapien ante. Curabitur sit amet ullamcorper quam, euismod pharetra sem. Pellentesque turpis massa, egestas at dignissim et, sagittis a erat. Nulla quis blandit arcu, ac lobortis ligula. Nam lectus ante, vehicula et nisl auctor, pretium vehicula arcu."/>
+                    <Label Text="{Binding Description}"/>
 
                     <BoxView HeightRequest="2"
                              WidthRequest="800"
                              Color="LightGray"
                              Margin="10"/>
 
-                    <ListView SelectionMode="None">
+                    <ListView SelectionMode="None"
+                              ItemsSource="{Binding Ingredients}">
+
                         <ListView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="m:IIngredient">
                                 <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
+                                    <StackLayout HeightRequest="32"
+                                                 Orientation="Horizontal">
+
                                         <Image Source="{Binding Icon}"
-                                               HeightRequest="32"
                                                WidthRequest="32"
                                                Aspect="AspectFill"/>
 
@@ -72,22 +95,6 @@
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
-
-                        <ListView.ItemsSource>
-                            <x:Array Type="{x:Type v:TemporaryIngredientInfo}">
-                                <v:TemporaryIngredientInfo Name="Test"
-                                                           Icon="food.jpg"/>
-
-                                <v:TemporaryIngredientInfo Name="Test"
-                                                           Icon="food.jpg"/>
-
-                                <v:TemporaryIngredientInfo Name="Test"
-                                                           Icon="food.jpg"/>
-
-                                <v:TemporaryIngredientInfo Name="Test"
-                                                           Icon="food.jpg"/>
-                            </x:Array>
-                        </ListView.ItemsSource>
                     </ListView>
                 </StackLayout>
             </Frame>
@@ -95,7 +102,8 @@
             <Button AbsoluteLayout.LayoutBounds="0.95,0.95,56,56"
                     AbsoluteLayout.LayoutFlags="PositionProportional"
                     CornerRadius="32"
-                    Clicked="OnCookButtonClicked"/>
+                    ImageSource="breakfast.png"
+                    Command="{Binding CookCommand}"/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

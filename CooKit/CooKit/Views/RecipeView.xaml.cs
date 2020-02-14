@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms.Xaml;
+﻿using System;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace CooKit.Views
 {
@@ -7,6 +9,9 @@ namespace CooKit.Views
     {
         public RecipeView() => 
             InitializeComponent();
+
+        private void OnBackButtonClicked(object sender, EventArgs e) =>
+            Shell.Current.Navigation.PopAsync();
     }
 
     public sealed class TemporaryRecipeStep
