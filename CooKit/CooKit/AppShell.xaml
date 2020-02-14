@@ -8,11 +8,11 @@
     </FlyoutItem>
 
     <FlyoutItem Title="Settings">
-
+        <ShellContent ContentTemplate="{DataTemplate v:SettingsView}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Help">
-
+        <ShellContent ContentTemplate="{DataTemplate v:HelpView}"/>
     </FlyoutItem>
 
 </Shell>

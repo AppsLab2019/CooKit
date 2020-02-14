@@ -1,4 +1,6 @@
 ﻿using System;
+using CooKit.Models;
+using CooKit.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +12,9 @@ namespace CooKit.Views
         public MainPage() => 
             InitializeComponent();
 
+        // TODO: completely rewrite this solution
         private void OnRecipeTapped(object sender, EventArgs e) =>
-            Shell.Current.GoToAsync("recipeIntroduction");
+            Shell.Current.Navigation.PushAsync(new RecipeIntroduction(
+                new RecipeViewModel((IRecipe) ((StackLayout) sender).BindingContext)));
     }
 }

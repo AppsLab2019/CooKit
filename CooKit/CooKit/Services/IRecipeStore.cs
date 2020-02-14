@@ -1,4 +1,4 @@
-﻿using CooKit.Models.Recipes;
+﻿using CooKit.Models;
 using JetBrains.Annotations;
 
 namespace CooKit.Services

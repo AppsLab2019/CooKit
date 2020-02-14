@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:CooKit.ViewModels"
              xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.MainPage">
 
@@ -18,7 +19,7 @@
                         RemainingItemsThresholdReachedCommand="{Binding ThresholdReachedCommand}">
 
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="m:IRecipe">
                     <StackLayout HeightRequest="200"
                                  Padding="15,10,15,10">
 
@@ -32,7 +33,7 @@
                             <AbsoluteLayout>
                                 <Image x:Name="BackgroundImage"
                                        Aspect="AspectFill"
-                                       Source="{Binding Image}"
+                                       Source="{Binding MainImage}"
                                        AbsoluteLayout.LayoutFlags="All"
                                        AbsoluteLayout.LayoutBounds="0,0,1,1"/>
 

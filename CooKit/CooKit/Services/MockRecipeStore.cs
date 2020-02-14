@@ -1,25 +1,20 @@
-﻿using CooKit.Models.Recipes;
-using JetBrains.Annotations;
+﻿using CooKit.Models;
 
 namespace CooKit.Services
 {
     public class MockRecipeStore : IRecipeStore
     {
+        public IRecipe GetRecipe(int index) => 
+            MockRecipe.Example;
 
-        [NotNull]
-        public IRecipe GetRecipe(int index) => new MockRecipe();
-
-        [NotNull]
-        [ItemNotNull]
         public IRecipe[] GetRecipeRange(int startIndex, int length)
         {
             var arr = new IRecipe[length];
 
             for (var i = 0; i < length; i++)
-                arr[i] = new MockRecipe();
+                arr[i] = MockRecipe.Example;
 
             return arr;
         }
-
     }
 }

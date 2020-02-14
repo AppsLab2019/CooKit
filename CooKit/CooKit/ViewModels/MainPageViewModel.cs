@@ -1,8 +1,8 @@
-﻿using CooKit.Models.Recipes;
-using CooKit.Services;
+﻿using CooKit.Services;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using CooKit.Models;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels

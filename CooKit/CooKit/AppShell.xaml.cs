@@ -1,15 +1,8 @@
-﻿using CooKit.Views;
-using Xamarin.Forms;
-
-namespace CooKit
+﻿namespace CooKit
 {
     public partial class AppShell
     {
-        public AppShell()
-        {
+        public AppShell() => 
             InitializeComponent();
-
-            Routing.RegisterRoute("recipeIntroduction", typeof(RecipeIntroduction));
-        }
     }
 }

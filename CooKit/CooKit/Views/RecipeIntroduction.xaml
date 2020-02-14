@@ -7,11 +7,8 @@
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeIntroduction"
+             x:DataType="vm:RecipeViewModel"
              Shell.NavBarIsVisible="False">
-
-    <ContentPage.BindingContext>
-        <vm:RecipeViewModel />
-    </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <AbsoluteLayout>
