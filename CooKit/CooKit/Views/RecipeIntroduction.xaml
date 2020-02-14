@@ -17,9 +17,9 @@
         <AbsoluteLayout>
             <Image AbsoluteLayout.LayoutBounds="0,0,1,0.4"
                    AbsoluteLayout.LayoutFlags="All"
-                   Source="{Binding MainImage}"
                    Aspect="AspectFill"
-                   VerticalOptions="Start"/>
+                   VerticalOptions="Start"
+                   Source="{Binding MainImage}"/>
 
             <Button AbsoluteLayout.LayoutBounds="0,0,64,64"
                     AbsoluteLayout.LayoutFlags="PositionProportional"

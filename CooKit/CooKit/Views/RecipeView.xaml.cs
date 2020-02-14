@@ -1,5 +1,4 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using CooKit.ViewModels;
 using Xamarin.Forms.Xaml;
 
 namespace CooKit.Views
@@ -7,15 +6,11 @@ namespace CooKit.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecipeView
     {
-        public RecipeView() => 
+        public RecipeView(RecipeViewModel viewModel)
+        {
             InitializeComponent();
 
-        private void OnBackButtonClicked(object sender, EventArgs e) =>
-            Shell.Current.Navigation.PopAsync();
-    }
-
-    public sealed class TemporaryRecipeStep
-    {
-        public string Value { get; set; }
+            BindingContext = viewModel;
+        }
     }
 }

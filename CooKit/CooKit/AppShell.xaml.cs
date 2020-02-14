@@ -10,7 +10,6 @@ namespace CooKit
             InitializeComponent();
 
             Routing.RegisterRoute("recipeIntroduction", typeof(RecipeIntroduction));
-            Routing.RegisterRoute("recipeView", typeof(RecipeView));
         }
     }
 }

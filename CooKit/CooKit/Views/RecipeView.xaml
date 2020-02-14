@@ -3,62 +3,85 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:v="clr-namespace:CooKit.Views"
              xmlns:cv="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeView"
+             x:DataType="vm:RecipeViewModel"
              Shell.NavBarIsVisible="False">
 
     <ContentPage.Content>
         <AbsoluteLayout>
             <Image AbsoluteLayout.LayoutBounds="0,0,1,0.4"
                    AbsoluteLayout.LayoutFlags="All"
-                   Source="food.png"
                    Aspect="AspectFill"
-                   VerticalOptions="Start"/>
+                   VerticalOptions="Start"
+                   Source="{Binding MainImage}"/>
 
             <Button AbsoluteLayout.LayoutBounds="0,0,64,64"
                     AbsoluteLayout.LayoutFlags="PositionProportional"
                     BackgroundColor="Transparent"
                     ImageSource="breakfast.png"
-                    Clicked="OnBackButtonClicked"/>
+                    Command="{Binding BackCommand}"/>
 
             <Frame AbsoluteLayout.LayoutBounds="0,1,1,0.65"
                    AbsoluteLayout.LayoutFlags="All"
                    CornerRadius="35"
                    HasShadow="False">
+
                 <StackLayout Padding="8">
-                    <Label Text="Food name!"
-                           FontSize="22"/>
+                    <Grid HeightRequest="32">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0"
+                               FontSize="22"
+                               Text="{Binding Name}"/>
+
+                        <CollectionView Grid.Column="1"
+                                        ItemsSource="{Binding Pictograms}">
+
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout ItemSpacing="4"
+                                                   Orientation="Horizontal"/>
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="ImageSource">
+                                    <Image Source="{Binding}"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
 
                     <BoxView HeightRequest="2"
                              WidthRequest="800"
                              Color="LightGray"
                              Margin="10"/>
 
-                    <cv:CardsView>
+                    <cv:CardsView ItemsSource="{Binding Steps}">
                         <cv:CardsView.ItemTemplate>
-                            <DataTemplate x:DataType="v:TemporaryRecipeStep">
+                            <DataTemplate x:DataType="{x:Type x:String}">
                                 <StackLayout>
                                     <Frame HasShadow="True"
                                            CornerRadius="10"
                                            HeightRequest="300"
                                            WidthRequest="300"
                                            Margin="20">
-                                        <Label Text="{Binding Value}"
+
+                                        <Label Text="{Binding}"
                                                HorizontalOptions="Center"
                                                VerticalOptions="Center"/>
                                     </Frame>
                                 </StackLayout>
                             </DataTemplate>
                         </cv:CardsView.ItemTemplate>
-
-                        <cv:CardsView.ItemsSource>
-                            <x:Array Type="{x:Type v:TemporaryRecipeStep}">
-                                <v:TemporaryRecipeStep Value="Boil an egg!"/>
-                                <v:TemporaryRecipeStep Value="Eat the egg!"/>
-                            </x:Array>
-                        </cv:CardsView.ItemsSource>
                     </cv:CardsView>
                 </StackLayout>
             </Frame>
