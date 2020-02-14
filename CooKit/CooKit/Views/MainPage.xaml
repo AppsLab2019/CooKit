@@ -14,14 +14,19 @@
     </ContentPage.BindingContext>
     
     <ContentPage.Content>
-        <CollectionView ItemsSource="{Binding Recipes}"
+        <CollectionView Margin="15"
+                        ItemsSource="{Binding Recipes}"
                         RemainingItemsThreshold="5"
                         RemainingItemsThresholdReachedCommand="{Binding ThresholdReachedCommand}">
 
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="20" 
+                                   Orientation="Vertical"/>
+            </CollectionView.ItemsLayout>
+
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="m:IRecipe">
-                    <StackLayout HeightRequest="200"
-                                 Padding="15,10,15,10">
+                    <StackLayout HeightRequest="196">
 
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnRecipeTapped"/>
@@ -31,13 +36,12 @@
                                         HasShadow="True">
 
                             <AbsoluteLayout>
-                                <Image x:Name="BackgroundImage"
-                                       Aspect="AspectFill"
-                                       Source="{Binding MainImage}"
+                                <Image AbsoluteLayout.LayoutBounds="0,0,1,1"
                                        AbsoluteLayout.LayoutFlags="All"
-                                       AbsoluteLayout.LayoutBounds="0,0,1,1"/>
+                                       Aspect="AspectFill"
+                                       Source="{Binding MainImage}"/>
 
-                                <Label AbsoluteLayout.LayoutBounds="0.1,0.9,0.9,0.1"
+                                <Label AbsoluteLayout.LayoutBounds="1,0.9,0.95,0.1"
                                        AbsoluteLayout.LayoutFlags="All"
                                        FontSize="Medium"
                                        Text="{Binding Name}"/>
