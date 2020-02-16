@@ -9,9 +9,13 @@ namespace CooKit.ViewModels
 {
     public sealed class RecipeViewModel : INotifyPropertyChanged
     {
-        public string Name { get; }
-        public string Description { get; }
-        public ImageSource MainImage { get; }
+        public string Name => 
+            _recipe.Name;
+        public string Description => 
+            _recipe.Description;
+        public ImageSource MainImage => 
+            _recipe.MainImage;
+
         public ObservableCollection<ImageSource> Pictograms { get; }
 
         public ObservableCollection<IIngredient> Ingredients { get; }
@@ -21,20 +25,14 @@ namespace CooKit.ViewModels
         public ICommand CookCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private IRecipe _recipe;
+        private readonly IRecipe _recipe;
 
         public RecipeViewModel(IRecipe recipe)
         {
-            Name = recipe.Name;
-            Description = recipe.Description;
-            MainImage = recipe.MainImage;
             Pictograms = new ObservableCollection<ImageSource>(new []{ ImageSource.FromFile("breakfast.png"), ImageSource.FromFile("breakfast.png") });
 
-            Ingredients = new ObservableCollection<IIngredient>();
+            Ingredients = new ObservableCollection<IIngredient>(recipe.Ingredients);
             Steps = new ObservableCollection<string>(new []{ "Boil an egg!", "Eat the egg!" });
-
-            for (var i = 0; i < 10; i++)
-                Ingredients.Add(new MockIngredient());
 
             BackCommand = new Command(() => Shell.Current.Navigation.PopAsync());
             CookCommand = new Command(() => Shell.Current.Navigation.PushAsync(new RecipeView(this)));

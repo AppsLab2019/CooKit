@@ -7,11 +7,9 @@ namespace CooKit.Models
         public string Name { get; }
         public ImageSource Icon { get; }
 
-        public MockIngredient()
-        {
-            Name = "Fake Ingredient";
-            Icon = ImageSource.FromFile("breakfast.png");
-        }
+        public static MockIngredient Example = new MockIngredient(
+            "Mock Ingredient",
+            ImageSource.FromFile("breakfast.png"));
 
         public MockIngredient(string name, ImageSource icon)
         {

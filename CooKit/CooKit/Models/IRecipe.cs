@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace CooKit.Models
 {
@@ -7,5 +8,7 @@ namespace CooKit.Models
         string Name { get; }
         string Description { get; }
         ImageSource MainImage { get; }
+
+        IReadOnlyList<IIngredient> Ingredients { get; }
     }
 }

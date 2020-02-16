@@ -9,7 +9,6 @@ namespace CooKit.ViewModels
 {
     public class MainPageViewModel
     {
-
         public readonly IRecipeStore RecipeStore;
         public ObservableCollection<IRecipe> Recipes { get; }
         public ICommand ThresholdReachedCommand { get; }
@@ -34,6 +33,5 @@ namespace CooKit.ViewModels
 
             _currentIndex += 10;
         }
-
     }
 }
