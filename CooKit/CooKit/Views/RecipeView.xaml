@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:cv="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeView"
@@ -53,8 +54,9 @@
                             </CollectionView.ItemsLayout>
 
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ImageSource">
-                                    <Image Source="{Binding}"/>
+                                <DataTemplate x:DataType="m:IPictogram">
+                                    <ImageButton Source="{Binding Image}"
+                                                 Clicked="OnPictogramClicked"/>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

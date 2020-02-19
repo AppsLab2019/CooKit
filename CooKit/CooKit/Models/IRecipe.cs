@@ -9,6 +9,9 @@ namespace CooKit.Models
         string Description { get; }
         ImageSource MainImage { get; }
 
+        IReadOnlyList<IPictogram> Pictograms { get; }
+
         IReadOnlyList<IIngredient> Ingredients { get; }
+        IReadOnlyList<string> Steps { get; }
     }
 }

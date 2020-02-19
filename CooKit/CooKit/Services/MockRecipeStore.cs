@@ -1,4 +1,5 @@
 ﻿using CooKit.Models;
+using CooKit.Models.Impl;
 
 namespace CooKit.Services
 {

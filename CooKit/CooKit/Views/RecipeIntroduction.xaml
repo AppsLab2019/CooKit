@@ -53,8 +53,9 @@
                             </CollectionView.ItemsLayout>
 
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="ImageSource">
-                                    <Image Source="{Binding}"/>
+                                <DataTemplate x:DataType="m:IPictogram">
+                                    <ImageButton Source="{Binding Image}"
+                                                 Clicked="OnPictogramClicked"/>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

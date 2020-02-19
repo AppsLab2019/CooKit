@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Views;
@@ -7,7 +6,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels
 {
-    public sealed class RecipeViewModel : INotifyPropertyChanged
+    public sealed class RecipeViewModel
     {
         public string Name => 
             _recipe.Name;
@@ -16,23 +15,22 @@ namespace CooKit.ViewModels
         public ImageSource MainImage => 
             _recipe.MainImage;
 
-        public ObservableCollection<ImageSource> Pictograms { get; }
+        public ObservableCollection<IPictogram> Pictograms { get; }
 
         public ObservableCollection<IIngredient> Ingredients { get; }
         public ObservableCollection<string> Steps { get; }
 
         public ICommand BackCommand { get; }
         public ICommand CookCommand { get; }
-        public event PropertyChangedEventHandler PropertyChanged;
 
         private readonly IRecipe _recipe;
 
         public RecipeViewModel(IRecipe recipe)
         {
-            Pictograms = new ObservableCollection<ImageSource>(new []{ ImageSource.FromFile("breakfast.png"), ImageSource.FromFile("breakfast.png") });
+            Pictograms = new ObservableCollection<IPictogram>(recipe.Pictograms);
 
             Ingredients = new ObservableCollection<IIngredient>(recipe.Ingredients);
-            Steps = new ObservableCollection<string>(new []{ "Boil an egg!", "Eat the egg!" });
+            Steps = new ObservableCollection<string>(recipe.Steps);
 
             BackCommand = new Command(() => Shell.Current.Navigation.PopAsync());
             CookCommand = new Command(() => Shell.Current.Navigation.PushAsync(new RecipeView(this)));

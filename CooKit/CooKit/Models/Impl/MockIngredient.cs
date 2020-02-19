@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace CooKit.Models
+namespace CooKit.Models.Impl
 {
     public sealed class MockIngredient : IIngredient
     {
