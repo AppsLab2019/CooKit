@@ -1,17 +1,17 @@
-﻿using CooKit.Models;
-using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using CooKit.Models;
 
 namespace CooKit.Services
 {
     public interface IRecipeStore
     {
+        IReadOnlyList<IRecipe> LoadedRecipes { get; }
 
-        [NotNull]
-        IRecipe GetRecipe(int index);
+        IRecipe LoadRecipe();
+        Task<IRecipe> LoadRecipeAsync();
 
-        [NotNull]
-        [ItemNotNull]
-        IRecipe[] GetRecipeRange(int startIndex, int length);
-
+        IReadOnlyList<IRecipe> LoadRecipes(int count);
+        Task<IReadOnlyList<IRecipe>> LoadRecipesAsync(int count);
     }
 }
