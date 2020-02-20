@@ -7,38 +7,43 @@ namespace CooKit.Services.Impl
 {
     public sealed class MockJsonStore : IJsonStore
     {
-        public string GetJson(JsonStoreType type, Guid guid)
+        private readonly string _ingredientJson;
+        private readonly string _pictogramJson;
+        private readonly string _recipeJson;
+
+        public MockJsonStore()
         {
-            if (type == JsonStoreType.Ingredient)
-            {
-                var ingredient = new DeserializedIngredientInfo
+            _ingredientJson = JsonConvert.SerializeObject(
+                new DeserializedIngredientInfo
                 {
                     Name = "Placeholder Ingredient Name"
-                };
+                });
 
-                return JsonConvert.SerializeObject(ingredient);
-            }
-            if (type == JsonStoreType.Pictogram)
-            {
-                var pictogram = new DeserializedPictogramInfo
+            _pictogramJson = JsonConvert.SerializeObject(
+                new DeserializedPictogramInfo
                 {
                     Name = "Placeholder Pictogram Info",
                     Description = "Placeholder Pictogram Description"
-                };
+                });
 
-                return JsonConvert.SerializeObject(pictogram);
-            }
-            
-            var recipe = new DeserializedRecipeInfo
-            {
-                Name = "Placeholder Recipe Name",
-                Description = "Placeholder Recipe Description",
-                Ingredients = new[] {Guid.Empty.ToString()},
-                Pictograms = new[] {Guid.Empty.ToString()}
-            };
-
-            return JsonConvert.SerializeObject(recipe);
+            _recipeJson = JsonConvert.SerializeObject(
+                new DeserializedRecipeInfo
+                {
+                    Name = "Placeholder Recipe Name",
+                    Description = "Placeholder Recipe Description",
+                    Ingredients = new[] { Guid.Empty.ToString() },
+                    Pictograms = new[] { Guid.Empty.ToString() }
+                });
         }
+
+        public string GetJson(JsonStoreType type, Guid guid) =>
+            type switch
+            {
+                JsonStoreType.Ingredient => _ingredientJson,
+                JsonStoreType.Pictogram => _pictogramJson,
+                JsonStoreType.Recipe => _recipeJson,
+                _ => null
+            };
 
         public async Task<string> GetJsonAsync(JsonStoreType type, Guid guid) =>
             await Task.Run(() => GetJson(type, guid));
