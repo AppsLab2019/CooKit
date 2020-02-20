@@ -1,9 +1,13 @@
-﻿using CooKit.Services;
+﻿using System;
+using CooKit.Services;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Services.Impl;
+using CooKit.Services.Impl.Json;
+using Newtonsoft.Json;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels
@@ -19,7 +23,16 @@ namespace CooKit.ViewModels
 
         public MainPageViewModel()
         {
-            _recipeStore = new MockRecipeStore();
+            // Test
+            var recipeIds = Enumerable
+                .Repeat(Guid.Empty, 100)
+                .ToList();
+
+            var serialized = JsonConvert.SerializeObject(recipeIds);
+            System.Diagnostics.Debug.WriteLine(serialized);
+
+            _recipeStore = new JsonRecipeStore(new MockJsonStore(), serialized);
+            // End Test
 
             _isBusy = false;
             Recipes = new ObservableCollection<IRecipe>();
@@ -37,7 +50,7 @@ namespace CooKit.ViewModels
             _isBusy = true;
 
             var recipes = await _recipeStore.LoadRecipesAsync(10);
-            
+
             foreach (var recipe in recipes)
                 Recipes.Add(recipe);
 

@@ -1,6 +1,6 @@
 ﻿namespace CooKit.Services
 {
-    public enum JSONStoreType
+    public enum JsonStoreType
     {
         Ingredient,
         Pictogram,

@@ -1,13 +1,11 @@
-﻿using System;
-
-namespace CooKit.Services.Impl.Json
+﻿namespace CooKit.Services.Impl.Json
 {
-    internal class DeserializedRecipeInfo
+    public sealed class DeserializedRecipeInfo
     {
-        internal string Name;
-        internal string Description;
+        public string Name;
+        public string Description;
 
-        internal Guid[] Ingredients;
-        internal Guid[] Pictograms;
+        public string[] Ingredients;
+        public string[] Pictograms;
     }
 }

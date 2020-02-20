@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace CooKit.Services
 {
-    public interface IJSONStore
+    public interface IJsonStore
     {
-        string GetJSON(JSONStoreType type, Guid guid);
-        Task<string> GetJSONAsync(JSONStoreType type, Guid guid);
+        string GetJson(JsonStoreType type, Guid guid);
+        Task<string> GetJsonAsync(JsonStoreType type, Guid guid);
     }
 }
