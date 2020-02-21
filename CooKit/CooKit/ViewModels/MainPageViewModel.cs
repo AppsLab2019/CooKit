@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Services.Impl;
+using CooKit.Services.Impl.ImageLoaders;
 using CooKit.Services.Impl.Json;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -23,16 +24,18 @@ namespace CooKit.ViewModels
 
         public MainPageViewModel()
         {
-            // Test
-            var recipeIds = Enumerable
+            var imageStore = new ImageStoreImpl();
+            imageStore.RegisterLoader("FileImageLoader", new FileImageLoader());
+
+            var placeholderIds = Enumerable
                 .Repeat(Guid.Empty, 100)
-                .ToList();
+                .ToArray();
 
-            var serialized = JsonConvert.SerializeObject(recipeIds);
-            System.Diagnostics.Debug.WriteLine(serialized);
-
-            _recipeStore = new JsonRecipeStore(new MockJsonStore(), serialized);
-            // End Test
+            _recipeStore = new JsonRecipeStoreBuilder()
+                .JsonStore.Set(new MockJsonStore())
+                .ImageStore.Set(imageStore)
+                .RecipeIdsJson.Set(JsonConvert.SerializeObject(placeholderIds))
+                .Build();
 
             _isBusy = false;
             Recipes = new ObservableCollection<IRecipe>();

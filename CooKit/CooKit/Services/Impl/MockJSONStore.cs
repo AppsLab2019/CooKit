@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CooKit.Services.Impl.Json;
+using CooKit.Models.Impl.Json;
 using Newtonsoft.Json;
 
 namespace CooKit.Services.Impl
@@ -14,25 +14,32 @@ namespace CooKit.Services.Impl
         public MockJsonStore()
         {
             _ingredientJson = JsonConvert.SerializeObject(
-                new DeserializedIngredientInfo
+                new JsonIngredientInfo
                 {
                     Name = "Placeholder Ingredient Name"
                 });
 
             _pictogramJson = JsonConvert.SerializeObject(
-                new DeserializedPictogramInfo
+                new JsonPictogramInfo
                 {
                     Name = "Placeholder Pictogram Info",
                     Description = "Placeholder Pictogram Description"
                 });
 
             _recipeJson = JsonConvert.SerializeObject(
-                new DeserializedRecipeInfo
+                new JsonRecipeInfo
                 {
                     Name = "Placeholder Recipe Name",
                     Description = "Placeholder Recipe Description",
-                    Ingredients = new[] { Guid.Empty.ToString() },
-                    Pictograms = new[] { Guid.Empty.ToString() }
+
+                    MainImageInfo = new JsonImageInfo
+                    {
+                        LoaderName = "FileImageLoader",
+                        Source = "food.jpg"
+                    },
+
+                    IngredientIds = new []{ Guid.Empty.ToString() },
+                    PictogramIds = new []{ Guid.Empty.ToString() }
                 });
         }
 

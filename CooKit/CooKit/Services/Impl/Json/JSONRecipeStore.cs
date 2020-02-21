@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CooKit.Models.Impl;
-using Newtonsoft.Json.Linq;
+using CooKit.Models.Impl.Json;
 using Xamarin.Forms;
 
 namespace CooKit.Services.Impl.Json
@@ -15,21 +15,17 @@ namespace CooKit.Services.Impl.Json
         public IReadOnlyList<IRecipe> LoadedRecipes => _recipes;
 
         private readonly IJsonStore _jsonStore;
+        private readonly IImageStore _imageStore;
         private readonly Stack<Guid> _recipeIds;
 
         private readonly List<IRecipe> _recipes;
         private readonly Dictionary<Guid, IIngredient> _ingredients;
         private readonly Dictionary<Guid, IPictogram> _pictograms;
 
-        public JsonRecipeStore(IJsonStore jsonStore, string mainJson)
+        public JsonRecipeStore(IJsonStore jsonStore, IImageStore imageStore, IEnumerable<Guid> recipeIds)
         {
             _jsonStore = jsonStore;
-
-            var recipeIds = JArray
-                .Parse(mainJson)
-                .ToObject<string[]>()
-                .Select(Guid.Parse);
-
+            _imageStore = imageStore;
             _recipeIds = new Stack<Guid>(recipeIds);
 
             _recipes = new List<IRecipe>();
@@ -47,22 +43,26 @@ namespace CooKit.Services.Impl.Json
             if (recipeJson is null)
                 return null;
 
-            var recipeInfo = JsonConvert.DeserializeObject<DeserializedRecipeInfo>(recipeJson);
+            var recipeInfo = JsonConvert.DeserializeObject<JsonRecipeInfo>(recipeJson);
 
-            var ingredients = recipeInfo.Ingredients
+            var mainImageInfo = recipeInfo.MainImageInfo;
+            var mainImage = _imageStore.LoadImage(
+                mainImageInfo.LoaderName,
+                mainImageInfo.Source);
+
+            var ingredients = recipeInfo.IngredientIds
                 .Select(Guid.Parse)
                 .Select(LoadIngredient)
                 .ToArray();
 
-            var pictograms = recipeInfo.Pictograms
+            var pictograms = recipeInfo.PictogramIds
                 .Select(Guid.Parse)
                 .Select(LoadPictogram)
                 .ToArray();
 
             // TODO: replace with custom type ? (maybe wrapper for DeserializedRecipeInfo)
             var recipe = new MockRecipe(recipeInfo.Name, recipeInfo.Description,
-                ImageSource.FromFile("food.jpg"),
-                pictograms, ingredients,
+                mainImage, pictograms, ingredients,
                 new []{ "Step 1?", "Step 2?" });
 
             _recipes.Add(recipe);
@@ -103,7 +103,7 @@ namespace CooKit.Services.Impl.Json
             if (ingredientJson is null)
                 return MockIngredient.Example;
 
-            var ingredientInfo = JsonConvert.DeserializeObject<DeserializedIngredientInfo>(ingredientJson);
+            var ingredientInfo = JsonConvert.DeserializeObject<JsonIngredientInfo>(ingredientJson);
 
             // TODO: replace with custom type ? (maybe wrapper for DeserializedIngredientInfo)
             var ingredient = new MockIngredient(ingredientInfo.Name, ImageSource.FromFile("breakfast.png"));
@@ -123,7 +123,7 @@ namespace CooKit.Services.Impl.Json
             if (pictogramJson is null)
                 return MockPictogram.Example;
 
-            var pictogramInfo = JsonConvert.DeserializeObject<DeserializedPictogramInfo>(pictogramJson);
+            var pictogramInfo = JsonConvert.DeserializeObject<JsonPictogramInfo>(pictogramJson);
 
             // TODO: replace with custom type ? (maybe wrapper for DeserializedPictogramInfo)
             var pictogram = new MockPictogram(pictogramInfo.Name, pictogramInfo.Description,
