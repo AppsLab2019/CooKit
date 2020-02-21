@@ -4,5 +4,6 @@
     {
         public string Name;
         public string Description;
+        public JsonImageInfo IconInfo;
     }
 }

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using CooKit.Models.Impl;
 using CooKit.Models.Impl.Json;
-using Xamarin.Forms;
 
 namespace CooKit.Services.Impl.Json
 {
@@ -62,8 +61,7 @@ namespace CooKit.Services.Impl.Json
 
             // TODO: replace with custom type ? (maybe wrapper for DeserializedRecipeInfo)
             var recipe = new MockRecipe(recipeInfo.Name, recipeInfo.Description,
-                mainImage, pictograms, ingredients,
-                new []{ "Step 1?", "Step 2?" });
+                mainImage, pictograms, ingredients, recipeInfo.RecipeSteps);
 
             _recipes.Add(recipe);
             return recipe;
@@ -104,9 +102,11 @@ namespace CooKit.Services.Impl.Json
                 return MockIngredient.Example;
 
             var ingredientInfo = JsonConvert.DeserializeObject<JsonIngredientInfo>(ingredientJson);
+            var iconInfo = ingredientInfo.IconInfo;
 
             // TODO: replace with custom type ? (maybe wrapper for DeserializedIngredientInfo)
-            var ingredient = new MockIngredient(ingredientInfo.Name, ImageSource.FromFile("breakfast.png"));
+            var ingredient = new MockIngredient(ingredientInfo.Name,
+                _imageStore.LoadImage(iconInfo.LoaderName, iconInfo.Source));
 
             _ingredients[guid] = ingredient;
             return ingredient;
@@ -124,10 +124,11 @@ namespace CooKit.Services.Impl.Json
                 return MockPictogram.Example;
 
             var pictogramInfo = JsonConvert.DeserializeObject<JsonPictogramInfo>(pictogramJson);
+            var iconInfo = pictogramInfo.IconInfo;
 
             // TODO: replace with custom type ? (maybe wrapper for DeserializedPictogramInfo)
             var pictogram = new MockPictogram(pictogramInfo.Name, pictogramInfo.Description,
-                ImageSource.FromFile("breakfast.png"));
+                _imageStore.LoadImage(iconInfo.LoaderName, iconInfo.Source));
 
             _pictograms[guid] = pictogram;
             return pictogram;

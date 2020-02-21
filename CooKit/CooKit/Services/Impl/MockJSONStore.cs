@@ -16,14 +16,25 @@ namespace CooKit.Services.Impl
             _ingredientJson = JsonConvert.SerializeObject(
                 new JsonIngredientInfo
                 {
-                    Name = "Placeholder Ingredient Name"
+                    Name = "Placeholder Ingredient Name",
+                    IconInfo = new JsonImageInfo
+                    {
+                        LoaderName = "FileImageLoader",
+                        Source = "breakfast.png"
+                    }
                 });
 
             _pictogramJson = JsonConvert.SerializeObject(
                 new JsonPictogramInfo
                 {
                     Name = "Placeholder Pictogram Info",
-                    Description = "Placeholder Pictogram Description"
+                    Description = "Placeholder Pictogram Description",
+
+                    IconInfo = new JsonImageInfo
+                    {
+                        LoaderName = "FileImageLoader",
+                        Source = "breakfast.png"
+                    }
                 });
 
             _recipeJson = JsonConvert.SerializeObject(
@@ -39,10 +50,12 @@ namespace CooKit.Services.Impl
                     },
 
                     IngredientIds = new []{ Guid.Empty.ToString() },
-                    PictogramIds = new []{ Guid.Empty.ToString() }
+                    PictogramIds = new []{ Guid.Empty.ToString() },
+
+                    RecipeSteps = new []{ "Placeholder Step 1", "Placeholder Step 2" }
                 });
         }
-
+        
         public string GetJson(JsonStoreType type, Guid guid) =>
             type switch
             {

@@ -3,5 +3,6 @@
     public sealed class JsonIngredientInfo
     {
         public string Name;
+        public JsonImageInfo IconInfo;
     }
 }

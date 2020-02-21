@@ -8,5 +8,7 @@
 
         public string[] IngredientIds;
         public string[] PictogramIds;
+
+        public string[] RecipeSteps;
     }
 }
