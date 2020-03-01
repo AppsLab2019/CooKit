@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CooKit.Services
@@ -13,5 +14,8 @@ namespace CooKit.Services
 
         string GetRecipeJson(Guid guid);
         Task<string> GetRecipeJsonAsync(Guid guid);
+
+        IReadOnlyList<Guid> GetNextRecipeIds();
+        Task<IReadOnlyList<Guid>> GetNextRecipeIdsAsync();
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using CooKit.Models;
 using CooKit.Models.Impl;
-using Newtonsoft.Json.Linq;
 
 namespace CooKit.Services.Impl.Json
 {
@@ -31,15 +29,9 @@ namespace CooKit.Services.Impl.Json
             if (RecipeIdsJson.Value is null)
                 throw new Exception();
 
-            var recipeIds = JArray
-                .Parse(RecipeIdsJson.Value)
-                .ToObject<string[]>()
-                .Select(Guid.Parse);
-
             return new JsonRecipeStore(
                 JsonStore.Value,
-                ImageStore.Value,
-                recipeIds);
+                ImageStore.Value);
         }
     }
 }

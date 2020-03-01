@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using CooKit.Models.Impl.Json;
 using Newtonsoft.Json;
@@ -73,5 +75,13 @@ namespace CooKit.Services.Impl
 
         public async Task<string> GetRecipeJsonAsync(Guid guid) =>
             await Task.FromResult(_recipeJson);
+
+        public IReadOnlyList<Guid> GetNextRecipeIds() =>
+            Enumerable
+                .Repeat(Guid.Empty, 10)
+                .ToArray();
+
+        public async Task<IReadOnlyList<Guid>> GetNextRecipeIdsAsync() =>
+            await Task.FromResult(GetNextRecipeIds());
     }
 }

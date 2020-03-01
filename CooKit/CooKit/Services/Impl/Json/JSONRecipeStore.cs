@@ -21,11 +21,11 @@ namespace CooKit.Services.Impl.Json
         private readonly Dictionary<Guid, IIngredient> _ingredients;
         private readonly Dictionary<Guid, IPictogram> _pictograms;
 
-        public JsonRecipeStore(IJsonStore jsonStore, IImageStore imageStore, IEnumerable<Guid> recipeIds)
+        public JsonRecipeStore(IJsonStore jsonStore, IImageStore imageStore)
         {
             _jsonStore = jsonStore;
             _imageStore = imageStore;
-            _recipeIds = new Stack<Guid>(recipeIds);
+            _recipeIds = new Stack<Guid>();
 
             _recipes = new List<IRecipe>();
             _ingredients = new Dictionary<Guid, IIngredient>();
@@ -35,7 +35,15 @@ namespace CooKit.Services.Impl.Json
         public IRecipe LoadRecipe()
         {
             if (_recipeIds.Count == 0)
-                return null;
+            {
+                var recipeIds = _jsonStore.GetNextRecipeIds();
+
+                if (!recipeIds.Any())
+                    return null;
+
+                foreach (var recipeId in recipeIds)
+                    _recipeIds.Push(recipeId);
+            }
 
             var recipeJson = _jsonStore.GetRecipeJson(_recipeIds.Pop());
 
