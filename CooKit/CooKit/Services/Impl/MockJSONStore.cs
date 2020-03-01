@@ -55,17 +55,23 @@ namespace CooKit.Services.Impl
                     RecipeSteps = new []{ "Placeholder Step 1", "Placeholder Step 2" }
                 });
         }
-        
-        public string GetJson(JsonStoreType type, Guid guid) =>
-            type switch
-            {
-                JsonStoreType.Ingredient => _ingredientJson,
-                JsonStoreType.Pictogram => _pictogramJson,
-                JsonStoreType.Recipe => _recipeJson,
-                _ => null
-            };
 
-        public async Task<string> GetJsonAsync(JsonStoreType type, Guid guid) =>
-            await Task.Run(() => GetJson(type, guid));
+        public string GetIngredientJson(Guid guid) =>
+            _ingredientJson;
+
+        public async Task<string> GetIngredientJsonAsync(Guid guid) =>
+            await Task.FromResult(_ingredientJson);
+
+        public string GetPictogramJson(Guid guid) =>
+            _pictogramJson;
+
+        public async Task<string> GetPictogramJsonAsync(Guid guid) =>
+            await Task.FromResult(_pictogramJson);
+
+        public string GetRecipeJson(Guid guid) =>
+            _recipeJson;
+
+        public async Task<string> GetRecipeJsonAsync(Guid guid) =>
+            await Task.FromResult(_recipeJson);
     }
 }

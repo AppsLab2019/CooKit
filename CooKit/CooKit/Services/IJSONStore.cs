@@ -5,7 +5,13 @@ namespace CooKit.Services
 {
     public interface IJsonStore
     {
-        string GetJson(JsonStoreType type, Guid guid);
-        Task<string> GetJsonAsync(JsonStoreType type, Guid guid);
+        string GetIngredientJson(Guid guid);
+        Task<string> GetIngredientJsonAsync(Guid guid);
+
+        string GetPictogramJson(Guid guid);
+        Task<string> GetPictogramJsonAsync(Guid guid);
+
+        string GetRecipeJson(Guid guid);
+        Task<string> GetRecipeJsonAsync(Guid guid);
     }
 }

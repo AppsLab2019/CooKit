@@ -37,7 +37,7 @@ namespace CooKit.Services.Impl.Json
             if (_recipeIds.Count == 0)
                 return null;
 
-            var recipeJson = _jsonStore.GetJson(JsonStoreType.Recipe, _recipeIds.Pop());
+            var recipeJson = _jsonStore.GetRecipeJson(_recipeIds.Pop());
 
             if (recipeJson is null)
                 return null;
@@ -67,6 +67,7 @@ namespace CooKit.Services.Impl.Json
             return recipe;
         }
 
+        // TODO: properly implement
         public async Task<IRecipe> LoadRecipeAsync() =>
             await Task.Run(LoadRecipe);
 
@@ -87,6 +88,7 @@ namespace CooKit.Services.Impl.Json
             return list;
         }
 
+        // TODO: properly implement
         public async Task<IReadOnlyList<IRecipe>> LoadRecipesAsync(int count) =>
             await Task.Run(() => LoadRecipes(count));
 
@@ -95,7 +97,7 @@ namespace CooKit.Services.Impl.Json
             if (_ingredients.ContainsKey(guid))
                 return _ingredients[guid];
 
-            var ingredientJson = _jsonStore.GetJson(JsonStoreType.Ingredient, guid);
+            var ingredientJson = _jsonStore.GetIngredientJson(guid);
 
             // TODO: replace me with placeholder ingredient
             if (ingredientJson is null)
@@ -117,7 +119,7 @@ namespace CooKit.Services.Impl.Json
             if (_pictograms.ContainsKey(guid))
                 return _pictograms[guid];
 
-            var pictogramJson = _jsonStore.GetJson(JsonStoreType.Pictogram, guid);
+            var pictogramJson = _jsonStore.GetPictogramJson(guid);
 
             // TODO: replace me with placeholder pictogram
             if (pictogramJson is null)
