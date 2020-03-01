@@ -2,7 +2,7 @@
 {
     public partial class App
     {
-        public App() =>
+        public App() => 
             InitializeComponent();
     }
 }
