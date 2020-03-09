@@ -1,14 +1,12 @@
-﻿using System;
-using CooKit.Services;
+﻿using CooKit.Services;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
-using CooKit.Services.Impl.Json;
 using Xamarin.Forms;
+using CooKit.Services.Impl.SQLite;
+using CooKit.Models.Impl;
 
 namespace CooKit.ViewModels
 {
@@ -26,14 +24,15 @@ namespace CooKit.ViewModels
             var imageStore = new ImageStoreImpl();
             imageStore.RegisterLoader("FileImageLoader", new FileImageLoader());
 
-            var placeholderIds = Enumerable
-                .Repeat(Guid.Empty, 100)
-                .ToArray();
+            //_recipeStore = new JsonRecipeStoreBuilder()
+            //    .JsonStore.Set(new MockJsonStore())
+            //    .ImageStore.Set(imageStore)
+            //    .Build();
 
-            _recipeStore = new JsonRecipeStoreBuilder()
-                .JsonStore.Set(new MockJsonStore())
+            _recipeStore = new SQLiteRecipeStoreBuilder()
                 .ImageStore.Set(imageStore)
-                .Build();
+                .BuildAsync()
+                .Result;
 
             _isBusy = false;
             Recipes = new ObservableCollection<IRecipe>();
@@ -42,7 +41,6 @@ namespace CooKit.ViewModels
             ThresholdReachedCommand = new Command(LoadRecipes);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private async void LoadRecipes()
         {
             if (_isBusy)
@@ -51,7 +49,7 @@ namespace CooKit.ViewModels
             _isBusy = true;
 
             for (var i = 0; i < 10; i++)
-                Recipes.Add(await _recipeStore.GetNextRecipeAsync());
+                Recipes.Add(await _recipeStore.GetNextRecipeAsync() ?? MockRecipe.Example);
 
             _isBusy = false;
         }

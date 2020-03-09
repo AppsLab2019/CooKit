@@ -39,6 +39,10 @@ namespace CooKit.Services.Impl.SQLite
 
         public async Task LoadRecipesAsync()
         {
+            await _connection.CreateTableAsync<SQLiteRecipeInfo>();
+            await _connection.CreateTableAsync<SQLiteIngredientInfo>();
+            await _connection.CreateTableAsync<SQLitePictogramInfo>();
+
             var recipeInfos = await LoadInfoAsync<SQLiteRecipeInfo>();
             var ingredientInfos = await LoadInfoAsync<SQLiteIngredientInfo>();
             var pictogramInfos = await LoadInfoAsync<SQLitePictogramInfo>();
