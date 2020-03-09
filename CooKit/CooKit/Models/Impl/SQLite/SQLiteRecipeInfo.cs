@@ -22,7 +22,5 @@ namespace CooKit.Models.Impl.SQLite
         public string PictogramIds { get; set; }
         [NotNull]
         public string StepIds { get; set; }
-
-        public SQLiteRecipeInfo() { }
     }
 }

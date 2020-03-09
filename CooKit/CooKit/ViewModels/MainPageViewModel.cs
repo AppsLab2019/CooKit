@@ -8,7 +8,6 @@ using CooKit.Models;
 using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
 using CooKit.Services.Impl.Json;
-using Newtonsoft.Json;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels
@@ -34,7 +33,6 @@ namespace CooKit.ViewModels
             _recipeStore = new JsonRecipeStoreBuilder()
                 .JsonStore.Set(new MockJsonStore())
                 .ImageStore.Set(imageStore)
-                .RecipeIdsJson.Set(JsonConvert.SerializeObject(placeholderIds))
                 .Build();
 
             _isBusy = false;
@@ -52,10 +50,8 @@ namespace CooKit.ViewModels
 
             _isBusy = true;
 
-            var recipes = await _recipeStore.LoadRecipesAsync(10);
-
-            foreach (var recipe in recipes)
-                Recipes.Add(recipe);
+            for (var i = 0; i < 10; i++)
+                Recipes.Add(await _recipeStore.GetNextRecipeAsync());
 
             _isBusy = false;
         }

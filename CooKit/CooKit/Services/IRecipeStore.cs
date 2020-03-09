@@ -8,10 +8,7 @@ namespace CooKit.Services
     {
         IReadOnlyList<IRecipe> LoadedRecipes { get; }
 
-        IRecipe LoadRecipe();
-        Task<IRecipe> LoadRecipeAsync();
-
-        IReadOnlyList<IRecipe> LoadRecipes(int count);
-        Task<IReadOnlyList<IRecipe>> LoadRecipesAsync(int count);
+        IRecipe GetNextRecipe();
+        Task<IRecipe> GetNextRecipeAsync();
     }
 }

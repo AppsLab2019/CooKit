@@ -21,7 +21,7 @@ namespace CooKit.Services.Impl.Json
         private readonly Dictionary<Guid, IIngredient> _ingredients;
         private readonly Dictionary<Guid, IPictogram> _pictograms;
 
-        public JsonRecipeStore(IJsonStore jsonStore, IImageStore imageStore)
+        internal JsonRecipeStore(IJsonStore jsonStore, IImageStore imageStore)
         {
             _jsonStore = jsonStore;
             _imageStore = imageStore;
@@ -32,7 +32,7 @@ namespace CooKit.Services.Impl.Json
             _pictograms = new Dictionary<Guid, IPictogram>();
         }
 
-        public IRecipe LoadRecipe()
+        public IRecipe GetNextRecipe()
         {
             if (_recipeIds.Count == 0)
             {
@@ -76,29 +76,8 @@ namespace CooKit.Services.Impl.Json
         }
 
         // TODO: properly implement
-        public async Task<IRecipe> LoadRecipeAsync() =>
-            await Task.Run(LoadRecipe);
-
-        public IReadOnlyList<IRecipe> LoadRecipes(int count)
-        {
-            var list = new List<IRecipe>(count);
-
-            for (var i = 0; i < count; i++)
-            {
-                var loadedRecipe = LoadRecipe();
-
-                if (loadedRecipe is null)
-                    break;
-
-                list.Add(loadedRecipe);
-            }
-
-            return list;
-        }
-
-        // TODO: properly implement
-        public async Task<IReadOnlyList<IRecipe>> LoadRecipesAsync(int count) =>
-            await Task.Run(() => LoadRecipes(count));
+        public async Task<IRecipe> GetNextRecipeAsync() =>
+            await Task.Run(GetNextRecipe);
 
         private IIngredient LoadIngredient(Guid guid)
         {
