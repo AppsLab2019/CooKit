@@ -2,10 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CooKit.Models;
-using CooKit.Services.Impl;
-using CooKit.Services.Impl.ImageLoaders;
 using Xamarin.Forms;
-using CooKit.Services.Impl.SQLite;
 using CooKit.Models.Impl;
 
 namespace CooKit.ViewModels
@@ -21,20 +18,9 @@ namespace CooKit.ViewModels
 
         public MainPageViewModel()
         {
-            var imageStore = new ImageStoreImpl();
-            imageStore.RegisterLoader("FileImageLoader", new FileImageLoader());
-
-            //_recipeStore = new JsonRecipeStoreBuilder()
-            //    .JsonStore.Set(new MockJsonStore())
-            //    .ImageStore.Set(imageStore)
-            //    .Build();
-
-            _recipeStore = new SQLiteRecipeStoreBuilder()
-                .ImageStore.Set(imageStore)
-                .BuildAsync()
-                .Result;
-
             _isBusy = false;
+            _recipeStore = ((App) Application.Current).RecipeStore;
+
             Recipes = new ObservableCollection<IRecipe>();
 
             LoadRecipes();

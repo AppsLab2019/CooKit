@@ -16,7 +16,6 @@ namespace CooKit.ViewModels
             _recipe.MainImage;
 
         public ObservableCollection<IPictogram> Pictograms { get; }
-
         public ObservableCollection<IIngredient> Ingredients { get; }
         public ObservableCollection<string> Steps { get; }
 
