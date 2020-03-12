@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using CooKit.Services;
+﻿using CooKit.Services;
 using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
-using CooKit.Services.Impl.Json;
+using CooKit.Services.Impl.SQLite;
 
 namespace CooKit
 {
@@ -20,11 +19,9 @@ namespace CooKit
             ImageStore.RegisterLoader("FileImageLoader", new FileImageLoader());
             ImageStore.RegisterLoader("UriImageLoader", new UriImageLoader());
 
-            var recipeStoreBuilder = new JsonRecipeStoreBuilder()
+            RecipeStore = await new SQLiteRecipeStoreBuilder()
                 .ImageStore.Set(ImageStore)
-                .JsonStore.Set(new MockJsonStore());
-
-            RecipeStore = await Task.Run(recipeStoreBuilder.Build);
+                .BuildAsync();
 
             MainPage = new AppShell();
         }

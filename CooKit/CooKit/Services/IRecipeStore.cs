@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CooKit.Models;
 
@@ -8,7 +9,10 @@ namespace CooKit.Services
     {
         IReadOnlyList<IRecipe> LoadedRecipes { get; }
 
-        IRecipe GetNextRecipe();
-        Task<IRecipe> GetNextRecipeAsync();
+        IRecipe LoadRecipe();
+        Task<IRecipe> LoadRecipeAsync();
+
+        IRecipe LoadRecipe(Guid id);
+        Task<IRecipe> LoadRecipeAsync(Guid id);
     }
 }

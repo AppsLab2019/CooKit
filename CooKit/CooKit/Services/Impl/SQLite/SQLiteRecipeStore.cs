@@ -16,26 +16,26 @@ namespace CooKit.Services.Impl.SQLite
         private readonly SQLiteAsyncConnection _connection;
         private readonly IImageStore _imageStore;
 
-        private Queue<IRecipe> _recipeQueue;
+        private readonly Dictionary<Guid, IRecipe> _recipes;
 
         internal SQLiteRecipeStore(string sqlPath, IImageStore imageStore)
         {
             _connection = new SQLiteAsyncConnection(sqlPath);
             _imageStore = imageStore;
 
-            _recipeQueue = null;
+            _recipes = new Dictionary<Guid, IRecipe>();
         }
 
-        public IRecipe GetNextRecipe()
-        {
-            if (_recipeQueue.Count == 0)
-                return null;
+        public IRecipe LoadRecipe() => null;
 
-            return _recipeQueue.Dequeue();
-        }
+        public Task<IRecipe> LoadRecipeAsync() =>
+            Task.FromResult(default(IRecipe));
 
-        public async Task<IRecipe> GetNextRecipeAsync() =>
-            await Task.Run(GetNextRecipe);
+        public IRecipe LoadRecipe(Guid id) => 
+            _recipes.ContainsKey(id) ? _recipes[id] : null;
+
+        public async Task<IRecipe> LoadRecipeAsync(Guid id) =>
+            await Task.Run(() => LoadRecipe(id));
 
         public async Task LoadRecipesAsync()
         {
@@ -71,17 +71,22 @@ namespace CooKit.Services.Impl.SQLite
                     .Select(id => pictograms[id])
                     .ToArray();
 
-                recipeList.Add(new MockRecipe(
-                    info.Name,
-                    info.Description,
+                var recipe = new RecipeImpl(Guid.Parse(info.Id))
+                {
+                    Name = info.Name,
+                    Description = info.Description,
+                    MainImage = _imageStore.LoadImage(info.ImageLoader, info.ImageSource),
 
-                    _imageStore.LoadImage(info.ImageLoader, info.ImageSource),
+                    Ingredients = recipeIngredients,
+                    Pictograms = recipePictograms,
+                    Steps = new[] { "Placeholder 1", "Placeholder 2" }
+                };
 
-                    recipePictograms, recipeIngredients, new[] { "Step 1", "Step 2" }));
+                recipeList.Add(recipe);
+                _recipes.Add(Guid.Parse(info.Id), recipe);
             }
 
             LoadedRecipes = recipeList;
-            _recipeQueue = new Queue<IRecipe>(recipeList);
         }
 
         private async Task<IEnumerable<T>> LoadInfoAsync<T>() where T : new() =>
@@ -89,22 +94,13 @@ namespace CooKit.Services.Impl.SQLite
                 .Table<T>()
                 .ToArrayAsync();
 
-        private SQLiteIngredient InfoToIngredient(SQLiteIngredientInfo info) =>
-            new SQLiteIngredient
-            {
-                Id = Guid.Parse(info.Id),
-                Name = info.Name,
-                Icon = _imageStore.LoadImage(info.ImageLoader, info.ImageSource)
-            };
+        private IIngredient InfoToIngredient(SQLiteIngredientInfo info) =>
+            new IngredientImpl(Guid.Parse(info.Id), info.Name,
+                _imageStore.LoadImage(info.ImageLoader, info.ImageSource));
 
-        private SQLitePictogram InfoToPictogram(SQLitePictogramInfo info) =>
-            new SQLitePictogram
-            {
-                Id = Guid.Parse(info.Id),
-                Name = info.Name,
-                Description = info.Description,
-                Image = _imageStore.LoadImage(info.ImageLoader, info.ImageSource)
-            };
+        private IPictogram InfoToPictogram(SQLitePictogramInfo info) =>
+            new PictogramImpl(Guid.Parse(info.Id), info.Name, info.Description,
+                _imageStore.LoadImage(info.ImageLoader, info.ImageSource));
 
         public void Dispose() =>
             _connection.CloseAsync().Wait();

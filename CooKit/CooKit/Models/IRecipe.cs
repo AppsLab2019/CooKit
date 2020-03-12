@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace CooKit.Models
 {
     public interface IRecipe
     {
+        Guid Id { get; }
         string Name { get; }
         string Description { get; }
         ImageSource MainImage { get; }

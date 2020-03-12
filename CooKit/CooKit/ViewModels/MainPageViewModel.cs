@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CooKit.Models;
 using Xamarin.Forms;
-using CooKit.Models.Impl;
 
 namespace CooKit.ViewModels
 {
@@ -21,7 +20,7 @@ namespace CooKit.ViewModels
             _isBusy = false;
             _recipeStore = ((App) Application.Current).RecipeStore;
 
-            Recipes = new ObservableCollection<IRecipe>();
+            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedRecipes);
 
             LoadRecipes();
             ThresholdReachedCommand = new Command(LoadRecipes);
@@ -35,7 +34,14 @@ namespace CooKit.ViewModels
             _isBusy = true;
 
             for (var i = 0; i < 10; i++)
-                Recipes.Add(await _recipeStore.GetNextRecipeAsync() ?? MockRecipe.Example);
+            {
+                var recipe = await _recipeStore.LoadRecipeAsync();
+
+                if (recipe is null)
+                    break;
+
+                Recipes.Add(recipe);
+            }
 
             _isBusy = false;
         }
