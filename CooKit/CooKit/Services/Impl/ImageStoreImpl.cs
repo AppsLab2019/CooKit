@@ -8,20 +8,29 @@ namespace CooKit.Services.Impl
     // TODO: introduce caching (maybe Dictionary with weak values?)
     public sealed class ImageStoreImpl : IImageStore
     {
-        private readonly Dictionary<string, IImageLoader> _loaders;
+        public IReadOnlyList<IImageLoader> RegisteredLoaders => _loaders;
 
-        public ImageStoreImpl() =>
-            _loaders = new Dictionary<string, IImageLoader>();
+        private readonly List<IImageLoader> _loaders;
+        private readonly Dictionary<string, IImageLoader> _loaderDictionary;
 
-        public void RegisterLoader(string loaderName, IImageLoader instance)
+        public ImageStoreImpl()
         {
-            if (!_loaders.ContainsKey(loaderName))
-                _loaders[loaderName] = instance;
+            _loaders = new List<IImageLoader>();
+            _loaderDictionary = new Dictionary<string, IImageLoader>();
+        }
+
+        public void RegisterLoader(IImageLoader instance)
+        {
+            if (_loaderDictionary.ContainsKey(instance.Name))
+                return;
+
+            _loaders.Add(instance);
+            _loaderDictionary[instance.Name] = instance;
         }
 
         public ImageSource LoadImage(string loaderName, string source)
         {
-            if (!_loaders.TryGetValue(loaderName, out var loader))
+            if (!_loaderDictionary.TryGetValue(loaderName, out var loader))
                 throw new ArgumentException(nameof(loaderName));
 
             return loader.LoadImage(source);
@@ -29,7 +38,7 @@ namespace CooKit.Services.Impl
 
         public async Task<ImageSource> LoadImageAsync(string loaderName, string source)
         {
-            if (!_loaders.TryGetValue(loaderName, out var loader))
+            if (!_loaderDictionary.TryGetValue(loaderName, out var loader))
                 throw new ArgumentException(nameof(loaderName));
 
             return await loader.LoadImageAsync(source);

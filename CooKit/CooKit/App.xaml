@@ -10,4 +10,17 @@
     <Application.MainPage>
         <v:LoadingPage/>
     </Application.MainPage>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="IconButtonStyle"
+                   TargetType="ImageButton">
+                <Setter Property="WidthRequest"
+                        Value="50"/>
+
+                <Setter Property="HeightRequest"
+                        Value="50"/>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

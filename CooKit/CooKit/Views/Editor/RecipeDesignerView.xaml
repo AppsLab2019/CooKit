@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
+             xmlns:vme="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Editor.RecipeDesignerView">
+
+    <ContentPage.BindingContext>
+        <vme:RecipeDesignerViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Entry IsReadOnly="True"
+                   Placeholder="Id"
+                   Text="{Binding Id}"/>
+
+            <Entry Grid.Row="1"
+                   Placeholder="Name"
+                   Text="{Binding Name}"/>
+
+            <Editor Grid.Row="2"
+                    HeightRequest="80"
+                    Placeholder="Description"
+                    Text="{Binding Description}"/>
+
+            <Picker Grid.Row="3"
+                    Title="Image Loader"
+                    SelectedItem="{Binding ImageLoader}"
+                    ItemsSource="{Binding AvailableImageLoaders}"/>
+
+            <Entry Grid.Row="4"
+                   Placeholder="Image Source"
+                   Text="{Binding ImageSource}"/>
+
+            <CollectionView Grid.Row="5"
+                            SelectionMode="Multiple"
+                            ItemsSource="{Binding AllIngredients}"
+                            SelectedItems="{Binding SelectedIngredients}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:IIngredient">
+                        <Grid Padding="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.RowSpan="2"
+                                   Source="{Binding Icon}"/>
+
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   FontSize="Medium"
+                                   Text="{Binding Name}"/>
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   FontSize="Small"
+                                   Text="{Binding Id}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <CollectionView Grid.Row="6"
+                            SelectionMode="Multiple"
+                            ItemsSource="{Binding AllPictograms}"
+                            SelectedItems="{Binding SelectedPictograms}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:IPictogram">
+                        <Grid Padding="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.RowSpan="2"
+                                   Source="{Binding Image}"/>
+
+                            <Label Grid.Row="0"
+                                   Grid.Column="1"
+                                   FontSize="Medium"
+                                   Text="{Binding Name}"/>
+
+                            <Label Grid.Row="1"
+                                   Grid.Column="1"
+                                   FontSize="Small"
+                                   Text="{Binding Id}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Grid.Row="7"
+                    Text="Create"
+                    Command="{Binding CreateCommand}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

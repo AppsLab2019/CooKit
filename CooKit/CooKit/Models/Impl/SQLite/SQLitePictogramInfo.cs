@@ -1,11 +1,12 @@
-﻿using SQLite;
+﻿using System;
+using SQLite;
 
 namespace CooKit.Models.Impl.SQLite
 {
     public class SQLitePictogramInfo
     {
         [PrimaryKey, NotNull, Unique]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [NotNull]
         public string Name { get; set; }
         [NotNull]

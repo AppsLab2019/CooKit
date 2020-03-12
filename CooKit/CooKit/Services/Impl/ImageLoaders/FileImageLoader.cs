@@ -5,6 +5,8 @@ namespace CooKit.Services.Impl.ImageLoaders
 {
     public sealed class FileImageLoader : IImageLoader
     {
+        public string Name => "FileImageLoader";
+
         public ImageSource LoadImage(string source) =>
             ImageSource.FromFile(source);
 

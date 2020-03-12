@@ -1,11 +1,12 @@
-﻿using SQLite;
+﻿using System;
+using SQLite;
 
 namespace CooKit.Models.Impl.SQLite
 {
     public sealed class SQLiteRecipeInfo
     {
         [PrimaryKey, NotNull, Unique]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [NotNull]
         public string Name { get; set; }
         [NotNull]
@@ -16,9 +17,7 @@ namespace CooKit.Models.Impl.SQLite
         [NotNull]
         public string ImageSource { get; set; }
 
-        [NotNull]
         public string IngredientIds { get; set; }
-        [NotNull]
         public string PictogramIds { get; set; }
         [NotNull]
         public string StepIds { get; set; }
