@@ -1,21 +1,20 @@
 ﻿using CooKit.Models;
 using CooKit.Models.Impl;
 using System;
-using System.IO;
 using System.Threading.Tasks;
+using SQLite;
 
 namespace CooKit.Services.Impl.SQLite
 {
     public sealed class SQLiteRecipeStoreBuilder
     {
         public IBuilderProperty<SQLiteRecipeStoreBuilder, IImageStore> ImageStore { get; }
-        public IBuilderProperty<SQLiteRecipeStoreBuilder, string> DatabasePath { get; }
+        public IBuilderProperty<SQLiteRecipeStoreBuilder, SQLiteAsyncConnection> DatabaseConnection { get; }
 
         public SQLiteRecipeStoreBuilder()
         {
             ImageStore = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, IImageStore>(this);
-            DatabasePath = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, string>(this,
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CooKit.db3"));
+            DatabaseConnection = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, SQLiteAsyncConnection>(this);
         }
 
         public async Task<IRecipeStore> BuildAsync()
@@ -23,11 +22,11 @@ namespace CooKit.Services.Impl.SQLite
             if (ImageStore.Value is null)
                 throw new ArgumentNullException(nameof(ImageStore));
 
-            if (DatabasePath.Value is null)
-                throw new ArgumentNullException(nameof(DatabasePath));
+            if (DatabaseConnection.Value is null)
+                throw new ArgumentNullException(nameof(DatabaseConnection));
 
-            var store = new SQLiteRecipeStore(DatabasePath.Value, ImageStore.Value);
-            await store.LoadRecipesAsync();
+            var store = new SQLiteRecipeStore(DatabaseConnection.Value, ImageStore.Value);
+            await store.InitAsync();
 
             return store;
         }

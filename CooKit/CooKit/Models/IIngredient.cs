@@ -1,11 +1,9 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace CooKit.Models
 {
-    public interface IIngredient
+    public interface IIngredient : IStorable
     {
-        Guid Id { get; }
         string Name { get; }
         ImageSource Icon { get; }
     }

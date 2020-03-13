@@ -1,9 +1,9 @@
 ﻿using System;
 using CooKit.Services;
 
-namespace CooKit.Models.Impl.SQLite
+namespace CooKit.Models.Impl
 {
-    internal sealed class SQLiteRecipeBuilder : IRecipeBuilder
+    public sealed class StoreCallbackRecipeBuilder : IRecipeBuilder
     {
         public IBuilderProperty<IRecipeBuilder, Guid> Id { get; }
         public IBuilderProperty<IRecipeBuilder, string> Name { get; }
@@ -18,7 +18,7 @@ namespace CooKit.Models.Impl.SQLite
 
         private readonly IRecipeStore _recipeStore;
 
-        public SQLiteRecipeBuilder(IRecipeStore recipeStore)
+        public StoreCallbackRecipeBuilder(IRecipeStore recipeStore)
         {
             Id = new BuilderPropertyImpl<IRecipeBuilder, Guid>(this, Guid.NewGuid());
             Name = new BuilderPropertyImpl<IRecipeBuilder, string>(this);
@@ -36,8 +36,9 @@ namespace CooKit.Models.Impl.SQLite
 
         public IRecipe Build()
         {
-            _recipeStore.AddRecipe(this);
-            return _recipeStore.LoadRecipe(Id.Value);
+            _recipeStore.Add(this);
+            return _recipeStore.Load(Id.Value);
         }
+
     }
 }

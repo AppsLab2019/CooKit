@@ -20,7 +20,7 @@ namespace CooKit.ViewModels
             _isBusy = false;
             _recipeStore = ((App) Application.Current).RecipeStore;
 
-            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedRecipes);
+            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
 
             LoadRecipes();
             ThresholdReachedCommand = new Command(LoadRecipes);
@@ -35,7 +35,7 @@ namespace CooKit.ViewModels
 
             for (var i = 0; i < 10; i++)
             {
-                var recipe = await _recipeStore.LoadRecipeAsync();
+                var recipe = await _recipeStore.LoadNextAsync();
 
                 if (recipe is null)
                     break;

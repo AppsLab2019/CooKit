@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using CooKit.Models;
+﻿using CooKit.Models;
 
 namespace CooKit.Services
 {
-    public interface IIngredientStore
-    {
-        IReadOnlyList<IIngredient> LoadedIngredients { get; }
-    }
+    public interface IIngredientStore : IStoreBase<IIngredient, IIngredientBuilder> { }
 }

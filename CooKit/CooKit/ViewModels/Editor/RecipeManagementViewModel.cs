@@ -32,7 +32,7 @@ namespace CooKit.ViewModels.Editor
         public RecipeManagementViewModel()
         {
             _recipeStore = ((App) Application.Current).RecipeStore;
-            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedRecipes);
+            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
             _selectedRecipe = null;
 
             AddCommand = new Command(HandleAdd);
@@ -49,7 +49,7 @@ namespace CooKit.ViewModels.Editor
             if (SelectedRecipe is null)
                 return;
 
-            _recipeStore.RemoveRecipe(SelectedRecipe.Id);
+            _recipeStore.Remove(SelectedRecipe.Id);
             SelectedRecipe = null;
         }
 
@@ -58,7 +58,7 @@ namespace CooKit.ViewModels.Editor
             if (sender != _recipeStore)
                 return;
 
-            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedRecipes);
+            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
         }
     }
 }

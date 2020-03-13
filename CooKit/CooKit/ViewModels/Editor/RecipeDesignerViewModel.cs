@@ -29,7 +29,7 @@ namespace CooKit.ViewModels.Editor
 
         public RecipeDesignerViewModel()
         {
-            _builder = App.GetRecipeStore().CreateRecipeBuilder();
+            _builder = App.GetRecipeStore().CreateBuilder();
             Id = _builder.Id.Value;
 
             var imageLoaderNames = App
@@ -40,10 +40,10 @@ namespace CooKit.ViewModels.Editor
             AvailableImageLoaders = new ObservableCollection<string>(imageLoaderNames);
 
             AllIngredients = new ObservableCollection<IIngredient>(
-                App.GetIngredientStore().LoadedIngredients);
+                App.GetIngredientStore().LoadedObjects);
 
             AllPictograms = new ObservableCollection<IPictogram>(
-                App.GetPictogramStore().LoadedPictograms);
+                App.GetPictogramStore().LoadedObjects);
 
             SelectedIngredients = new ObservableCollection<IIngredient>();
             SelectedPictograms = new ObservableCollection<IPictogram>();
@@ -71,7 +71,7 @@ namespace CooKit.ViewModels.Editor
                 .IngredientIds.Set(ingredients)
                 .PictogramIds.Set(pictograms);
 
-            App.GetRecipeStore().AddRecipe(_builder);
+            App.GetRecipeStore().Add(_builder);
         }
     }
 }

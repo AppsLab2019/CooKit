@@ -1,8 +1,10 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using CooKit.Services;
 using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
 using CooKit.Services.Impl.SQLite;
+using SQLite;
 
 namespace CooKit
 {
@@ -10,7 +12,6 @@ namespace CooKit
     {
         public IIngredientStore IngredientStore { get; private set; }
         public IPictogramStore PictogramStore { get; private set; }
-
         public IRecipeStore RecipeStore { get; private set; }
         public IImageStore ImageStore { get; private set; }
 
@@ -23,12 +24,23 @@ namespace CooKit
             ImageStore.RegisterLoader(new FileImageLoader());
             ImageStore.RegisterLoader(new UriImageLoader());
 
-            RecipeStore = await new SQLiteRecipeStoreBuilder()
+            var dbConnection = new SQLiteAsyncConnection(
+                System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CooKit.db3"));
+
+            IngredientStore = await new SQLiteIngredientStoreBuilder()
                 .ImageStore.Set(ImageStore)
+                .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
-            IngredientStore = (IIngredientStore) RecipeStore;
-            PictogramStore = (IPictogramStore) RecipeStore;
+            PictogramStore = await new SQLitePictogramStoreBuilder()
+                .ImageStore.Set(ImageStore)
+                .DatabaseConnection.Set(dbConnection)
+                .BuildAsync();
+
+            RecipeStore = await new SQLiteRecipeStoreBuilder()
+                .ImageStore.Set(ImageStore)
+                .DatabaseConnection.Set(dbConnection)
+                .BuildAsync();
 
             MainPage = new AppShell();
         }
