@@ -19,20 +19,27 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ListView SelectionMode="Single"
-                      ItemsSource="{Binding Recipes}"
-                      SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}">
-                <ListView.ItemTemplate>
+            <CollectionView SelectionMode="Single"
+                            ItemsSource="{Binding Recipes}"
+                            SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}">
+                <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:IRecipe">
-                        <ViewCell>
-                            <StackLayout>
-                                <Label Text="{Binding Name}"/>
-                                <Label Text="{Binding Id}"/>
-                            </StackLayout>
-                        </ViewCell>
+                        <Grid Padding="6">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label FontSize="Medium"
+                                   Text="{Binding Name}"/>
+
+                            <Label Grid.Row="1"
+                                   FontSize="Small"
+                                   Text="{Binding Id}"/>
+                        </Grid>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
