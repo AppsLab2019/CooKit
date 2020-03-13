@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace CooKit.Models
 {
@@ -11,6 +12,6 @@ namespace CooKit.Models
         IBuilderProperty<IPictogramBuilder, string> ImageLoader { get; }
         IBuilderProperty<IPictogramBuilder, string> ImageSource { get; }
 
-        IPictogram Build();
+        Task<IPictogram> BuildAsync();
     }
 }

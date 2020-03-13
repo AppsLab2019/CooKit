@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CooKit.Services;
 
 namespace CooKit.Models.Impl
@@ -24,10 +25,10 @@ namespace CooKit.Models.Impl
             ImageSource = new BuilderPropertyImpl<IIngredientBuilder, string>(this);
         }
 
-        public IIngredient Build()
+        public async Task<IIngredient> BuildAsync()
         {
-            _ingredientStore.Add(this);
-            return _ingredientStore.Load(Id.Value);
+            await _ingredientStore.AddAsync(this);
+            return await _ingredientStore.LoadAsync(Id.Value);
         }
     }
 }

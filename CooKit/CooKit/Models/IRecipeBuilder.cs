@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace CooKit.Models
 {
@@ -15,6 +16,6 @@ namespace CooKit.Models
         IBuilderProperty<IRecipeBuilder, Guid[]> PictogramIds { get; }
         IBuilderProperty<IRecipeBuilder, Guid[]> StepIds { get; }
 
-        IRecipe Build();
+        Task<IRecipe> BuildAsync();
     }
 }

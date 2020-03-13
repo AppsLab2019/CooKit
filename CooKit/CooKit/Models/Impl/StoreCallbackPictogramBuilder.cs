@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CooKit.Services;
 
 namespace CooKit.Models.Impl
@@ -18,7 +19,7 @@ namespace CooKit.Models.Impl
         {
             _pictogramStore = pictogramStore;
 
-            Id = new BuilderPropertyImpl<IPictogramBuilder, Guid>(this);
+            Id = new BuilderPropertyImpl<IPictogramBuilder, Guid>(this, Guid.NewGuid());
             Name = new BuilderPropertyImpl<IPictogramBuilder, string>(this);
             Description = new BuilderPropertyImpl<IPictogramBuilder, string>(this);
 
@@ -26,10 +27,10 @@ namespace CooKit.Models.Impl
             ImageSource = new BuilderPropertyImpl<IPictogramBuilder, string>(this);
         }
 
-        public IPictogram Build()
+        public async Task<IPictogram> BuildAsync()
         {
-            _pictogramStore.Add(this);
-            return _pictogramStore.Load(Id.Value);
+            await _pictogramStore.AddAsync(this);
+            return await _pictogramStore.LoadAsync(Id.Value);
         }
     }
 }

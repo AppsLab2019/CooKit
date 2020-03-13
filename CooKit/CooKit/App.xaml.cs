@@ -39,6 +39,8 @@ namespace CooKit
 
             RecipeStore = await new SQLiteRecipeStoreBuilder()
                 .ImageStore.Set(ImageStore)
+                .IngredientStore.Set(IngredientStore)
+                .PictogramStore.Set(PictogramStore)
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 

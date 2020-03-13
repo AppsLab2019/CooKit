@@ -1,4 +1,5 @@
-﻿using CooKit.Models;
+﻿using System.Threading.Tasks;
+using CooKit.Models;
 using CooKit.Models.Impl;
 using CooKit.Models.Impl.SQLite;
 using SQLite;
@@ -15,7 +16,7 @@ namespace CooKit.Services.Impl.SQLite
         public override IPictogramBuilder CreateBuilder() =>
             new StoreCallbackPictogramBuilder(this);
 
-        protected internal override SQLitePictogram CreateObjectFromBuilder(IPictogramBuilder builder)
+        protected internal override async Task<SQLitePictogram> CreateObjectFromBuilder(IPictogramBuilder builder)
         {
             var info = new SQLitePictogramInfo
             {
@@ -29,14 +30,14 @@ namespace CooKit.Services.Impl.SQLite
 
             return new SQLitePictogram(info)
             {
-                Image = _imageStore.LoadImage(info.ImageLoader, info.ImageSource)
+                Image = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource)
             };
         }
 
-        protected internal override SQLitePictogram CreateObjectFromInfo(SQLitePictogramInfo info) =>
+        protected internal override async Task<SQLitePictogram> CreateObjectFromInfo(SQLitePictogramInfo info) =>
             new SQLitePictogram(info)
             {
-                Image = _imageStore.LoadImage(info.ImageLoader, info.ImageSource)
+                Image = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource)
             };
     }
 }

@@ -18,10 +18,10 @@ namespace CooKit.ViewModels.Editor
         public string ImageSource { get; set; }
 
         public ObservableCollection<IIngredient> AllIngredients { get; }
-        public ObservableCollection<IIngredient> SelectedIngredients { get; }
+        public ObservableCollection<object> SelectedIngredients { get; }
 
         public ObservableCollection<IPictogram> AllPictograms { get; }
-        public ObservableCollection<IPictogram> SelectedPictograms { get; }
+        public ObservableCollection<object> SelectedPictograms { get; }
 
         public ICommand CreateCommand { get; }
 
@@ -29,7 +29,10 @@ namespace CooKit.ViewModels.Editor
 
         public RecipeDesignerViewModel()
         {
-            _builder = App.GetRecipeStore().CreateBuilder();
+            _builder = App
+                .GetRecipeStore()
+                .CreateBuilder();
+
             Id = _builder.Id.Value;
 
             var imageLoaderNames = App
@@ -45,13 +48,13 @@ namespace CooKit.ViewModels.Editor
             AllPictograms = new ObservableCollection<IPictogram>(
                 App.GetPictogramStore().LoadedObjects);
 
-            SelectedIngredients = new ObservableCollection<IIngredient>();
-            SelectedPictograms = new ObservableCollection<IPictogram>();
+            SelectedIngredients = new ObservableCollection<object>();
+            SelectedPictograms = new ObservableCollection<object>();
 
             CreateCommand = new Command(HandleCreate);
         }
 
-        private void HandleCreate()
+        private async void HandleCreate()
         {
             _builder
                 .Name.Set(Name)
@@ -60,10 +63,12 @@ namespace CooKit.ViewModels.Editor
                 .ImageSource.Set(ImageSource);
 
             var ingredients = SelectedIngredients
+                .Cast<IIngredient>()
                 .Select(ingredient => ingredient.Id)
                 .ToArray();
 
             var pictograms = SelectedPictograms
+                .Cast<IPictogram>()
                 .Select(pictogram => pictogram.Id)
                 .ToArray();
 
@@ -71,7 +76,8 @@ namespace CooKit.ViewModels.Editor
                 .IngredientIds.Set(ingredients)
                 .PictogramIds.Set(pictograms);
 
-            App.GetRecipeStore().Add(_builder);
+            await App.GetRecipeStore().AddAsync(_builder);
+            await Shell.Current.Navigation.PopAsync();
         }
     }
 }

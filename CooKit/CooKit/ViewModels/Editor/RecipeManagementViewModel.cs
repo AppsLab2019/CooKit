@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using CooKit.Models;
@@ -8,7 +9,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class RecipeManagementViewModel : BaseViewModel
+    public sealed class RecipeManagementViewModel : BaseViewModel, IDisposable
     {
         public ObservableCollection<IRecipe> Recipes
         {
@@ -31,34 +32,38 @@ namespace CooKit.ViewModels.Editor
 
         public RecipeManagementViewModel()
         {
-            _recipeStore = ((App) Application.Current).RecipeStore;
-            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
+            _recipeStore = App.GetRecipeStore();
+            _recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
             _selectedRecipe = null;
 
             AddCommand = new Command(HandleAdd);
             RemoveCommand = new Command(HandleRemove);
 
-            _recipeStore.PropertyChanged += HandleStoreChange;
+            _recipeStore.PropertyChanged += HandleStoreContentChange;
         }
 
-        private static void HandleAdd() =>
-            Shell.Current.Navigation.PushAsync(new RecipeDesignerView());
+        private static async void HandleAdd() =>
+            await Shell.Current.Navigation.PushAsync(new RecipeDesignerView());
 
-        private void HandleRemove()
+        private async void HandleRemove()
         {
             if (SelectedRecipe is null)
                 return;
 
-            _recipeStore.Remove(SelectedRecipe.Id);
+            await _recipeStore.RemoveAsync(SelectedRecipe.Id);
             SelectedRecipe = null;
         }
 
-        private void HandleStoreChange(object sender, PropertyChangedEventArgs e)
+        private void HandleStoreContentChange(object sender, PropertyChangedEventArgs e)
         {
             if (sender != _recipeStore)
                 return;
 
+            SelectedRecipe = null;
             Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
         }
+
+        public void Dispose() =>
+            _recipeStore.PropertyChanged -= HandleStoreContentChange;
     }
 }

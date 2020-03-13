@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CooKit.Services;
 
 namespace CooKit.Models.Impl
@@ -27,17 +28,17 @@ namespace CooKit.Models.Impl
             ImageLoader = new BuilderPropertyImpl<IRecipeBuilder, string>(this);
             ImageSource = new BuilderPropertyImpl<IRecipeBuilder, string>(this);
 
-            IngredientIds = new BuilderPropertyImpl<IRecipeBuilder, Guid[]>(this);
-            PictogramIds = new BuilderPropertyImpl<IRecipeBuilder, Guid[]>(this);
-            StepIds = new BuilderPropertyImpl<IRecipeBuilder, Guid[]>(this);
+            IngredientIds = new BuilderPropertyImpl<IRecipeBuilder, Guid[]>(this, new Guid[0]);
+            PictogramIds = new BuilderPropertyImpl<IRecipeBuilder, Guid[]>(this, new Guid[0]);
+            StepIds = new BuilderPropertyImpl<IRecipeBuilder, Guid[]>(this, new Guid[0]);
 
             _recipeStore = recipeStore;
         }
 
-        public IRecipe Build()
+        public async Task<IRecipe> BuildAsync()
         {
-            _recipeStore.Add(this);
-            return _recipeStore.Load(Id.Value);
+            await _recipeStore.AddAsync(this);
+            return await _recipeStore.LoadAsync(Id.Value);
         }
 
     }

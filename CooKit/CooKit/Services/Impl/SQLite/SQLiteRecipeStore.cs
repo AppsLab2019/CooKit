@@ -1,25 +1,33 @@
-﻿using CooKit.Models;
+﻿using System;
+using System.Collections.Generic;
+using CooKit.Models;
 using CooKit.Models.Impl;
 using CooKit.Models.Impl.SQLite;
 using SQLite;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace CooKit.Services.Impl.SQLite
 {
-    internal sealed class SQLiteRecipeStore : SQLiteStoreBase<IRecipe, IRecipeBuilder, SQLiteRecipe, SQLiteRecipeInfo>, IRecipeStore
+    internal sealed class SQLiteRecipeStore : SQLiteStoreBase<IRecipe, IRecipeBuilder, SQLiteRecipe, SQLiteRecipeInfo>,
+        IRecipeStore
     {
         private readonly IImageStore _imageStore;
+        private readonly IIngredientStore _ingredientStore;
+        private readonly IPictogramStore _pictogramStore;
 
-        internal SQLiteRecipeStore(SQLiteAsyncConnection connection, IImageStore imageStore) 
-            : base(connection)
+        internal SQLiteRecipeStore(SQLiteAsyncConnection connection, IImageStore imageStore,
+            IIngredientStore ingredientStore, IPictogramStore pictogramStore) : base(connection)
         {
             _imageStore = imageStore;
+            _ingredientStore = ingredientStore;
+            _pictogramStore = pictogramStore;
         }
 
         public override IRecipeBuilder CreateBuilder() =>
             new StoreCallbackRecipeBuilder(this);
 
-        protected internal override SQLiteRecipe CreateObjectFromBuilder(IRecipeBuilder builder)
+        protected internal override async Task<SQLiteRecipe> CreateObjectFromBuilder(IRecipeBuilder builder)
         {
             var info = new SQLiteRecipeInfo
             {
@@ -30,52 +38,88 @@ namespace CooKit.Services.Impl.SQLite
                 ImageLoader = builder.ImageLoader.Value,
                 ImageSource = builder.ImageSource.Value,
 
-                IngredientIds = builder.IngredientIds.Value?
-                    .Select(id => id.ToString())
-                    .Aggregate((id, id2) => $"{id};{id2}"),
-
-                PictogramIds = builder.PictogramIds.Value?
-                    .Select(id => id.ToString())
-                    .Aggregate((id, id2) => $"{id};{id2}"),
-
-                StepIds = builder.StepIds.Value
-                    .Select(id => id.ToString())
-                    .Aggregate((id, id2) => $"{id};{id2}")
+                IngredientIds = GuidCollectionToString(builder.IngredientIds.Value),
+                PictogramIds = GuidCollectionToString(builder.PictogramIds.Value),
+                StepIds = GuidCollectionToString(builder.StepIds.Value)
             };
 
             return new SQLiteRecipe(info)
             {
-                MainImage = _imageStore.LoadImage(info.ImageLoader, info.ImageSource),
+                MainImage = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
 
-                Ingredients = new IIngredient[0],
-                Pictograms = new IPictogram[0],
+                Ingredients = await GuidEnumerableToIngredientsAsync(builder.IngredientIds.Value),
+                Pictograms = await GuidEnumerableToPictogramsAsync(builder.PictogramIds.Value),
 
-                Steps = new[] { "Placeholder 1", "Placeholder 2" }
+                Steps = new[] {"Placeholder 1", "Placeholder 2"}
             };
         }
 
-        protected internal override SQLiteRecipe CreateObjectFromInfo(SQLiteRecipeInfo info)
+        protected internal override async Task<SQLiteRecipe> CreateObjectFromInfo(SQLiteRecipeInfo info)
         {
-            //var recipeIngredients = info.IngredientIds
-            //    .Split(';')
-            //    .Select(Guid.Parse)
-            //    .Select(id => _ingredients[id])
-            //    .ToArray();
-
-            //var recipePictograms = info.PictogramIds
-            //    .Split(';')
-            //    .Select(Guid.Parse)
-            //    .Select(id => _pictograms[id])
-            //    .ToArray();
+            var ingredientIds = StringToGuidCollection(info.IngredientIds);
+            var pictogramIds = StringToGuidCollection(info.PictogramIds);
 
             return new SQLiteRecipe(info)
             {
-                MainImage = _imageStore.LoadImage(info.ImageLoader, info.ImageSource),
+                MainImage = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
 
-                Ingredients = new IIngredient[0],
-                Pictograms = new IPictogram[0],
-                Steps = new[] { "Placeholder 1", "Placeholder 2" }
+                Ingredients = await GuidEnumerableToIngredientsAsync(ingredientIds),
+                Pictograms = await GuidEnumerableToPictogramsAsync(pictogramIds),
+
+                Steps = new[] {"Placeholder 1", "Placeholder 2"}
             };
+        }
+
+        private static string GuidCollectionToString(IReadOnlyCollection<Guid> ids)
+        {
+            if (ids is null || ids.Count == 0)
+                return string.Empty;
+
+            if (ids.Count == 1)
+                return ids.First().ToString();
+
+            return ids
+                .Select(id => id.ToString())
+                .Aggregate((id, id2) => $"{id};{id2}");
+        }
+
+        private static IReadOnlyCollection<Guid> StringToGuidCollection(string str)
+        {
+            if (str is null || str == string.Empty)
+                return new Guid[0];
+
+            return str
+                .Split(';')
+                .Select(Guid.Parse)
+                .ToArray();
+        }
+
+        private async Task<IReadOnlyList<IIngredient>> GuidEnumerableToIngredientsAsync(IEnumerable<Guid> ids)
+        {
+            if (ids is null)
+                return new IIngredient[0];
+
+            var tasks = ids.Select(id => _ingredientStore.LoadAsync(id));
+            var ingredients = new List<IIngredient>();
+
+            foreach (var task in tasks)
+                ingredients.Add(await task);
+
+            return ingredients;
+        }
+
+        private async Task<IReadOnlyList<IPictogram>> GuidEnumerableToPictogramsAsync(IEnumerable<Guid> ids)
+        {
+            if (ids is null)
+                return new IPictogram[0];
+
+            var tasks = ids.Select(id => _pictogramStore.LoadAsync(id));
+            var pictograms = new List<IPictogram>();
+
+            foreach (var task in tasks)
+                pictograms.Add(await task);
+
+            return pictograms;
         }
     }
 }

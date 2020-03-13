@@ -13,16 +13,10 @@ namespace CooKit.Services
 
         TStorableBuilder CreateBuilder();
 
-        TStorable LoadNext();
+        Task<TStorable> LoadAsync(Guid id);
         Task<TStorable> LoadNextAsync();
 
-        TStorable Load(Guid id);
-        Task<TStorable> LoadAsync(Guid id);
-
-        void Add(TStorableBuilder builder);
         Task AddAsync(TStorableBuilder builder);
-
-        bool Remove(Guid id);
         Task<bool> RemoveAsync(Guid id);
     }
 }

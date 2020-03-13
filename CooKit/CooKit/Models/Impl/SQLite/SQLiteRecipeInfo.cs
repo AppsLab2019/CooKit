@@ -17,7 +17,9 @@ namespace CooKit.Models.Impl.SQLite
         [NotNull]
         public string ImageSource { get; set; }
 
+        [NotNull]
         public string IngredientIds { get; set; }
+        [NotNull]
         public string PictogramIds { get; set; }
         [NotNull]
         public string StepIds { get; set; }

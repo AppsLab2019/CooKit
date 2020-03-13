@@ -28,23 +28,18 @@ namespace CooKit.Services.Impl.SQLite
 
         public abstract TStorableBuilder CreateBuilder();
 
-        public TStorable LoadNext() => default;
-
         public Task<TStorable> LoadNextAsync() =>
             Task.FromResult(default(TStorable));
 
-        public TStorable Load(Guid id) =>
+        private TStorable Load(Guid id) =>
             _idToObject.ContainsKey(id) ? _idToObject[id] : default;
 
         public async Task<TStorable> LoadAsync(Guid id) =>
             await Task.Run(() => Load(id));
 
-        public void Add(TStorableBuilder builder) =>
-            AddAsync(builder).Wait();
-
         public async Task AddAsync(TStorableBuilder builder)
         {
-            var obj = CreateObjectFromBuilder(builder);
+            var obj = await CreateObjectFromBuilder(builder);
 
             await _connection.InsertAsync(obj.InternalInfo);
 
@@ -53,9 +48,6 @@ namespace CooKit.Services.Impl.SQLite
 
             RaisePropertyChanged(nameof(LoadedObjects));
         }
-
-        public bool Remove(Guid id) =>
-            RemoveAsync(id).Result;
 
         public async Task<bool> RemoveAsync(Guid id)
         {
@@ -79,9 +71,14 @@ namespace CooKit.Services.Impl.SQLite
                 .Table<TStorableInfo>()
                 .ToArrayAsync();
 
-            var objects = infos
+            var objectTasks = infos
                 .Select(CreateObjectFromInfo)
                 .ToList();
+
+            var objects = new List<TStorableInternal>();
+
+            foreach (var objectTask in objectTasks)
+                objects.Add(await objectTask);
 
             _objects = objects
                 .Cast<TStorable>()
@@ -90,8 +87,8 @@ namespace CooKit.Services.Impl.SQLite
             _idToObject = objects.ToDictionary(obj => obj.Id);
         }
 
-        protected internal abstract TStorableInternal CreateObjectFromBuilder(TStorableBuilder builder);
-        protected internal abstract TStorableInternal CreateObjectFromInfo(TStorableInfo info);
+        protected internal abstract Task<TStorableInternal> CreateObjectFromBuilder(TStorableBuilder builder);
+        protected internal abstract Task<TStorableInternal> CreateObjectFromInfo(TStorableInfo info);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected internal void RaisePropertyChanged(string propertyName) =>
