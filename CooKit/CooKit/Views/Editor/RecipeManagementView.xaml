@@ -20,8 +20,8 @@
             </Grid.RowDefinitions>
 
             <CollectionView SelectionMode="Single"
-                            ItemsSource="{Binding Recipes}"
-                            SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}">
+                            ItemsSource="{Binding StoredObjects}"
+                            SelectedItem="{Binding SelectedObject, Mode=TwoWay}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:IRecipe">
                         <Grid Padding="6">

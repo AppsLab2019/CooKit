@@ -20,8 +20,8 @@
             </Grid.RowDefinitions>
 
             <CollectionView SelectionMode="Single"
-                            ItemsSource="{Binding Pictograms}"
-                            SelectedItem="{Binding SelectedPictogram, Mode=TwoWay}">
+                            ItemsSource="{Binding StoredObjects}"
+                            SelectedItem="{Binding SelectedObject, Mode=TwoWay}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:IPictogram">
                         <Grid Padding="6">
