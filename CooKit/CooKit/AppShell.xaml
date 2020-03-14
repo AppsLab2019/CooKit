@@ -5,7 +5,7 @@
        x:Class="CooKit.AppShell">
 
     <FlyoutItem Title="Home">
-        <ShellContent ContentTemplate="{DataTemplate v:MainPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate v:MainView}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="Editor">

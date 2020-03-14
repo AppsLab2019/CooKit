@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.MainView">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Padding="15"
+                     BackgroundColor="#F0F0F0">
+            <CollectionView SelectionMode="Single"
+                            ItemsSource="{Binding Recipes}"
+                            SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"
+                            SelectionChangedCommand="{Binding RecipeSelectCommand}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Span="2"
+                                     Orientation="Vertical"
+                                     VerticalItemSpacing="5"
+                                     HorizontalItemSpacing="5"/>
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="m:IRecipe">
+                        <StackLayout Padding="1">
+                            <Frame Padding="0"
+                                   HasShadow="True">
+                                <Grid RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image HeightRequest="150"
+                                           Aspect="AspectFill"
+                                           Source="{Binding MainImage}"/>
+
+                                    <StackLayout Grid.Row="1"
+                                                 Padding="10">
+                                        <Label Text="{Binding Name}"/>
+                                    </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -4,15 +4,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using CooKit.Models;
+using CooKit.Views;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels
 {
-    public class MainPageViewModel : BaseViewModel, IDisposable
+    public class MainViewModel : BaseViewModel, IDisposable
     {
-        private bool _isBusy;
-        private readonly IRecipeStore _recipeStore;
-
         public ObservableCollection<IRecipe> Recipes
         {
             get => _recipes;
@@ -20,38 +18,36 @@ namespace CooKit.ViewModels
         }
         private ObservableCollection<IRecipe> _recipes;
 
-        public ICommand ThresholdReachedCommand { get; }
-
-        public MainPageViewModel()
+        public IRecipe SelectedRecipe
         {
-            _isBusy = false;
-            _recipeStore = ((App) Application.Current).RecipeStore;
+            get => _selectedRecipe;
+            set => HandlePropertyChange(ref _selectedRecipe, value);
+        }
+        private IRecipe _selectedRecipe;
+
+        public ICommand RecipeSelectCommand { get; }
+
+        private readonly IRecipeStore _recipeStore;
+
+        public MainViewModel()
+        {
+            _recipeStore = App.GetRecipeStore();
 
             Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
-            _recipeStore.PropertyChanged += HandleStoreContentChange;
+            RecipeSelectCommand = new Command(HandleRecipeSelect);
 
-            LoadRecipes();
-            ThresholdReachedCommand = new Command(LoadRecipes);
+            _recipeStore.PropertyChanged += HandleStoreContentChange;
         }
 
-        private async void LoadRecipes()
+        private async void HandleRecipeSelect()
         {
-            if (_isBusy)
+            if (SelectedRecipe is null)
                 return;
 
-            _isBusy = true;
+            var recipePage = new RecipeIntroduction(new RecipeViewModel(SelectedRecipe));
+            await Shell.Current.Navigation.PushAsync(recipePage);
 
-            for (var i = 0; i < 10; i++)
-            {
-                var recipe = await _recipeStore.LoadNextAsync();
-
-                if (recipe is null)
-                    break;
-
-                Recipes.Add(recipe);
-            }
-
-            _isBusy = false;
+            SelectedRecipe = null;
         }
 
         private void HandleStoreContentChange(object sender, PropertyChangedEventArgs e)
