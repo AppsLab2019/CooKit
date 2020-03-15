@@ -20,7 +20,7 @@ namespace CooKit.ViewModels
                 return;
 
             backingField = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            RaisePropertyChanged(propertyName);
         }
 
         protected void HandlePropertyChangeCallback<T>(ref T backingField, T newValue,
@@ -30,8 +30,12 @@ namespace CooKit.ViewModels
                 return;
 
             backingField = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            RaisePropertyChanged(propertyName);
             callback?.Invoke(newValue);
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        protected void RaisePropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
