@@ -8,6 +8,7 @@ namespace CooKit.Models
         IBuilderProperty<IRecipeBuilder, Guid> Id { get; }
         IBuilderProperty<IRecipeBuilder, string> Name { get; }
         IBuilderProperty<IRecipeBuilder, string> Description { get; }
+        IBuilderProperty<IRecipeBuilder, TimeSpan> RequiredTime { get; }
 
         IBuilderProperty<IRecipeBuilder, string> ImageLoader { get; }
         IBuilderProperty<IRecipeBuilder, string> ImageSource { get; }

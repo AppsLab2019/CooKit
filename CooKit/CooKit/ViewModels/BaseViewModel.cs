@@ -10,8 +10,22 @@ namespace CooKit.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        #region Alert Functions
+
         protected Task DisplayAlert(string title, string message, string cancel) =>
             Shell.Current.DisplayAlert(title, message, cancel);
+
+        protected Task<bool> DisplayAlert(string title, string message, string accept, string cancel) =>
+            Shell.Current.DisplayAlert(title, message, accept, cancel);
+
+        #endregion
+
+        #region Alert Sheet Function
+
+        public Task<string> DisplayActionSheet(string title, string cancel, string destruction, params string[] buttons) =>
+            Shell.Current.DisplayActionSheet(title, cancel, destruction, buttons);
+
+        #endregion
 
         protected void HandlePropertyChange<T>(ref T backingField, T newValue, 
             [CallerMemberName] string propertyName = null)

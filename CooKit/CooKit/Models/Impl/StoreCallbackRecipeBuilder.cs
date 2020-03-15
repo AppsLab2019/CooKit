@@ -9,6 +9,7 @@ namespace CooKit.Models.Impl
         public IBuilderProperty<IRecipeBuilder, Guid> Id { get; }
         public IBuilderProperty<IRecipeBuilder, string> Name { get; }
         public IBuilderProperty<IRecipeBuilder, string> Description { get; }
+        public IBuilderProperty<IRecipeBuilder, TimeSpan> RequiredTime { get; }
 
         public IBuilderProperty<IRecipeBuilder, string> ImageLoader { get; }
         public IBuilderProperty<IRecipeBuilder, string> ImageSource { get; }
@@ -24,6 +25,7 @@ namespace CooKit.Models.Impl
             Id = new BuilderPropertyImpl<IRecipeBuilder, Guid>(this, Guid.NewGuid());
             Name = new BuilderPropertyImpl<IRecipeBuilder, string>(this);
             Description = new BuilderPropertyImpl<IRecipeBuilder, string>(this);
+            RequiredTime = new BuilderPropertyImpl<IRecipeBuilder, TimeSpan>(this);
 
             ImageLoader = new BuilderPropertyImpl<IRecipeBuilder, string>(this);
             ImageSource = new BuilderPropertyImpl<IRecipeBuilder, string>(this);

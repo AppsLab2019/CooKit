@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CooKit.Models;
 using Xamarin.Forms;
@@ -9,7 +10,8 @@ namespace CooKit.ViewModels
     {
         public string RecipeName => _recipe.Name;
         public string RecipeDescription => _recipe.Description;
-        public ImageSource RecipeImage => _recipe.MainImage;
+        public ImageSource RecipeImage => _recipe.Image;
+        public TimeSpan RecipeRequiredTime => _recipe.RequiredTime;
         public ObservableCollection<IIngredient> RecipeIngredients { get; }
         public ObservableCollection<IPictogram> RecipePictograms { get; }
         public ObservableCollection<string> RecipeSteps { get; }

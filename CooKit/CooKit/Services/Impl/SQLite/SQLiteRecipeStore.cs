@@ -34,6 +34,7 @@ namespace CooKit.Services.Impl.SQLite
                 Id = builder.Id.Value,
                 Name = builder.Name.Value,
                 Description = builder.Description.Value,
+                RequiredTime = builder.RequiredTime.Value,
 
                 ImageLoader = builder.ImageLoader.Value,
                 ImageSource = builder.ImageSource.Value,
@@ -45,7 +46,7 @@ namespace CooKit.Services.Impl.SQLite
 
             return new SQLiteRecipe(info)
             {
-                MainImage = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
+                Image = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
 
                 Ingredients = await GuidEnumerableToIngredientsAsync(builder.IngredientIds.Value),
                 Pictograms = await GuidEnumerableToPictogramsAsync(builder.PictogramIds.Value),
@@ -61,7 +62,7 @@ namespace CooKit.Services.Impl.SQLite
 
             return new SQLiteRecipe(info)
             {
-                MainImage = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
+                Image = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
 
                 Ingredients = await GuidEnumerableToIngredientsAsync(ingredientIds),
                 Pictograms = await GuidEnumerableToPictogramsAsync(pictogramIds),

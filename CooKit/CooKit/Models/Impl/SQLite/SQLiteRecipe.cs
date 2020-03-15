@@ -9,7 +9,8 @@ namespace CooKit.Models.Impl.SQLite
         public Guid Id => InternalInfo.Id;
         public string Name => InternalInfo.Name;
         public string Description => InternalInfo.Description;
-        public ImageSource MainImage { get; internal set; }
+        public ImageSource Image { get; internal set; }
+        public TimeSpan RequiredTime => InternalInfo.RequiredTime;
 
         public IReadOnlyList<IPictogram> Pictograms { get; internal set; }
         public IReadOnlyList<IIngredient> Ingredients { get; internal set; }

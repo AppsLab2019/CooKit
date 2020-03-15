@@ -5,9 +5,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
+             xmlns:c="clr-namespace:CooKit.Converters;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeView"
              x:DataType="vm:RecipeViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Frame">
+                <Setter Property="HasShadow"
+                        Value="True"/>
+            </Style>
+
+            <c:TimeToFormattedMinutesStringConverter x:Key="RequiredTimeConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.Content>
         <ScrollView Padding="20"
@@ -21,38 +33,62 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Frame Padding="0"
-                       HasShadow="True">
+                <Frame Padding="0">
                     <Image Aspect="AspectFill"
                            HeightRequest="220"
                            Source="{Binding RecipeImage}"/>
                 </Frame>
 
-                <Frame Grid.Row="1"
-                       Padding="6"
-                       HeightRequest="32">
-                    <CollectionView IsEnabled="False"
-                                    SelectionMode="Single"
-                                    ItemsSource="{Binding RecipePictograms}"
-                                    SelectedItem="{Binding SelectedPictogram, Mode=TwoWay}"
-                                    SelectionChangedCommand="{Binding PictogramSelectedCommand}">
-                        <CollectionView.ItemsLayout>
-                            <LinearItemsLayout Orientation="Horizontal"
-                                               ItemSpacing="6"/>
-                        </CollectionView.ItemsLayout>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="m:IPictogram">
-                                <Image WidthRequest="32"
-                                       HeightRequest="32"
-                                       Source="{Binding Image}"/>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </Frame>
+                    <Frame Padding="6">
+                        <Grid ColumnSpacing="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                <Frame Grid.Row="2"
-                       HasShadow="True">
+                            <Image WidthRequest="32"
+                                   HeightRequest="32"
+                                   Source="ic_timer.png"/>
+
+                            <Label Grid.Column="1"
+                                   FontSize="Subtitle"
+                                   VerticalOptions="Center"
+                                   Text="{Binding RecipeRequiredTime,
+                                        Converter={StaticResource RequiredTimeConverter}}"/>
+                        </Grid>
+                    </Frame>
+
+                    <Frame Grid.Column="1"
+                           Padding="6"
+                           HeightRequest="32">
+                        <CollectionView IsEnabled="False"
+                                        SelectionMode="Single"
+                                        ItemsSource="{Binding RecipePictograms}"
+                                        SelectedItem="{Binding SelectedPictogram, Mode=TwoWay}"
+                                        SelectionChangedCommand="{Binding PictogramSelectedCommand}">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal"
+                                                   ItemSpacing="6"/>
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="m:IPictogram">
+                                    <Image WidthRequest="32"
+                                           HeightRequest="32"
+                                           Source="{Binding Image}"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Frame>
+                </Grid>
+
+                <Frame Grid.Row="2">
                     <Grid RowSpacing="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -73,8 +109,7 @@
                     </Grid>
                 </Frame>
 
-                <Frame Grid.Row="3"
-                       HasShadow="True">
+                <Frame Grid.Row="3">
                     <Grid RowSpacing="6">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -110,8 +145,7 @@
                     </Grid>
                 </Frame>
 
-                <Frame Grid.Row="4"
-                       HasShadow="True">
+                <Frame Grid.Row="4">
                     <StackLayout>
                         <CarouselView HeightRequest="400"
                                       IndicatorView="StepsIndicator"

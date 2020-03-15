@@ -14,7 +14,7 @@ namespace CooKit.ViewModels
         public ObservableCollection<IRecipe> Recipes
         {
             get => _recipes;
-            set => HandlePropertyChange(ref _recipes, value);
+            private set => HandlePropertyChange(ref _recipes, value);
         }
         private ObservableCollection<IRecipe> _recipes;
 

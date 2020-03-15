@@ -12,6 +12,7 @@ namespace CooKit.ViewModels.Editor
         public Guid Id { get; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public TimeSpan RequiredTime { get; set; }
 
         public string ImageLoader { get; set; }
         public ObservableCollection<string> AvailableImageLoaders { get; }
@@ -59,6 +60,7 @@ namespace CooKit.ViewModels.Editor
             _builder
                 .Name.Set(Name)
                 .Description.Set(Description)
+                .RequiredTime.Set(RequiredTime)
                 .ImageLoader.Set(ImageLoader)
                 .ImageSource.Set(ImageSource);
 

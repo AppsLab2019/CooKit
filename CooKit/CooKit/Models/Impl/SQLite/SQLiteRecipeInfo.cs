@@ -11,6 +11,8 @@ namespace CooKit.Models.Impl.SQLite
         public string Name { get; set; }
         [NotNull]
         public string Description { get; set; }
+        [NotNull]
+        public TimeSpan RequiredTime { get; set; }
         
         [NotNull]
         public string ImageLoader { get; set; }

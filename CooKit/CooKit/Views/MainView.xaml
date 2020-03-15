@@ -39,7 +39,7 @@
 
                                     <Image HeightRequest="150"
                                            Aspect="AspectFill"
-                                           Source="{Binding MainImage}"/>
+                                           Source="{Binding Image}"/>
 
                                     <StackLayout Grid.Row="1"
                                                  Padding="10">
