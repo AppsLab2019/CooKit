@@ -3,90 +3,147 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:cv="clr-namespace:PanCardView;assembly=PanCardView"
-             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeView"
-             x:DataType="vm:RecipeViewModel"
-             Shell.NavBarIsVisible="False">
+             x:DataType="vm:RecipeViewModel">
 
     <ContentPage.Content>
-        <AbsoluteLayout>
-            <Image AbsoluteLayout.LayoutBounds="0,0,1,0.4"
-                   AbsoluteLayout.LayoutFlags="All"
-                   Aspect="AspectFill"
-                   VerticalOptions="Start"
-                   Source="{Binding MainImage}"/>
+        <ScrollView Padding="20"
+                    BackgroundColor="#F0F0F0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <Button AbsoluteLayout.LayoutBounds="0,0,64,64"
-                    AbsoluteLayout.LayoutFlags="PositionProportional"
-                    BackgroundColor="Transparent"
-                    ImageSource="breakfast.png"
-                    Command="{Binding BackCommand}"/>
+                <Frame Padding="0"
+                       HasShadow="True">
+                    <Image Aspect="AspectFill"
+                           HeightRequest="220"
+                           Source="{Binding RecipeImage}"/>
+                </Frame>
 
-            <Frame AbsoluteLayout.LayoutBounds="0,1,1,0.65"
-                   AbsoluteLayout.LayoutFlags="All"
-                   CornerRadius="35"
-                   HasShadow="False">
+                <Frame Grid.Row="1"
+                       Padding="6"
+                       HeightRequest="32">
+                    <CollectionView IsEnabled="False"
+                                    SelectionMode="Single"
+                                    ItemsSource="{Binding RecipePictograms}"
+                                    SelectedItem="{Binding SelectedPictogram, Mode=TwoWay}"
+                                    SelectionChangedCommand="{Binding PictogramSelectedCommand}">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Horizontal"
+                                               ItemSpacing="6"/>
+                        </CollectionView.ItemsLayout>
 
-                <StackLayout Padding="8">
-                    <Grid HeightRequest="32">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="m:IPictogram">
+                                <Image WidthRequest="32"
+                                       HeightRequest="32"
+                                       Source="{Binding Image}"/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Frame>
+
+                <Frame Grid.Row="2"
+                       HasShadow="True">
+                    <Grid RowSpacing="10">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                        <Label FontSize="Medium"
+                               Text="{Binding RecipeName}"/>
 
-                        <Label Grid.Column="0"
-                               FontSize="22"
-                               Text="{Binding Name}"/>
+                        <BoxView Grid.Row="1"
+                                 Color="#CFCFCF"
+                                 HeightRequest="1"/>
 
-                        <CollectionView Grid.Column="1"
-                                        ItemsSource="{Binding Pictograms}">
-
-                            <CollectionView.ItemsLayout>
-                                <LinearItemsLayout ItemSpacing="4"
-                                                   Orientation="Horizontal"/>
-                            </CollectionView.ItemsLayout>
-
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="m:IPictogram">
-                                    <ImageButton Source="{Binding Image}"
-                                                 Clicked="OnPictogramClicked"/>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                        <Label Grid.Row="2"
+                               FontSize="Small"
+                               Text="{Binding RecipeDescription}"/>
                     </Grid>
+                </Frame>
 
-                    <BoxView HeightRequest="2"
-                             WidthRequest="800"
-                             Color="LightGray"
-                             Margin="10"/>
+                <Frame Grid.Row="3"
+                       HasShadow="True">
+                    <Grid RowSpacing="6">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <cv:CardsView ItemsSource="{Binding Steps}">
-                        <cv:CardsView.ItemTemplate>
-                            <DataTemplate x:DataType="{x:Type x:String}">
-                                <StackLayout>
-                                    <Frame HasShadow="True"
-                                           CornerRadius="10"
-                                           HeightRequest="300"
-                                           WidthRequest="300"
-                                           Margin="20">
+                        <Label FontSize="Medium"
+                               Text="You'll need:"/>
 
-                                        <Label Text="{Binding}"
-                                               HorizontalOptions="Center"
+                        <StackLayout Grid.Row="1"
+                                     BindableLayout.ItemsSource="{Binding RecipeIngredients}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="m:IIngredient">
+                                    <Grid Padding="6"
+                                          ColumnSpacing="10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image WidthRequest="32"
+                                               HeightRequest="32"
+                                               Source="{Binding Icon}"/>
+
+                                        <Label Grid.Column="1"
+                                               FontSize="Subtitle"
+                                               Text="{Binding Name}"
                                                VerticalOptions="Center"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </Grid>
+                </Frame>
+
+                <Frame Grid.Row="4"
+                       HasShadow="True">
+                    <StackLayout>
+                        <CarouselView HeightRequest="400"
+                                      IndicatorView="StepsIndicator"
+                                      ItemsSource="{Binding RecipeSteps}">
+                            <CarouselView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal"
+                                                   SnapPointsAlignment="Center"
+                                                   SnapPointsType="Mandatory"/>
+                            </CarouselView.ItemsLayout>
+
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Frame Padding="6">
+                                        <Frame Padding="0"
+                                               HasShadow="True"
+                                               CornerRadius="20">
+                                            <Label Text="{Binding}"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Center"/>
+                                        </Frame>
                                     </Frame>
-                                </StackLayout>
-                            </DataTemplate>
-                        </cv:CardsView.ItemTemplate>
-                    </cv:CardsView>
-                </StackLayout>
-            </Frame>
-        </AbsoluteLayout>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <IndicatorView x:Name="StepsIndicator"
+                                       HorizontalOptions="Center"
+                                       IndicatorColor="LightGray"
+                                       SelectedIndicatorColor="DarkGray"/>
+                    </StackLayout>
+                </Frame>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

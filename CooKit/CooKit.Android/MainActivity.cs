@@ -2,13 +2,12 @@
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
-using PanCardView.Droid;
 using Xamarin.Forms;
 
 namespace CooKit.Droid
 {
     [Activity(Label = "CooKit", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -16,18 +15,18 @@ namespace CooKit.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-            
-            Forms.SetFlags("CollectionView_Experimental");
-            Forms.SetFlags("CarouselView_Experimental");
+
+            Forms.SetFlags(
+                "CarouselView_Experimental", 
+                "CollectionView_Experimental",
+                "IndicatorView_Experimental");
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
 
-            CardsViewRenderer.Preserve();
-
             LoadApplication(new App());
         }
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 

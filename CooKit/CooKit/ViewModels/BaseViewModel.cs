@@ -1,12 +1,17 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CooKit.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        protected Task DisplayAlert(string title, string message, string cancel) =>
+            Shell.Current.DisplayAlert(title, message, cancel);
 
         protected void HandlePropertyChange<T>(ref T backingField, T newValue, 
             [CallerMemberName] string propertyName = null)

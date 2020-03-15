@@ -44,7 +44,7 @@ namespace CooKit.ViewModels
             if (SelectedRecipe is null)
                 return;
 
-            var recipePage = new RecipeIntroduction(new RecipeViewModel(SelectedRecipe));
+            var recipePage = new RecipeView {BindingContext = new RecipeViewModel(SelectedRecipe)};
             await Shell.Current.Navigation.PushAsync(recipePage);
 
             SelectedRecipe = null;

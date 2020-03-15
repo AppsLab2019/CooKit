@@ -1,40 +1,49 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CooKit.Models;
-using CooKit.Views;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels
 {
-    public sealed class RecipeViewModel
+    public sealed class RecipeViewModel : BaseViewModel
     {
-        public string Name => 
-            _recipe.Name;
-        public string Description => 
-            _recipe.Description;
-        public ImageSource MainImage => 
-            _recipe.MainImage;
+        public string RecipeName => _recipe.Name;
+        public string RecipeDescription => _recipe.Description;
+        public ImageSource RecipeImage => _recipe.MainImage;
+        public ObservableCollection<IIngredient> RecipeIngredients { get; }
+        public ObservableCollection<IPictogram> RecipePictograms { get; }
+        public ObservableCollection<string> RecipeSteps { get; }
 
-        public ObservableCollection<IPictogram> Pictograms { get; }
-        public ObservableCollection<IIngredient> Ingredients { get; }
-        public ObservableCollection<string> Steps { get; }
+        public IPictogram SelectedPictogram
+        {
+            get => _selectedPictogram;
+            set => HandlePropertyChange(ref _selectedPictogram, value);
+        }
+        private IPictogram _selectedPictogram;
 
-        public ICommand BackCommand { get; }
-        public ICommand CookCommand { get; }
+        public ICommand PictogramSelectedCommand { get; }
 
         private readonly IRecipe _recipe;
 
         public RecipeViewModel(IRecipe recipe)
         {
-            Pictograms = new ObservableCollection<IPictogram>(recipe.Pictograms);
-
-            Ingredients = new ObservableCollection<IIngredient>(recipe.Ingredients);
-            Steps = new ObservableCollection<string>(recipe.Steps);
-
-            BackCommand = new Command(() => Shell.Current.Navigation.PopAsync());
-            CookCommand = new Command(() => Shell.Current.Navigation.PushAsync(new RecipeView(this)));
-
             _recipe = recipe;
+
+            RecipeIngredients = new ObservableCollection<IIngredient>(_recipe.Ingredients);
+            RecipePictograms = new ObservableCollection<IPictogram>(_recipe.Pictograms);
+            RecipeSteps = new ObservableCollection<string>(_recipe.Steps);
+
+            PictogramSelectedCommand = new Command(HandlePictogramSelected);
+        }
+
+        private async void HandlePictogramSelected()
+        {
+            if (SelectedPictogram is null)
+                return;
+
+            await DisplayAlert(SelectedPictogram.Name, SelectedPictogram.Description, "Ok");
+
+            SelectedPictogram = null;
         }
     }
 }

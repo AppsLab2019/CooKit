@@ -47,6 +47,7 @@ namespace CooKit
             MainPage = new AppShell();
         }
 
+        #region Store Getters
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IIngredientStore GetIngredientStore() =>
             ((App) Current).IngredientStore;
@@ -62,5 +63,6 @@ namespace CooKit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IImageStore GetImageStore() =>
             ((App) Current).ImageStore;
+        #endregion
     }
 }
