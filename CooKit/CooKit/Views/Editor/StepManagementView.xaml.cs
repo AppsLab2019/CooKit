@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-namespace CooKit.Views.Editor
+﻿namespace CooKit.Views.Editor
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class StepManagementView : ContentPage
+    public partial class StepManagementView
     {
-        public StepManagementView()
-        {
+        public StepManagementView() => 
             InitializeComponent();
-        }
     }
 }

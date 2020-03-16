@@ -19,6 +19,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Button Grid.Row="1"
@@ -32,6 +33,10 @@
             <Button Grid.Row="3"
                     Text="Manage Recipes"
                     Command="{Binding ManageRecipesCommand}"/>
+
+            <Button Grid.Row="5"
+                    Text="Purge Unused Steps"
+                    Command="{Binding PurgeStepsCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
