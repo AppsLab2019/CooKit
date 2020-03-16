@@ -16,24 +16,17 @@ namespace CooKit.Services.Impl.SQLite
         public override IIngredientBuilder CreateBuilder() =>
             new StoreCallbackIngredientBuilder(this);
 
-        protected internal override async Task<SQLiteIngredient> CreateObjectFromBuilder(IIngredientBuilder builder)
-        {
-            var info = new SQLiteIngredientInfo
+        private protected override Task<SQLiteIngredientInfo> CreateInfoFromBuilder(IIngredientBuilder builder) =>
+            Task.Run(() => new SQLiteIngredientInfo
             {
                 Id = builder.Id.Value,
                 Name = builder.Name.Value,
 
                 ImageLoader = builder.ImageLoader.Value,
                 ImageSource = builder.ImageSource.Value
-            };
+            });
 
-            return new SQLiteIngredient(info)
-            {
-                Icon = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource)
-            };
-        }
-
-        protected internal override async Task<SQLiteIngredient> CreateObjectFromInfo(SQLiteIngredientInfo info) =>
+        private protected override async Task<SQLiteIngredient> CreateObjectFromInfo(SQLiteIngredientInfo info) =>
             new SQLiteIngredient(info)
             {
                 Icon = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource)

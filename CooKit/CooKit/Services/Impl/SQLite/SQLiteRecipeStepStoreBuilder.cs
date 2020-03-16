@@ -13,15 +13,16 @@ namespace CooKit.Services.Impl.SQLite
         public SQLiteRecipeStepStoreBuilder() =>
             DatabaseConnection = new BuilderPropertyImpl<SQLiteRecipeStepStoreBuilder, SQLiteAsyncConnection>(this);
 
-        public async Task<IRecipeStepStore> BuildAsync()
+        public Task<IRecipeStepStore> BuildAsync()
         {
             if (DatabaseConnection.Value is null)
                 throw new ArgumentNullException(nameof(DatabaseConnection));
 
             var store = new SQLiteRecipeStepStore(DatabaseConnection.Value);
 
-            await store.InitAsync();
-            return store;
+            return store
+                .InitAsync()
+                .ContinueWith(_ => (IRecipeStepStore) store);
         }
     }
 }

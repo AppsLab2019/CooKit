@@ -7,9 +7,9 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class IngredientDesignerViewModel
+    public sealed class IngredientDesignerViewModel : BaseViewModel
     {
-        public Guid Id { get; }
+        public Guid Id => _builder.Id.Value;
         public string Name { get; set; }
 
         public string ImageLoader { get; set; }
@@ -24,8 +24,6 @@ namespace CooKit.ViewModels.Editor
             _builder = App
                 .GetIngredientStore()
                 .CreateBuilder();
-
-            Id = _builder.Id.Value;
 
             var imageLoaderNames = App
                 .GetImageStore()
@@ -45,7 +43,7 @@ namespace CooKit.ViewModels.Editor
                 .ImageSource.Set(ImageSource);
 
             await App.GetIngredientStore().AddAsync(_builder);
-            await Shell.Current.Navigation.PopAsync();
+            await PopAsync();
         }
     }
 }

@@ -7,9 +7,9 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class PictogramDesignerViewModel
+    public sealed class PictogramDesignerViewModel : BaseViewModel
     {
-        public Guid Id { get; }
+        public Guid Id => _builder.Id.Value;
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -25,8 +25,6 @@ namespace CooKit.ViewModels.Editor
             _builder = App
                 .GetPictogramStore()
                 .CreateBuilder();
-
-            Id = _builder.Id.Value;
 
             var imageLoaderNames = App
                 .GetImageStore()
@@ -47,7 +45,7 @@ namespace CooKit.ViewModels.Editor
                 .ImageSource.Set(ImageSource);
 
             await App.GetPictogramStore().AddAsync(_builder);
-            await Shell.Current.Navigation.PopAsync();
+            await PopAsync();
         }
     }
 }

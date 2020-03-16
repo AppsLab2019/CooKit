@@ -42,6 +42,5 @@ namespace CooKit.Models.Impl
             await _recipeStore.AddAsync(this);
             return await _recipeStore.LoadAsync(Id.Value);
         }
-
     }
 }

@@ -54,6 +54,7 @@ namespace CooKit
         }
 
         #region Store Getters
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IIngredientStore GetIngredientStore() =>
             ((App) Current).IngredientStore;
@@ -67,8 +68,13 @@ namespace CooKit
             ((App) Current).RecipeStore;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static IRecipeStepStore GetRecipeStepStore() =>
+            ((App) Current).RecipeStepStore;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IImageStore GetImageStore() =>
             ((App) Current).ImageStore;
+
         #endregion
     }
 }

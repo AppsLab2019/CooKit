@@ -23,7 +23,7 @@ namespace CooKit.Services.Impl.SQLite
             DatabaseConnection = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, SQLiteAsyncConnection>(this);
         }
 
-        public async Task<IRecipeStore> BuildAsync()
+        public Task<IRecipeStore> BuildAsync()
         {
             if (ImageStore.Value is null)
                 throw new ArgumentNullException(nameof(ImageStore));
@@ -43,8 +43,9 @@ namespace CooKit.Services.Impl.SQLite
             var store = new SQLiteRecipeStore(DatabaseConnection.Value, ImageStore.Value, 
                 IngredientStore.Value, PictogramStore.Value, RecipeStepStore.Value);
 
-            await store.InitAsync();
-            return store;
+            return store
+                .InitAsync()
+                .ContinueWith(_ => (IRecipeStore) store);
         }
     }
 }

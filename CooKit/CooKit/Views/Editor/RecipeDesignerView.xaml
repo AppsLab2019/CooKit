@@ -22,6 +22,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <Entry IsReadOnly="True"
@@ -131,6 +132,10 @@
             </CollectionView>
 
             <Button Grid.Row="6"
+                    Text="Edit Steps"
+                    Command="{Binding EditStepsCommand}"/>
+
+            <Button Grid.Row="7"
                     Text="Create"
                     Command="{Binding CreateCommand}"/>
         </Grid>

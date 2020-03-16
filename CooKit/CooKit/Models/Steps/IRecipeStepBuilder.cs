@@ -1,6 +1,11 @@
-﻿namespace CooKit.Models.Steps
+﻿using System;
+
+namespace CooKit.Models.Steps
 {
-    public interface IRecipeStepBuilder
+    public interface IRecipeStepBuilder : IAsyncBuilder<IRecipeStep>
     {
+        IBuilderProperty<IRecipeStepBuilder, Guid> Id { get; }
+
+        ITextRecipeStepBuilder ToTextBuilder();
     }
 }

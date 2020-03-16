@@ -3,15 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
+             xmlns:ms="clr-namespace:CooKit.Models.Steps;assembly=CooKit"
+             xmlns:c="clr-namespace:CooKit.Controls;assembly=CooKit"
              xmlns:vme="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.RecipeManagementView">
-
-    <ContentPage.BindingContext>
-        <vme:RecipeManagementViewModel/>
-    </ContentPage.BindingContext>
+             x:Class="CooKit.Views.Editor.StepManagementView"
+             x:DataType="vme:StepManagementViewModel">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -22,33 +20,37 @@
     <ContentPage.Content>
         <Grid Padding="20">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <CollectionView SelectionMode="Single"
-                            ItemsSource="{Binding StoredObjects}"
-                            SelectedItem="{Binding SelectedObject, Mode=TwoWay}">
+            <c:RecipeStepsView HeightRequest="350"
+                               IndicatorView="StepsIndicator"
+                               ItemsSource="{Binding Steps}"/>
+
+            <IndicatorView Grid.Row="1"
+                           x:Name="StepsIndicator"
+                           HorizontalOptions="Center"
+                           IndicatorColor="LightGray"
+                           SelectedIndicatorColor="DarkGray"/>
+
+            <CollectionView Grid.Row="2"
+                            SelectionMode="Single"
+                            ItemsSource="{Binding Steps}"
+                            SelectedItem="{Binding SelectedStep, Mode=TwoWay}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="m:IRecipe">
-                        <Grid Padding="6">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <Label FontSize="Medium"
-                                   Text="{Binding Name}"/>
-
-                            <Label Grid.Row="1"
-                                   FontSize="Small"
-                                   Text="{Binding Id}"/>
-                        </Grid>
+                    <DataTemplate x:DataType="ms:IRecipeStep">
+                        <StackLayout Padding="6">
+                            <Label Text="{Binding Type}"/>
+                            <Label Text="{Binding Id}"/>
+                        </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -58,9 +60,10 @@
                         Command="{Binding AddCommand}"/>
 
                 <Button Grid.Column="1"
-                        Text="Remove"
+                        Text="Delete"
                         Command="{Binding RemoveCommand}"
-                        IsEnabled="{Binding SelectedObject, Converter={StaticResource NotNullToBoolConverter}}"/>
+                        IsEnabled="{Binding SelectedStep, Converter={StaticResource NotNullToBoolConverter}}">
+                </Button>
             </Grid>
         </Grid>
     </ContentPage.Content>

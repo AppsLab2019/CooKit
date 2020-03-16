@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CooKit.Models.Impl.SQLite.Steps;
+using CooKit.Models.Impl.Steps;
 using CooKit.Models.Steps;
 using SQLite;
 
@@ -14,28 +15,10 @@ namespace CooKit.Services.Impl.SQLite
 
         internal SQLiteRecipeStepStore(SQLiteAsyncConnection connection) : base(connection) { }
 
-        public override IRecipeStepBuilder CreateBuilder() => 
-            throw new NotImplementedException();
+        public override IRecipeStepBuilder CreateBuilder() =>
+            new StoreCallbackRecipeStepBuilder(this);
 
-        #region Database Manipulation
-
-        protected internal override async Task AddObjectToDatabase(SQLiteRecipeStep storable)
-        {
-            await base.AddObjectToDatabase(storable);
-            await Connection.InsertAsync(storable.SpecificInternalInfo);
-        }
-
-        protected internal override async Task RemoveObjectFromDatabase(SQLiteRecipeStep storable)
-        {
-            await base.RemoveObjectFromDatabase(storable);
-            await Connection.DeleteAsync(storable.SpecificInternalInfo);
-        }
-
-        #endregion
-
-        #region Initialization Overrides
-
-        protected internal override async Task PreInitAsync()
+        private protected override async Task PreInitAsync()
         {
             await Connection.CreateTableAsync<SQLiteTextRecipeStepInfo>();
 
@@ -46,30 +29,69 @@ namespace CooKit.Services.Impl.SQLite
             _idToTextInfo = textInfos.ToDictionary(info => info.Id);
         }
 
-        protected internal override Task PostInitAsync()
+        private protected override Task RemoveObjectFromDatabase(SQLiteRecipeStep storable)
         {
-            _idToTextInfo = null;
-            return Task.CompletedTask;
+            var baseTask = base.RemoveObjectFromDatabase(storable);
+            var task = Connection.DeleteAsync(storable.SpecificInternalInfo);
+
+            return Task.WhenAll(baseTask, task);
         }
 
-        #endregion
-
-        protected internal override Task<SQLiteRecipeStep> CreateObjectFromBuilder(IRecipeStepBuilder builder) => 
-            throw new NotImplementedException();
-
-        protected internal override Task<SQLiteRecipeStep> CreateObjectFromInfo(SQLiteRecipeStepInfo info)
+        private protected override async Task<SQLiteRecipeStepInfo> CreateInfoFromBuilder(IRecipeStepBuilder builder)
         {
-            SQLiteRecipeStep result = info.Type switch
+            RecipeStepType type;
+
+            switch (builder)
+            {
+                case ITextRecipeStepBuilder specified:
+                    await BuilderToTextInfo(specified);
+                    type = RecipeStepType.TextOnly;
+                    break;
+
+                default:
+                    return null;
+            }
+
+            return new SQLiteRecipeStepInfo
+            {
+                Id = builder.Id.Value,
+                Type = type
+            };
+        }
+
+        private protected override Task<SQLiteRecipeStep> CreateObjectFromInfo(SQLiteRecipeStepInfo info)
+        {
+            var step = info.Type switch
             {
                 RecipeStepType.TextOnly => GenericInfoToTextStep(info),
                 _ => null
             };
 
-            return Task.FromResult(result);
+            return Task.FromResult(step);
         }
 
-        private SQLiteTextRecipeStep GenericInfoToTextStep(SQLiteRecipeStepInfo info) =>
-            _idToTextInfo.TryGetValue(info.Id, out var specificInfo)
-                ? new SQLiteTextRecipeStep(specificInfo, info) : null;
+        #region Generic Info to Implementation
+
+        private SQLiteRecipeStep GenericInfoToTextStep(SQLiteRecipeStepInfo info) =>
+            _idToTextInfo.ContainsKey(info.Id) ? new SQLiteTextRecipeStep(_idToTextInfo[info.Id], info) : null;
+
+        #endregion
+
+        #region Builder to Specific Info
+
+        private Task<SQLiteTextRecipeStepInfo> BuilderToTextInfo(ITextRecipeStepBuilder builder)
+        {
+            var info = new SQLiteTextRecipeStepInfo
+            {
+                Id = builder.Id.Value,
+                Text = builder.Text.Value
+            };
+
+            return Connection
+                .InsertAsync(info)
+                .ContinueWith(_ => _idToTextInfo[info.Id] = info);
+        }
+
+        #endregion
     }
 }

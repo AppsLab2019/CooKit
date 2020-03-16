@@ -9,7 +9,7 @@ using Xamarin.Forms;
 namespace CooKit.ViewModels.Editor
 {
     public class SharedManagementViewModel<TStorable, TStorableBuilder> 
-        : BaseViewModel, IDisposable where TStorable : IStorable
+        : BaseViewModel where TStorable : IStorable
     {
         public ObservableCollection<TStorable> StoredObjects
         {
@@ -48,7 +48,7 @@ namespace CooKit.ViewModels.Editor
         private async void HandleAdd()
         {
             var page = (Page) Activator.CreateInstance(_designerPageType);
-            await Shell.Current.Navigation.PushAsync(page);
+            await PushAsync(page);
         }
 
         private async void HandleRemove()
@@ -68,8 +68,5 @@ namespace CooKit.ViewModels.Editor
             SelectedObject = default;
             StoredObjects = new ObservableCollection<TStorable>(_store.LoadedObjects);
         }
-
-        public void Dispose() =>
-            _store.PropertyChanged -= HandleStoreContentChange;
     }
 }

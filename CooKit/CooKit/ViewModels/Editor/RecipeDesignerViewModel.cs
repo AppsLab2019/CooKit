@@ -3,13 +3,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using CooKit.Models;
+using CooKit.Models.Steps;
+using CooKit.Views.Editor;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class RecipeDesignerViewModel
+    public sealed class RecipeDesignerViewModel : BaseViewModel
     {
-        public Guid Id { get; }
+        public Guid Id => _builder.Id.Value;
         public string Name { get; set; }
         public string Description { get; set; }
         public TimeSpan RequiredTime { get; set; }
@@ -24,7 +26,10 @@ namespace CooKit.ViewModels.Editor
         public ObservableCollection<IPictogram> AllPictograms { get; }
         public ObservableCollection<object> SelectedPictograms { get; }
 
+        public ObservableCollection<IRecipeStep> Steps { get; }
+
         public ICommand CreateCommand { get; }
+        public ICommand EditStepsCommand { get; }
 
         private readonly IRecipeBuilder _builder;
 
@@ -33,8 +38,6 @@ namespace CooKit.ViewModels.Editor
             _builder = App
                 .GetRecipeStore()
                 .CreateBuilder();
-
-            Id = _builder.Id.Value;
 
             var imageLoaderNames = App
                 .GetImageStore()
@@ -52,7 +55,10 @@ namespace CooKit.ViewModels.Editor
             SelectedIngredients = new ObservableCollection<object>();
             SelectedPictograms = new ObservableCollection<object>();
 
+            Steps = new ObservableCollection<IRecipeStep>();
+
             CreateCommand = new Command(HandleCreate);
+            EditStepsCommand = new Command(HandleEditSteps);
         }
 
         private async void HandleCreate()
@@ -74,12 +80,20 @@ namespace CooKit.ViewModels.Editor
                 .Select(pictogram => pictogram.Id)
                 .ToArray();
 
+            var steps = Steps
+                .Select(step => step.Id)
+                .ToArray();
+
             _builder
                 .IngredientIds.Set(ingredients)
-                .PictogramIds.Set(pictograms);
+                .PictogramIds.Set(pictograms)
+                .StepIds.Set(steps);
 
             await App.GetRecipeStore().AddAsync(_builder);
-            await Shell.Current.Navigation.PopAsync();
+            await PopAsync();
         }
+
+        private async void HandleEditSteps() =>
+            await PushAsync(new StepManagementView{ BindingContext = new StepManagementViewModel(Steps) });
     }
 }

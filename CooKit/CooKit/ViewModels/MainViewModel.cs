@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels
 {
-    public class MainViewModel : BaseViewModel, IDisposable
+    public class MainViewModel : BaseViewModel
     {
         public ObservableCollection<IRecipe> Recipes
         {
@@ -45,7 +45,7 @@ namespace CooKit.ViewModels
                 return;
 
             var recipePage = new RecipeView {BindingContext = new RecipeViewModel(SelectedRecipe)};
-            await Shell.Current.Navigation.PushAsync(recipePage);
+            await PushAsync(recipePage);
 
             SelectedRecipe = null;
         }
@@ -55,8 +55,5 @@ namespace CooKit.ViewModels
             if (sender == _recipeStore)
                 Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
         }
-
-        public void Dispose() =>
-            _recipeStore.PropertyChanged -= HandleStoreContentChange;
     }
 }

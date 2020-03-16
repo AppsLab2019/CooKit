@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditorMainViewModel
+    public sealed class EditorMainViewModel : BaseViewModel
     {
         public ICommand ManageIngredientsCommand { get; }
         public ICommand ManagePictogramsCommand { get; }
@@ -12,11 +12,9 @@ namespace CooKit.ViewModels.Editor
 
         public EditorMainViewModel()
         {
-            var navigation = Shell.Current.Navigation;
-
-            ManageIngredientsCommand = new Command(() => navigation.PushAsync(new IngredientManagementView()));
-            ManagePictogramsCommand = new Command(() => navigation.PushAsync(new PictogramManagementView()));
-            ManageRecipesCommand = new Command(() => navigation.PushAsync(new RecipeManagementView()));
+            ManageIngredientsCommand = new Command(() => PushAsync(new IngredientManagementView()));
+            ManagePictogramsCommand = new Command(() => PushAsync(new PictogramManagementView()));
+            ManageRecipesCommand = new Command(() => PushAsync(new RecipeManagementView()));
         }
     }
 }

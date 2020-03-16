@@ -27,6 +27,18 @@ namespace CooKit.ViewModels
 
         #endregion
 
+        #region Navigation
+
+        protected Task PushAsync(Page page) =>
+            Shell.Current.Navigation.PushAsync(page);
+
+        protected Task<Page> PopAsync() =>
+            Shell.Current.Navigation.PopAsync();
+
+        #endregion
+
+        #region Property Change Handlers
+
         protected void HandlePropertyChange<T>(ref T backingField, T newValue, 
             [CallerMemberName] string propertyName = null)
         {
@@ -47,6 +59,8 @@ namespace CooKit.ViewModels
             RaisePropertyChanged(propertyName);
             callback?.Invoke(newValue);
         }
+
+        #endregion
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void RaisePropertyChanged(string propertyName) =>

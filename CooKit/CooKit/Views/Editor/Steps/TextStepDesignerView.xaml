@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vmes="clr-namespace:CooKit.ViewModels.Editor.Steps;assembly=CooKit"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Editor.Steps.TextStepDesignerView"
+             x:DataType="vmes:TextStepDesignerViewModel">
+
+    <ContentPage.Content>
+        <Grid Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Entry Placeholder="Id"
+                   Text="{Binding Id}"/>
+
+            <Editor Grid.Row="1"
+                    Placeholder="Text"
+                    Text="{Binding Text}"/>
+
+            <Button Grid.Row="3"
+                    Text="Create"
+                    Command="{Binding CreateCommand}"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

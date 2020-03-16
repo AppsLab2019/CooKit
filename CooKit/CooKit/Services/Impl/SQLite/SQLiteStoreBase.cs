@@ -15,7 +15,7 @@ namespace CooKit.Services.Impl.SQLite
         where TStorableInternal : ISQLiteStorable<TStorableInfo>, TStorable
         where TStorableInfo : new()
     {
-        protected internal readonly SQLiteAsyncConnection Connection;
+        private protected readonly SQLiteAsyncConnection Connection;
 
         private List<TStorable> _objects;
         private Dictionary<Guid, TStorableInternal> _idToObject;
@@ -23,23 +23,21 @@ namespace CooKit.Services.Impl.SQLite
         public IReadOnlyList<TStorable> LoadedObjects => _objects;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected internal SQLiteStoreBase(SQLiteAsyncConnection connection) => 
+        private protected SQLiteStoreBase(SQLiteAsyncConnection connection) => 
             Connection = connection;
 
         public abstract TStorableBuilder CreateBuilder();
 
-        public Task<TStorable> LoadNextAsync() =>
+        public virtual Task<TStorable> LoadNextAsync() =>
             Task.FromResult(default(TStorable));
 
-        private TStorable Load(Guid id) =>
-            _idToObject.ContainsKey(id) ? _idToObject[id] : default;
+        public virtual Task<TStorable> LoadAsync(Guid id) =>
+            Task.FromResult((TStorable) (_idToObject.ContainsKey(id) ? _idToObject[id] : default));
 
-        public async Task<TStorable> LoadAsync(Guid id) =>
-            await Task.Run(() => Load(id));
-
-        public async Task AddAsync(TStorableBuilder builder)
+        public virtual async Task AddAsync(TStorableBuilder builder)
         {
-            var obj = await CreateObjectFromBuilder(builder);
+            var info = await CreateInfoFromBuilder(builder);
+            var obj = await CreateObjectFromInfo(info);
 
             await AddObjectToDatabase(obj);
 
@@ -49,7 +47,7 @@ namespace CooKit.Services.Impl.SQLite
             RaisePropertyChanged(nameof(LoadedObjects));
         }
 
-        public async Task<bool> RemoveAsync(Guid id)
+        public virtual async Task<bool> RemoveAsync(Guid id)
         {
             if (!_idToObject.TryGetValue(id, out var obj))
                 return false;
@@ -75,12 +73,13 @@ namespace CooKit.Services.Impl.SQLite
 
             var objectTasks = infos
                 .Select(CreateObjectFromInfo)
-                .ToList();
+                .ToArray();
 
-            var objects = new List<TStorableInternal>();
+            await Task.WhenAll(objectTasks);
 
-            foreach (var objectTask in objectTasks)
-                objects.Add(await objectTask);
+            var objects = objectTasks
+                .Select(task => task.Result)
+                .ToArray();
 
             _objects = objects
                 .Cast<TStorable>()
@@ -91,20 +90,20 @@ namespace CooKit.Services.Impl.SQLite
             await PostInitAsync();
         }
 
-        protected internal virtual Task AddObjectToDatabase(TStorableInternal storable) =>
+        private protected virtual Task AddObjectToDatabase(TStorableInternal storable) =>
             Connection.InsertAsync(storable.InternalInfo);
 
-        protected internal virtual Task RemoveObjectFromDatabase(TStorableInternal storable) =>
+        private protected virtual Task RemoveObjectFromDatabase(TStorableInternal storable) =>
             Connection.DeleteAsync(storable.InternalInfo);
 
-        protected internal virtual Task PreInitAsync() => Task.CompletedTask;
-        protected internal virtual Task PostInitAsync() => Task.CompletedTask;
+        private protected virtual Task PreInitAsync() => Task.CompletedTask;
+        private protected virtual Task PostInitAsync() => Task.CompletedTask;
 
-        protected internal abstract Task<TStorableInternal> CreateObjectFromBuilder(TStorableBuilder builder);
-        protected internal abstract Task<TStorableInternal> CreateObjectFromInfo(TStorableInfo info);
+        private protected abstract Task<TStorableInfo> CreateInfoFromBuilder(TStorableBuilder builder);
+        private protected abstract Task<TStorableInternal> CreateObjectFromInfo(TStorableInfo info);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        protected internal void RaisePropertyChanged(string propertyName) =>
+        private protected void RaisePropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

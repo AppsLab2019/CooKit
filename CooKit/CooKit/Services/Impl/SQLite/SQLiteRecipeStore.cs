@@ -29,9 +29,8 @@ namespace CooKit.Services.Impl.SQLite
         public override IRecipeBuilder CreateBuilder() =>
             new StoreCallbackRecipeBuilder(this);
 
-        protected internal override async Task<SQLiteRecipe> CreateObjectFromBuilder(IRecipeBuilder builder)
-        {
-            var info = new SQLiteRecipeInfo
+        private protected override Task<SQLiteRecipeInfo> CreateInfoFromBuilder(IRecipeBuilder builder) =>
+            Task.Run(() => new SQLiteRecipeInfo
             {
                 Id = builder.Id.Value,
                 Name = builder.Name.Value,
@@ -44,19 +43,9 @@ namespace CooKit.Services.Impl.SQLite
                 IngredientIds = GuidsToString(builder.IngredientIds.Value),
                 PictogramIds = GuidsToString(builder.PictogramIds.Value),
                 StepIds = GuidsToString(builder.StepIds.Value)
-            };
+            });
 
-            return new SQLiteRecipe(info)
-            {
-                Image = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
-
-                Ingredients = await GuidsToStorableAsync(_ingredientStore, builder.IngredientIds.Value),
-                Pictograms = await GuidsToStorableAsync(_pictogramStore, builder.PictogramIds.Value),
-                Steps = await GuidsToStorableAsync(_recipeStepStore, builder.StepIds.Value)
-            };
-        }
-
-        protected internal override async Task<SQLiteRecipe> CreateObjectFromInfo(SQLiteRecipeInfo info)
+        private protected override async Task<SQLiteRecipe> CreateObjectFromInfo(SQLiteRecipeInfo info)
         {
             var ingredientIds = StringToGuids(info.IngredientIds);
             var pictogramIds = StringToGuids(info.PictogramIds);
@@ -102,13 +91,15 @@ namespace CooKit.Services.Impl.SQLite
             if (ids is null)
                 return new T[0];
 
-            var tasks = ids.Select(store.LoadAsync);
-            var objects = new List<T>();
+            var tasks = ids
+                .Select(store.LoadAsync)
+                .ToArray();
 
-            foreach (var task in tasks)
-                objects.Add(await task);
+            await Task.WhenAll(tasks);
 
-            return objects;
+            return tasks
+                .Select(task => task.Result)
+                .ToArray();
         }
     }
 }

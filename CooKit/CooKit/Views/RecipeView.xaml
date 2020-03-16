@@ -6,6 +6,7 @@
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:c="clr-namespace:CooKit.Converters;assembly=CooKit"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeView"
              x:DataType="vm:RecipeViewModel">
@@ -147,29 +148,9 @@
 
                 <Frame Grid.Row="4">
                     <StackLayout>
-                        <CarouselView HeightRequest="400"
-                                      IndicatorView="StepsIndicator"
-                                      ItemsSource="{Binding RecipeSteps}">
-                            <CarouselView.ItemsLayout>
-                                <LinearItemsLayout Orientation="Horizontal"
-                                                   SnapPointsAlignment="Center"
-                                                   SnapPointsType="Mandatory"/>
-                            </CarouselView.ItemsLayout>
-
-                            <CarouselView.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <Frame Padding="6">
-                                        <Frame Padding="0"
-                                               HasShadow="True"
-                                               CornerRadius="20">
-                                            <Label Text="{Binding}"
-                                                   VerticalOptions="Center"
-                                                   HorizontalOptions="Center"/>
-                                        </Frame>
-                                    </Frame>
-                                </DataTemplate>
-                            </CarouselView.ItemTemplate>
-                        </CarouselView>
+                        <controls:RecipeStepsView HeightRequest="350"
+                                                  IndicatorView="StepsIndicator"
+                                                  ItemsSource="{Binding RecipeSteps}"/>
 
                         <IndicatorView x:Name="StepsIndicator"
                                        HorizontalOptions="Center"
