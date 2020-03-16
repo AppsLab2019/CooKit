@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CooKit.Models;
+using CooKit.Models.Steps;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels
@@ -14,7 +15,7 @@ namespace CooKit.ViewModels
         public TimeSpan RecipeRequiredTime => _recipe.RequiredTime;
         public ObservableCollection<IIngredient> RecipeIngredients { get; }
         public ObservableCollection<IPictogram> RecipePictograms { get; }
-        public ObservableCollection<string> RecipeSteps { get; }
+        public ObservableCollection<IRecipeStep> RecipeSteps { get; }
 
         public IPictogram SelectedPictogram
         {
@@ -33,7 +34,7 @@ namespace CooKit.ViewModels
 
             RecipeIngredients = new ObservableCollection<IIngredient>(_recipe.Ingredients);
             RecipePictograms = new ObservableCollection<IPictogram>(_recipe.Pictograms);
-            RecipeSteps = new ObservableCollection<string>(_recipe.Steps);
+            RecipeSteps = new ObservableCollection<IRecipeStep>(_recipe.Steps);
 
             PictogramSelectedCommand = new Command(HandlePictogramSelected);
         }

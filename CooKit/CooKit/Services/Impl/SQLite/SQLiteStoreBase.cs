@@ -15,7 +15,7 @@ namespace CooKit.Services.Impl.SQLite
         where TStorableInternal : ISQLiteStorable<TStorableInfo>, TStorable
         where TStorableInfo : new()
     {
-        private readonly SQLiteAsyncConnection _connection;
+        protected internal readonly SQLiteAsyncConnection Connection;
 
         private List<TStorable> _objects;
         private Dictionary<Guid, TStorableInternal> _idToObject;
@@ -24,7 +24,7 @@ namespace CooKit.Services.Impl.SQLite
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected internal SQLiteStoreBase(SQLiteAsyncConnection connection) => 
-            _connection = connection;
+            Connection = connection;
 
         public abstract TStorableBuilder CreateBuilder();
 
@@ -41,7 +41,7 @@ namespace CooKit.Services.Impl.SQLite
         {
             var obj = await CreateObjectFromBuilder(builder);
 
-            await _connection.InsertAsync(obj.InternalInfo);
+            await AddObjectToDatabase(obj);
 
             _objects.Add(obj);
             _idToObject.Add(obj.Id, obj);
@@ -54,7 +54,7 @@ namespace CooKit.Services.Impl.SQLite
             if (!_idToObject.TryGetValue(id, out var obj))
                 return false;
 
-            await _connection.DeleteAsync(obj.InternalInfo);
+            await RemoveObjectFromDatabase(obj);
 
             _objects.Remove(obj);
             _idToObject.Remove(obj.Id);
@@ -65,9 +65,11 @@ namespace CooKit.Services.Impl.SQLite
 
         internal async Task InitAsync()
         {
-            await _connection.CreateTableAsync<TStorableInfo>();
+            await Connection.CreateTableAsync<TStorableInfo>();
 
-            var infos = await _connection
+            await PreInitAsync();
+
+            var infos = await Connection
                 .Table<TStorableInfo>()
                 .ToArrayAsync();
 
@@ -85,7 +87,18 @@ namespace CooKit.Services.Impl.SQLite
                 .ToList();
 
             _idToObject = objects.ToDictionary(obj => obj.Id);
+
+            await PostInitAsync();
         }
+
+        protected internal virtual Task AddObjectToDatabase(TStorableInternal storable) =>
+            Connection.InsertAsync(storable.InternalInfo);
+
+        protected internal virtual Task RemoveObjectFromDatabase(TStorableInternal storable) =>
+            Connection.DeleteAsync(storable.InternalInfo);
+
+        protected internal virtual Task PreInitAsync() => Task.CompletedTask;
+        protected internal virtual Task PostInitAsync() => Task.CompletedTask;
 
         protected internal abstract Task<TStorableInternal> CreateObjectFromBuilder(TStorableBuilder builder);
         protected internal abstract Task<TStorableInternal> CreateObjectFromInfo(TStorableInfo info);

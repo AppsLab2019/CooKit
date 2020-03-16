@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CooKit.Models.Steps;
 using Xamarin.Forms;
 
 namespace CooKit.Models.Impl.SQLite
@@ -14,7 +15,7 @@ namespace CooKit.Models.Impl.SQLite
 
         public IReadOnlyList<IPictogram> Pictograms { get; internal set; }
         public IReadOnlyList<IIngredient> Ingredients { get; internal set; }
-        public IReadOnlyList<string> Steps { get; internal set; }
+        public IReadOnlyList<IRecipeStep> Steps { get; internal set; }
 
         public SQLiteRecipeInfo InternalInfo { get; }
 

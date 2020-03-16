@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace CooKit.Models
 {
-    public interface IRecipeBuilder
+    public interface IRecipeBuilder : IAsyncBuilder<IRecipe>
     {
         IBuilderProperty<IRecipeBuilder, Guid> Id { get; }
         IBuilderProperty<IRecipeBuilder, string> Name { get; }
@@ -16,7 +15,5 @@ namespace CooKit.Models
         IBuilderProperty<IRecipeBuilder, Guid[]> IngredientIds { get; }
         IBuilderProperty<IRecipeBuilder, Guid[]> PictogramIds { get; }
         IBuilderProperty<IRecipeBuilder, Guid[]> StepIds { get; }
-
-        Task<IRecipe> BuildAsync();
     }
 }

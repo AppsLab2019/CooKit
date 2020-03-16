@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace CooKit.Models
 {
-    public interface IPictogramBuilder
+    public interface IPictogramBuilder : IAsyncBuilder<IPictogram>
     {
         IBuilderProperty<IPictogramBuilder, Guid> Id { get; }
         IBuilderProperty<IPictogramBuilder, string> Name { get; }
@@ -11,7 +10,5 @@ namespace CooKit.Models
 
         IBuilderProperty<IPictogramBuilder, string> ImageLoader { get; }
         IBuilderProperty<IPictogramBuilder, string> ImageSource { get; }
-
-        Task<IPictogram> BuildAsync();
     }
 }

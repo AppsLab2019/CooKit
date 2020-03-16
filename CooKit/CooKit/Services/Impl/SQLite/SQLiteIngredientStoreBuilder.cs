@@ -6,7 +6,7 @@ using SQLite;
 
 namespace CooKit.Services.Impl.SQLite
 {
-    public sealed class SQLiteIngredientStoreBuilder
+    public sealed class SQLiteIngredientStoreBuilder : IAsyncBuilder<IIngredientStore>
     {
         public IBuilderProperty<SQLiteIngredientStoreBuilder, IImageStore> ImageStore { get; }
         public IBuilderProperty<SQLiteIngredientStoreBuilder, SQLiteAsyncConnection> DatabaseConnection { get; }

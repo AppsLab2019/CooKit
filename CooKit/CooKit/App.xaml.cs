@@ -12,6 +12,7 @@ namespace CooKit
     {
         public IIngredientStore IngredientStore { get; private set; }
         public IPictogramStore PictogramStore { get; private set; }
+        public IRecipeStepStore RecipeStepStore { get; private set; }
         public IRecipeStore RecipeStore { get; private set; }
         public IImageStore ImageStore { get; private set; }
 
@@ -37,10 +38,15 @@ namespace CooKit
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
+            RecipeStepStore = await new SQLiteRecipeStepStoreBuilder()
+                .DatabaseConnection.Set(dbConnection)
+                .BuildAsync();
+
             RecipeStore = await new SQLiteRecipeStoreBuilder()
                 .ImageStore.Set(ImageStore)
                 .IngredientStore.Set(IngredientStore)
                 .PictogramStore.Set(PictogramStore)
+                .RecipeStepStore.Set(RecipeStepStore)
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 

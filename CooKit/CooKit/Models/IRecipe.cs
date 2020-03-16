@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CooKit.Models.Steps;
 using Xamarin.Forms;
 
 namespace CooKit.Models
@@ -13,7 +14,6 @@ namespace CooKit.Models
 
         IReadOnlyList<IIngredient> Ingredients { get; }
         IReadOnlyList<IPictogram> Pictograms { get; }
-
-        IReadOnlyList<string> Steps { get; }
+        IReadOnlyList<IRecipeStep> Steps { get; }
     }
 }

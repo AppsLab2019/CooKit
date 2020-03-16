@@ -15,13 +15,15 @@ namespace CooKit.Services.Impl.SQLite
         private readonly IImageStore _imageStore;
         private readonly IIngredientStore _ingredientStore;
         private readonly IPictogramStore _pictogramStore;
+        private readonly IRecipeStepStore _recipeStepStore;
 
-        internal SQLiteRecipeStore(SQLiteAsyncConnection connection, IImageStore imageStore,
-            IIngredientStore ingredientStore, IPictogramStore pictogramStore) : base(connection)
+        internal SQLiteRecipeStore(SQLiteAsyncConnection connection, IImageStore imageStore, IIngredientStore ingredientStore, 
+            IPictogramStore pictogramStore, IRecipeStepStore recipeStepStore) : base(connection)
         {
             _imageStore = imageStore;
             _ingredientStore = ingredientStore;
             _pictogramStore = pictogramStore;
+            _recipeStepStore = recipeStepStore;
         }
 
         public override IRecipeBuilder CreateBuilder() =>
@@ -39,39 +41,38 @@ namespace CooKit.Services.Impl.SQLite
                 ImageLoader = builder.ImageLoader.Value,
                 ImageSource = builder.ImageSource.Value,
 
-                IngredientIds = GuidCollectionToString(builder.IngredientIds.Value),
-                PictogramIds = GuidCollectionToString(builder.PictogramIds.Value),
-                StepIds = GuidCollectionToString(builder.StepIds.Value)
+                IngredientIds = GuidsToString(builder.IngredientIds.Value),
+                PictogramIds = GuidsToString(builder.PictogramIds.Value),
+                StepIds = GuidsToString(builder.StepIds.Value)
             };
 
             return new SQLiteRecipe(info)
             {
                 Image = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
 
-                Ingredients = await GuidEnumerableToIngredientsAsync(builder.IngredientIds.Value),
-                Pictograms = await GuidEnumerableToPictogramsAsync(builder.PictogramIds.Value),
-
-                Steps = new[] {"Placeholder 1", "Placeholder 2"}
+                Ingredients = await GuidsToStorableAsync(_ingredientStore, builder.IngredientIds.Value),
+                Pictograms = await GuidsToStorableAsync(_pictogramStore, builder.PictogramIds.Value),
+                Steps = await GuidsToStorableAsync(_recipeStepStore, builder.StepIds.Value)
             };
         }
 
         protected internal override async Task<SQLiteRecipe> CreateObjectFromInfo(SQLiteRecipeInfo info)
         {
-            var ingredientIds = StringToGuidCollection(info.IngredientIds);
-            var pictogramIds = StringToGuidCollection(info.PictogramIds);
+            var ingredientIds = StringToGuids(info.IngredientIds);
+            var pictogramIds = StringToGuids(info.PictogramIds);
+            var recipeStepIds = StringToGuids(info.StepIds);
 
             return new SQLiteRecipe(info)
             {
                 Image = await _imageStore.LoadImageAsync(info.ImageLoader, info.ImageSource),
 
-                Ingredients = await GuidEnumerableToIngredientsAsync(ingredientIds),
-                Pictograms = await GuidEnumerableToPictogramsAsync(pictogramIds),
-
-                Steps = new[] {"Placeholder 1", "Placeholder 2"}
+                Ingredients = await GuidsToStorableAsync(_ingredientStore, ingredientIds),
+                Pictograms = await GuidsToStorableAsync(_pictogramStore, pictogramIds),
+                Steps = await GuidsToStorableAsync(_recipeStepStore, recipeStepIds)
             };
         }
 
-        private static string GuidCollectionToString(IReadOnlyCollection<Guid> ids)
+        private static string GuidsToString(IReadOnlyCollection<Guid> ids)
         {
             if (ids is null || ids.Count == 0)
                 return string.Empty;
@@ -84,7 +85,7 @@ namespace CooKit.Services.Impl.SQLite
                 .Aggregate((id, id2) => $"{id};{id2}");
         }
 
-        private static IReadOnlyCollection<Guid> StringToGuidCollection(string str)
+        private static IEnumerable<Guid> StringToGuids(string str)
         {
             if (str is null || str == string.Empty)
                 return new Guid[0];
@@ -95,32 +96,19 @@ namespace CooKit.Services.Impl.SQLite
                 .ToArray();
         }
 
-        private async Task<IReadOnlyList<IIngredient>> GuidEnumerableToIngredientsAsync(IEnumerable<Guid> ids)
+        private static async Task<IReadOnlyList<T>> GuidsToStorableAsync<T, TBuilder>(
+            IStoreBase<T, TBuilder> store, IEnumerable<Guid> ids) where T : IStorable
         {
             if (ids is null)
-                return new IIngredient[0];
+                return new T[0];
 
-            var tasks = ids.Select(id => _ingredientStore.LoadAsync(id));
-            var ingredients = new List<IIngredient>();
-
-            foreach (var task in tasks)
-                ingredients.Add(await task);
-
-            return ingredients;
-        }
-
-        private async Task<IReadOnlyList<IPictogram>> GuidEnumerableToPictogramsAsync(IEnumerable<Guid> ids)
-        {
-            if (ids is null)
-                return new IPictogram[0];
-
-            var tasks = ids.Select(id => _pictogramStore.LoadAsync(id));
-            var pictograms = new List<IPictogram>();
+            var tasks = ids.Select(store.LoadAsync);
+            var objects = new List<T>();
 
             foreach (var task in tasks)
-                pictograms.Add(await task);
+                objects.Add(await task);
 
-            return pictograms;
+            return objects;
         }
     }
 }
