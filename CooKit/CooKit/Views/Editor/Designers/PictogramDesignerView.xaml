@@ -3,17 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vme="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
+             xmlns:vm="clr-namespace:CooKit.ViewModels.Editor.Designers;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.IngredientDesignerView">
+             x:Class="CooKit.Views.Editor.Designers.PictogramDesignerView">
 
     <ContentPage.BindingContext>
-        <vme:IngredientDesignerViewModel/>
+        <vm:PictogramDesignerViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
         <Grid Padding="20">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -24,24 +25,29 @@
 
             <Entry IsReadOnly="True"
                    Placeholder="Id"
-                   Text="{Binding Id}"/>
+                   Text="{Binding Builder.Id.Value}"/>
 
             <Entry Grid.Row="1"
                    Placeholder="Name"
-                   Text="{Binding Name}"/>
+                   Text="{Binding Builder.Name.Value}"/>
 
-            <Picker Grid.Row="2"
-                    Title="Image Source"
+            <Editor Grid.Row="2"
+                    HeightRequest="80"
+                    Placeholder="Description"
+                    Text="{Binding Builder.Description.Value}"/>
+
+            <Picker Grid.Row="3"
+                    Title="Image Loader"
                     ItemsSource="{Binding AvailableImageLoaders}"
-                    SelectedItem="{Binding ImageLoader}"/>
+                    SelectedItem="{Binding Builder.ImageLoader.Value}"/>
 
-            <Entry Grid.Row="3"
-                   Placeholder="Image Loader"
-                   Text="{Binding ImageSource}"/>
+            <Entry Grid.Row="4"
+                   Placeholder="Image Source"
+                   Text="{Binding Builder.ImageSource.Value}"/>
 
-            <Button Grid.Row="5"
+            <Button Grid.Row="6"
                     Text="Create"
-                    Command="{Binding CreateCommand}"/>
+                    Command="{Binding BuildCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

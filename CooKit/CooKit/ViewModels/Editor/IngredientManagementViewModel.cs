@@ -1,5 +1,5 @@
 ﻿using CooKit.Models;
-using CooKit.Views.Editor;
+using CooKit.Views.Editor.Designers;
 
 namespace CooKit.ViewModels.Editor
 {

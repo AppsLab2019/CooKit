@@ -1,4 +1,4 @@
-﻿namespace CooKit.Views.Editor
+﻿namespace CooKit.Views.Editor.Designers
 {
     public partial class RecipeDesignerView
     {

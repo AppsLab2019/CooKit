@@ -28,20 +28,12 @@ namespace CooKit.Services.Impl
             _loaderDictionary[instance.Name] = instance;
         }
 
-        public ImageSource LoadImage(string loaderName, string source)
+        public Task<ImageSource> LoadImageAsync(string loaderName, string source)
         {
             if (!_loaderDictionary.TryGetValue(loaderName, out var loader))
                 throw new ArgumentException(nameof(loaderName));
 
-            return loader.LoadImage(source);
-        }
-
-        public async Task<ImageSource> LoadImageAsync(string loaderName, string source)
-        {
-            if (!_loaderDictionary.TryGetValue(loaderName, out var loader))
-                throw new ArgumentException(nameof(loaderName));
-
-            return await loader.LoadImageAsync(source);
+            return loader.LoadImageAsync(source);
         }
     }
 }

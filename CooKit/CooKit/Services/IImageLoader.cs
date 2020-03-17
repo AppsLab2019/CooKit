@@ -7,7 +7,6 @@ namespace CooKit.Services
     {
         string Name { get; }
 
-        ImageSource LoadImage(string source);
         Task<ImageSource> LoadImageAsync(string source);
     }
 }

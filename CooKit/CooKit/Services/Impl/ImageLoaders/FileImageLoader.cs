@@ -7,10 +7,7 @@ namespace CooKit.Services.Impl.ImageLoaders
     {
         public string Name => "FileImageLoader";
 
-        public ImageSource LoadImage(string source) =>
-            ImageSource.FromFile(source);
-
-        public async Task<ImageSource> LoadImageAsync(string source) =>
-            await Task.Run(() => LoadImage(source));
+        public Task<ImageSource> LoadImageAsync(string source) =>
+            Task.Run(() => ImageSource.FromFile(source));
     }
 }

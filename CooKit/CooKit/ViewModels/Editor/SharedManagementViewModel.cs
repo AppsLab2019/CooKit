@@ -7,8 +7,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public class SharedManagementViewModel<TStorable, TStorableBuilder> 
-        : BaseViewModel where TStorable : IStorable
+    public class SharedManagementViewModel<TStorable, TStorableBuilder> : BaseViewModel where TStorable : IStorable
     {
         public ReadOnlyObservableCollection<TStorable> StoredObjects { get; }
 
@@ -48,7 +47,9 @@ namespace CooKit.ViewModels.Editor
             if (SelectedObject is null)
                 return;
 
-            await _store.RemoveAsync(SelectedObject.Id);
+            using (await DisplayLoadingDialog("Removing..."))
+                await _store.RemoveAsync(SelectedObject.Id);
+
             SelectedObject = default;
         }
     }

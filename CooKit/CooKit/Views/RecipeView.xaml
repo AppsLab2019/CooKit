@@ -14,9 +14,9 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style TargetType="Frame">
-                <Setter Property="HasShadow"
-                        Value="True"/>
+            <Style TargetType="ui:MaterialCard">
+                <Setter Property="Elevation"
+                        Value="2"/>
             </Style>
 
             <c:TimeToFormattedMinutesStringConverter x:Key="RequiredTimeConverter"/>
@@ -90,7 +90,7 @@
                     </ui:MaterialCard>
                 </Grid>
 
-                <Frame Grid.Row="2">
+                <ui:MaterialCard Grid.Row="2">
                     <Grid RowSpacing="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -109,9 +109,9 @@
                                           Text="{Binding Recipe.Description}"
                                           Style="{StaticResource BodyTwoLabelStyle}"/>
                     </Grid>
-                </Frame>
+                </ui:MaterialCard>
 
-                <Frame Grid.Row="3">
+                <ui:MaterialCard Grid.Row="3">
                     <Grid RowSpacing="6">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -145,9 +145,9 @@
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
                     </Grid>
-                </Frame>
+                </ui:MaterialCard>
 
-                <Frame Grid.Row="4">
+                <ui:MaterialCard Grid.Row="4">
                     <StackLayout>
                         <controls:RecipeStepsView HeightRequest="350"
                                                   IndicatorView="StepsIndicator"
@@ -158,7 +158,7 @@
                                        IndicatorColor="LightGray"
                                        SelectedIndicatorColor="DarkGray"/>
                     </StackLayout>
-                </Frame>
+                </ui:MaterialCard>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

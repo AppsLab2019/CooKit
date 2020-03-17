@@ -9,8 +9,6 @@ namespace CooKit.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
         #region Alert Functions
 
         protected Task DisplayAlert(string title, string message, string cancel) =>
@@ -24,8 +22,15 @@ namespace CooKit.ViewModels
 
         #region Alert Sheet Function
 
-        public Task<string> DisplayActionSheet(string title, string cancel, string destruction, params string[] buttons) =>
+        protected Task<string> DisplayActionSheet(string title, string cancel, string destruction, params string[] buttons) =>
             Shell.Current.DisplayActionSheet(title, cancel, destruction, buttons);
+
+        #endregion
+
+        #region Loading Dialog Function
+
+        protected Task<IMaterialModalPage> DisplayLoadingDialog(string message = null) =>
+            MaterialDialog.Instance.LoadingDialogAsync(message);
 
         #endregion
 
@@ -64,8 +69,14 @@ namespace CooKit.ViewModels
 
         #endregion
 
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void RaisePropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        #endregion
     }
 }

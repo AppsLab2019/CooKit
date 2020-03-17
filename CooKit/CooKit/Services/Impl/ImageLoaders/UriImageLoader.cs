@@ -8,10 +8,7 @@ namespace CooKit.Services.Impl.ImageLoaders
     {
         public string Name => "UriImageLoader";
 
-        public ImageSource LoadImage(string source) =>
-            ImageSource.FromUri(new Uri(source));
-
-        public async Task<ImageSource> LoadImageAsync(string source) =>
-            await Task.Run(() => ImageSource.FromUri(new Uri(source)));
+        public Task<ImageSource> LoadImageAsync(string source) =>
+            Task.Run(() => ImageSource.FromUri(new Uri(source)));
     }
 }

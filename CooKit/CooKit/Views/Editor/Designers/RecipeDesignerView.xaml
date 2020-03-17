@@ -4,12 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
-             xmlns:vme="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
+             xmlns:vm="clr-namespace:CooKit.ViewModels.Editor.Designers;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.RecipeDesignerView">
+             x:Class="CooKit.Views.Editor.Designers.RecipeDesignerView">
 
     <ContentPage.BindingContext>
-        <vme:RecipeDesignerViewModel/>
+        <vm:RecipeDesignerViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
@@ -27,7 +27,7 @@
 
             <Entry IsReadOnly="True"
                    Placeholder="Id"
-                   Text="{Binding Id}"/>
+                   Text="{Binding Builder.Id.Value}"/>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -36,17 +36,17 @@
                 </Grid.ColumnDefinitions>
 
                 <Entry Placeholder="Name"
-                       Text="{Binding Name}"/>
+                       Text="{Binding Builder.Name.Value}"/>
 
                 <TimePicker Grid.Column="1"
                             Format="HH:mm"
-                            Time="{Binding RequiredTime}"/>
+                            Time="{Binding Builder.RequiredTime.Value}"/>
             </Grid>
 
             <Editor Grid.Row="2"
                     HeightRequest="80"
                     Placeholder="Description"
-                    Text="{Binding Description}"/>
+                    Text="{Binding Builder.Description.Value}"/>
 
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
@@ -55,17 +55,17 @@
                 </Grid.ColumnDefinitions>
 
                 <Picker Title="Image Loader"
-                        SelectedItem="{Binding ImageLoader}"
-                        ItemsSource="{Binding AvailableImageLoaders}"/>
+                        ItemsSource="{Binding AvailableImageLoaders}"
+                        SelectedItem="{Binding Builder.ImageLoader.Value}"/>
 
                 <Entry Grid.Column="1"
                        Placeholder="Image Source"
-                       Text="{Binding ImageSource}"/>
+                       Text="{Binding Builder.ImageSource.Value}"/>
             </Grid>
 
             <CollectionView Grid.Row="4"
                             SelectionMode="Multiple"
-                            ItemsSource="{Binding AllIngredients}"
+                            ItemsSource="{Binding AvailableIngredients}"
                             SelectedItems="{Binding SelectedIngredients}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:IIngredient">
@@ -99,7 +99,7 @@
 
             <CollectionView Grid.Row="5"
                             SelectionMode="Multiple"
-                            ItemsSource="{Binding AllPictograms}"
+                            ItemsSource="{Binding AvailablePictograms}"
                             SelectedItems="{Binding SelectedPictograms}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:IPictogram">
@@ -137,7 +137,7 @@
 
             <Button Grid.Row="7"
                     Text="Create"
-                    Command="{Binding CreateCommand}"/>
+                    Command="{Binding BuildCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
