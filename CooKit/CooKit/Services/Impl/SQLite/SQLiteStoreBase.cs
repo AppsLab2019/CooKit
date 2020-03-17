@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CooKit.Models;
 using SQLite;
@@ -17,11 +16,10 @@ namespace CooKit.Services.Impl.SQLite
     {
         private protected readonly SQLiteAsyncConnection Connection;
 
-        private List<TStorable> _objects;
+        private ObservableCollection<TStorable> _objects;
         private Dictionary<Guid, TStorableInternal> _idToObject;
 
-        public IReadOnlyList<TStorable> LoadedObjects => _objects;
-        public event PropertyChangedEventHandler PropertyChanged;
+        public ReadOnlyObservableCollection<TStorable> LoadedObjects { get; private protected set; }
 
         private protected SQLiteStoreBase(SQLiteAsyncConnection connection) => 
             Connection = connection;
@@ -43,8 +41,6 @@ namespace CooKit.Services.Impl.SQLite
 
             _objects.Add(obj);
             _idToObject.Add(obj.Id, obj);
-
-            RaisePropertyChanged(nameof(LoadedObjects));
         }
 
         public virtual async Task<bool> RemoveAsync(Guid id)
@@ -57,7 +53,6 @@ namespace CooKit.Services.Impl.SQLite
             _objects.Remove(obj);
             _idToObject.Remove(obj.Id);
 
-            RaisePropertyChanged(nameof(LoadedObjects));
             return true;
         }
 
@@ -81,11 +76,9 @@ namespace CooKit.Services.Impl.SQLite
                 .Select(task => task.Result)
                 .ToArray();
 
-            _objects = objects
-                .Cast<TStorable>()
-                .ToList();
-
+            _objects = new ObservableCollection<TStorable>(objects.Cast<TStorable>());
             _idToObject = objects.ToDictionary(obj => obj.Id);
+            LoadedObjects = new ReadOnlyObservableCollection<TStorable>(_objects);
 
             await PostInitAsync();
         }
@@ -101,9 +94,5 @@ namespace CooKit.Services.Impl.SQLite
 
         private protected abstract Task<TStorableInfo> CreateInfoFromBuilder(TStorableBuilder builder);
         private protected abstract Task<TStorableInternal> CreateObjectFromInfo(TStorableInfo info);
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private protected void RaisePropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

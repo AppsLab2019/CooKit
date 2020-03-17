@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CooKit.Models;
 
 namespace CooKit.Services
 {
-    public interface IStoreBase<TStorable, TStorableBuilder> : INotifyPropertyChanged
+    public interface IStoreBase<TStorable, TStorableBuilder>
         where TStorable : IStorable
     {
-        IReadOnlyList<TStorable> LoadedObjects { get; }
+        ReadOnlyObservableCollection<TStorable> LoadedObjects { get; }
 
         TStorableBuilder CreateBuilder();
 

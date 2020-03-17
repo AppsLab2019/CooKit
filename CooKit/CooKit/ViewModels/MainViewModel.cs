@@ -1,7 +1,4 @@
-﻿using System;
-using CooKit.Services;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Views;
@@ -11,49 +8,23 @@ namespace CooKit.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<IRecipe> Recipes
-        {
-            get => _recipes;
-            private set => HandlePropertyChange(ref _recipes, value);
-        }
-        private ObservableCollection<IRecipe> _recipes;
-
-        public IRecipe SelectedRecipe
-        {
-            get => _selectedRecipe;
-            set => HandlePropertyChange(ref _selectedRecipe, value);
-        }
-        private IRecipe _selectedRecipe;
-
-        public ICommand RecipeSelectCommand { get; }
-
-        private readonly IRecipeStore _recipeStore;
+        public ReadOnlyCollection<IRecipe> Recipes { get; }
+        public ICommand OpenRecipeCommand { get; }
 
         public MainViewModel()
         {
-            _recipeStore = App.GetRecipeStore();
-
-            Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
-            RecipeSelectCommand = new Command(HandleRecipeSelect);
-
-            _recipeStore.PropertyChanged += HandleStoreContentChange;
+            Recipes = App.GetRecipeStore().LoadedObjects;
+            OpenRecipeCommand = new Command<IRecipe>(HandleOpenRecipe);
         }
 
-        private async void HandleRecipeSelect()
+        private async void HandleOpenRecipe(IRecipe recipe)
         {
-            if (SelectedRecipe is null)
+            if (recipe is null)
                 return;
 
-            var recipePage = new RecipeView {BindingContext = new RecipeViewModel(SelectedRecipe)};
-            await PushAsync(recipePage);
+            var page = new RecipeView { BindingContext = new RecipeViewModel(recipe) };
 
-            SelectedRecipe = null;
-        }
-
-        private void HandleStoreContentChange(object sender, PropertyChangedEventArgs e)
-        {
-            if (sender == _recipeStore)
-                Recipes = new ObservableCollection<IRecipe>(_recipeStore.LoadedObjects);
+            await PushAsync(page);
         }
     }
 }

@@ -5,6 +5,7 @@ using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
 using CooKit.Services.Impl.SQLite;
 using SQLite;
+using XF.Material.Forms;
 
 namespace CooKit
 {
@@ -16,8 +17,11 @@ namespace CooKit
         public IRecipeStore RecipeStore { get; private set; }
         public IImageStore ImageStore { get; private set; }
 
-        public App() => 
+        public App()
+        {
             InitializeComponent();
+            Material.Init(this, "Material.Configuration");
+        }
 
         protected override async void OnStart()
         {

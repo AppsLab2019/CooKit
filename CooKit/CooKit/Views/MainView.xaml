@@ -5,8 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.MainView">
+             x:Class="CooKit.Views.MainView"
+             x:Name="Page">
 
     <ContentPage.BindingContext>
         <vm:MainViewModel/>
@@ -16,21 +18,23 @@
         <StackLayout Padding="15"
                      BackgroundColor="#F0F0F0">
             <CollectionView SelectionMode="Single"
-                            ItemsSource="{Binding Recipes}"
-                            SelectedItem="{Binding SelectedRecipe, Mode=TwoWay}"
-                            SelectionChangedCommand="{Binding RecipeSelectCommand}">
+                            ItemsSource="{Binding Recipes}">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Span="2"
                                      Orientation="Vertical"
-                                     VerticalItemSpacing="5"
-                                     HorizontalItemSpacing="5"/>
+                                     VerticalItemSpacing="2"
+                                     HorizontalItemSpacing="2"/>
                 </CollectionView.ItemsLayout>
 
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="m:IRecipe">
-                        <StackLayout Padding="1">
-                            <Frame Padding="0"
-                                   HasShadow="True">
+                        <StackLayout Padding="4">
+                            <mtrl:MaterialCard Padding="0"
+                                               Elevation="2"
+                                               IsClickable="True"
+                                               ClickCommand="{Binding Source={x:Reference Name=Page},
+                                                                Path=BindingContext.OpenRecipeCommand}"
+                                               ClickCommandParameter="{Binding .}">
                                 <Grid RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -43,10 +47,11 @@
 
                                     <StackLayout Grid.Row="1"
                                                  Padding="10">
-                                        <Label Text="{Binding Name}"/>
+                                        <mtrl:MaterialLabel Text="{Binding Name}"
+                                                            Style="{StaticResource SubtitleLabelStyle}"/>
                                     </StackLayout>
                                 </Grid>
-                            </Frame>
+                            </mtrl:MaterialCard>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CooKit.Models;
-using CooKit.Models.Steps;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels
 {
     public sealed class RecipeViewModel : BaseViewModel
     {
-        public string RecipeName => _recipe.Name;
-        public string RecipeDescription => _recipe.Description;
-        public ImageSource RecipeImage => _recipe.Image;
-        public TimeSpan RecipeRequiredTime => _recipe.RequiredTime;
-        public ObservableCollection<IIngredient> RecipeIngredients { get; }
-        public ObservableCollection<IPictogram> RecipePictograms { get; }
-        public ObservableCollection<IRecipeStep> RecipeSteps { get; }
+        public IRecipe Recipe { get; }
 
         public IPictogram SelectedPictogram
         {
@@ -26,16 +17,9 @@ namespace CooKit.ViewModels
 
         public ICommand PictogramSelectedCommand { get; }
 
-        private readonly IRecipe _recipe;
-
         public RecipeViewModel(IRecipe recipe)
         {
-            _recipe = recipe;
-
-            RecipeIngredients = new ObservableCollection<IIngredient>(_recipe.Ingredients);
-            RecipePictograms = new ObservableCollection<IPictogram>(_recipe.Pictograms);
-            RecipeSteps = new ObservableCollection<IRecipeStep>(_recipe.Steps);
-
+            Recipe = recipe;
             PictogramSelectedCommand = new Command(HandlePictogramSelected);
         }
 

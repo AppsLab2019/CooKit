@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XF.Material.Forms.UI.Dialogs;
 
 namespace CooKit.ViewModels
 {
@@ -13,10 +14,11 @@ namespace CooKit.ViewModels
         #region Alert Functions
 
         protected Task DisplayAlert(string title, string message, string cancel) =>
-            Shell.Current.DisplayAlert(title, message, cancel);
+            MaterialDialog.Instance.AlertAsync(message, title, cancel);
 
         protected Task<bool> DisplayAlert(string title, string message, string accept, string cancel) =>
-            Shell.Current.DisplayAlert(title, message, accept, cancel);
+            MaterialDialog.Instance.ConfirmAsync(message, title, accept, cancel)
+                .ContinueWith(task => task.Result ?? false);
 
         #endregion
 

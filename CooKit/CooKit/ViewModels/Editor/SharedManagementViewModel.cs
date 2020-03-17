@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Services;
@@ -11,12 +10,7 @@ namespace CooKit.ViewModels.Editor
     public class SharedManagementViewModel<TStorable, TStorableBuilder> 
         : BaseViewModel where TStorable : IStorable
     {
-        public ObservableCollection<TStorable> StoredObjects
-        {
-            get => _storedObjects;
-            set => HandlePropertyChange(ref _storedObjects, value);
-        }
-        private ObservableCollection<TStorable> _storedObjects;
+        public ReadOnlyObservableCollection<TStorable> StoredObjects { get; }
 
         public TStorable SelectedObject
         {
@@ -37,12 +31,10 @@ namespace CooKit.ViewModels.Editor
             _designerPageType = designerPageType;
 
             _selectedObject = default;
-            _storedObjects = new ObservableCollection<TStorable>(store.LoadedObjects);
+            StoredObjects = store.LoadedObjects;
             
             AddCommand = new Command(HandleAdd);
             RemoveCommand = new Command(HandleRemove);
-
-            _store.PropertyChanged += HandleStoreContentChange;
         }
 
         private async void HandleAdd()
@@ -58,15 +50,6 @@ namespace CooKit.ViewModels.Editor
 
             await _store.RemoveAsync(SelectedObject.Id);
             SelectedObject = default;
-        }
-
-        private void HandleStoreContentChange(object sender, PropertyChangedEventArgs e)
-        {
-            if (sender != _store)
-                return;
-
-            SelectedObject = default;
-            StoredObjects = new ObservableCollection<TStorable>(_store.LoadedObjects);
         }
     }
 }

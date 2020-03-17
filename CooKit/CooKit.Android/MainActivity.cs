@@ -3,6 +3,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Xamarin.Forms;
+using XF.Material.Droid;
 
 namespace CooKit.Droid
 {
@@ -23,6 +24,7 @@ namespace CooKit.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
+            Material.Init(this, savedInstanceState);
 
             LoadApplication(new App());
         }

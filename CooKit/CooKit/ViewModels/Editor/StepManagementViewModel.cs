@@ -42,7 +42,7 @@ namespace CooKit.ViewModels.Editor
                 "Text Only", () => new TextStepDesignerView { BindingContext = new TextStepDesignerViewModel(steps) }
             },
             {
-               "Big Image", () => new BigImageStepDesignerView { BindingContext = new BigImageStepDesignerViewModel(steps) }
+                "Big Image", () => new BigImageStepDesignerView { BindingContext = new BigImageStepDesignerViewModel(steps) }
             }};
         }
 
