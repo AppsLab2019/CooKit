@@ -23,6 +23,9 @@ namespace CooKit.Models.Impl.Steps
         public ITextRecipeStepBuilder ToTextBuilder() =>
             throw new NotSupportedException();
 
+        public IBigImageRecipeStepBuilder ToBigImageBuilder() => 
+            throw new NotSupportedException();
+
         public async Task<IRecipeStep> BuildAsync()
         {
             await _store.AddAsync(this);

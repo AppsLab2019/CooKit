@@ -12,8 +12,12 @@ namespace CooKit.Services.Impl.SQLite
     internal sealed class SQLiteRecipeStepStore : SQLiteStoreBase<IRecipeStep, IRecipeStepBuilder, SQLiteRecipeStep, SQLiteRecipeStepInfo>, IRecipeStepStore
     {
         private Dictionary<Guid, SQLiteTextRecipeStepInfo> _idToTextInfo;
+        private Dictionary<Guid, SQLiteBigImageRecipeStepInfo> _idToBigImageInfo;
 
-        internal SQLiteRecipeStepStore(SQLiteAsyncConnection connection) : base(connection) { }
+        private readonly IImageStore _imageStore;
+
+        internal SQLiteRecipeStepStore(SQLiteAsyncConnection connection, IImageStore imageStore)
+            : base(connection) => _imageStore = imageStore;
 
         public override IRecipeStepBuilder CreateBuilder() =>
             new StoreCallbackRecipeStepBuilder(this);
@@ -21,12 +25,20 @@ namespace CooKit.Services.Impl.SQLite
         private protected override async Task PreInitAsync()
         {
             await Connection.CreateTableAsync<SQLiteTextRecipeStepInfo>();
+            await Connection.CreateTableAsync<SQLiteBigImageRecipeStepInfo>();
 
-            var textInfos = await Connection
+            var textInfoTask = Connection
                 .Table<SQLiteTextRecipeStepInfo>()
                 .ToArrayAsync();
 
-            _idToTextInfo = textInfos.ToDictionary(info => info.Id);
+            var bigImageInfoTask = Connection
+                .Table<SQLiteBigImageRecipeStepInfo>()
+                .ToArrayAsync();
+
+            await Task.WhenAll(textInfoTask, bigImageInfoTask);
+
+            _idToTextInfo = textInfoTask.Result.ToDictionary(info => info.Id);
+            _idToBigImageInfo = bigImageInfoTask.Result.ToDictionary(info => info.Id);
         }
 
         private protected override Task RemoveObjectFromDatabase(SQLiteRecipeStep storable)
@@ -48,6 +60,11 @@ namespace CooKit.Services.Impl.SQLite
                     type = RecipeStepType.TextOnly;
                     break;
 
+                case IBigImageRecipeStepBuilder specified:
+                    await BuilderToBigImageInfo(specified);
+                    type = RecipeStepType.BigImage;
+                    break;
+
                 default:
                     return null;
             }
@@ -59,15 +76,16 @@ namespace CooKit.Services.Impl.SQLite
             };
         }
 
-        private protected override Task<SQLiteRecipeStep> CreateObjectFromInfo(SQLiteRecipeStepInfo info)
+        private protected override async Task<SQLiteRecipeStep> CreateObjectFromInfo(SQLiteRecipeStepInfo info)
         {
             var step = info.Type switch
             {
                 RecipeStepType.TextOnly => GenericInfoToTextStep(info),
+                RecipeStepType.BigImage => await GenericInfoToBigImageStep(info),
                 _ => null
             };
 
-            return Task.FromResult(step);
+            return step;
         }
 
         #region Generic Info to Implementation
@@ -75,11 +93,27 @@ namespace CooKit.Services.Impl.SQLite
         private SQLiteRecipeStep GenericInfoToTextStep(SQLiteRecipeStepInfo info) =>
             _idToTextInfo.ContainsKey(info.Id) ? new SQLiteTextRecipeStep(_idToTextInfo[info.Id], info) : null;
 
+        private Task<SQLiteRecipeStep> GenericInfoToBigImageStep(SQLiteRecipeStepInfo info)
+        {
+            if (!_idToBigImageInfo.TryGetValue(info.Id, out var specificInfo))
+                return Task.FromResult(default(SQLiteRecipeStep));
+
+            var step = new SQLiteBigImageRecipeStep(specificInfo, info);
+
+            return _imageStore
+                .LoadImageAsync(specificInfo.ImageLoader, specificInfo.ImageSource)
+                .ContinueWith(imageTask =>
+                {
+                    step.Image = imageTask.Result;
+                    return (SQLiteRecipeStep) step;
+                });
+        }
+        
         #endregion
 
         #region Builder to Specific Info
 
-        private Task<SQLiteTextRecipeStepInfo> BuilderToTextInfo(ITextRecipeStepBuilder builder)
+        private Task BuilderToTextInfo(ITextRecipeStepBuilder builder)
         {
             var info = new SQLiteTextRecipeStepInfo
             {
@@ -90,6 +124,20 @@ namespace CooKit.Services.Impl.SQLite
             return Connection
                 .InsertAsync(info)
                 .ContinueWith(_ => _idToTextInfo[info.Id] = info);
+        }
+
+        private Task BuilderToBigImageInfo(IBigImageRecipeStepBuilder builder)
+        {
+            var info = new SQLiteBigImageRecipeStepInfo
+            {
+                Id = builder.Id.Value,
+                ImageLoader = builder.ImageLoader.Value,
+                ImageSource = builder.ImageSource.Value
+            };
+
+            return Connection
+                .InsertAsync(info)
+                .ContinueWith(_ => _idToBigImageInfo[info.Id] = info);
         }
 
         #endregion

@@ -6,6 +6,7 @@ namespace CooKit.Controls
     public sealed class RecipeStepTemplateSelector : DataTemplateSelector
     {
         public DataTemplate TextRecipeStepTemplate { get; set; }
+        public DataTemplate BigImageRecipeStepTemplate { get; set; }
         public DataTemplate UnknownRecipeStepTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
@@ -16,6 +17,7 @@ namespace CooKit.Controls
             return step.Type switch
             {
                 RecipeStepType.TextOnly => TextRecipeStepTemplate,
+                RecipeStepType.BigImage => BigImageRecipeStepTemplate,
 
                 _ => UnknownRecipeStepTemplate
             };

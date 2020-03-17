@@ -7,5 +7,6 @@ namespace CooKit.Models.Steps
         IBuilderProperty<IRecipeStepBuilder, Guid> Id { get; }
 
         ITextRecipeStepBuilder ToTextBuilder();
+        IBigImageRecipeStepBuilder ToBigImageBuilder();
     }
 }

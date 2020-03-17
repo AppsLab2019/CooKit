@@ -5,14 +5,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vmes="clr-namespace:CooKit.ViewModels.Editor.Steps;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.Steps.TextStepDesignerView"
-             x:DataType="vmes:TextStepDesignerViewModel">
+             x:Class="CooKit.Views.Editor.Steps.BigImageStepDesignerView"
+             x:DataType="vmes:BigImageStepDesignerViewModel">
 
     <ContentPage.Content>
         <Grid Padding="20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
@@ -21,9 +21,20 @@
                    IsReadOnly="True"
                    Text="{Binding Id}"/>
 
-            <Editor Grid.Row="1"
-                    Placeholder="Text"
-                    Text="{Binding Text}"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Picker Title="Image Loader"
+                        ItemsSource="{Binding AvailableImageLoaders}"
+                        SelectedItem="{Binding SelectedImageLoader, Mode=TwoWay}"/>
+
+                <Entry Grid.Column="1"
+                       Placeholder="Image Source"
+                       Text="{Binding ImageSource}"/>
+            </Grid>
 
             <Button Grid.Row="3"
                     Text="Create"

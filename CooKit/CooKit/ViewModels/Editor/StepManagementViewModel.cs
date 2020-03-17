@@ -39,9 +39,11 @@ namespace CooKit.ViewModels.Editor
 
             _options = new Dictionary<string, CreateViewMethod> {
             {
-                typeof(ITextRecipeStep).Name, () => new TextStepDesignerView 
-                    {BindingContext = new TextStepDesignerViewModel(steps)}
-            } };
+                "Text Only", () => new TextStepDesignerView { BindingContext = new TextStepDesignerViewModel(steps) }
+            },
+            {
+               "Big Image", () => new BigImageStepDesignerView { BindingContext = new BigImageStepDesignerViewModel(steps) }
+            }};
         }
 
         public async void HandleAdd()

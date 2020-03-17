@@ -39,6 +39,7 @@ namespace CooKit
                 .BuildAsync();
 
             RecipeStepStore = await new SQLiteRecipeStepStoreBuilder()
+                .ImageStore.Set(ImageStore)
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 

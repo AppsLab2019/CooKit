@@ -19,6 +19,9 @@ namespace CooKit.Models.Impl.Steps
         public ITextRecipeStepBuilder ToTextBuilder() =>
             new StoreCallbackTextRecipeStepBuilder(_store, this);
 
+        public IBigImageRecipeStepBuilder ToBigImageBuilder() => 
+            new StoreCallbackBigImageRecipeStepBuilder(_store, this);
+
         public Task<IRecipeStep> BuildAsync() =>
             throw new NotSupportedException();
     }

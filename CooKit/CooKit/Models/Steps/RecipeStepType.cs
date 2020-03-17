@@ -2,6 +2,7 @@
 {
     public enum RecipeStepType : short
     {
-        TextOnly
+        TextOnly,
+        BigImage
     }
 }
