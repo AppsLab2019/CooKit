@@ -5,43 +5,43 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:ms="clr-namespace:CooKit.Models.Steps;assembly=CooKit"
               xmlns:c="clr-namespace:CooKit.Controls;assembly=CooKit"
+              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
               mc:Ignorable="d"
               x:Class="CooKit.Controls.RecipeStepsView">
 
     <CarouselView.Resources>
         <ResourceDictionary>
-            <Style TargetType="Frame"
-                   x:Key="OuterFrameStyle">
+            <Style TargetType="ContentView" x:Key="Style.StepWrappingView">
                 <Setter Property="Padding" Value="6"/>
-                <Setter Property="HasShadow" Value="True"/>
             </Style>
 
-            <Style TargetType="Frame"
-                   x:Key="InnerFrameStyle">
+            <Style TargetType="ui:MaterialCard" x:Key="Style.StepCard"
+                   BasedOn="{StaticResource Style.Card}">
                 <Setter Property="Padding" Value="0"/>
-                <Setter Property="HasShadow" Value="True"/>
+                <Setter Property="Elevation" Value="2"/>
                 <Setter Property="CornerRadius" Value="20"/>
             </Style>
 
             <DataTemplate x:DataType="ms:ITextRecipeStep"
                           x:Key="TextRecipeStepTemplate">
-                <Frame Style="{StaticResource OuterFrameStyle}">
-                    <Frame Style="{StaticResource InnerFrameStyle}">
-                        <Label Text="{Binding Text}"
-                               VerticalOptions="Center"
-                               HorizontalOptions="Center"/>
-                    </Frame>
-                </Frame>
+                <ContentView Style="{StaticResource Style.StepWrappingView}">
+                    <ui:MaterialCard Style="{StaticResource Style.StepCard}">
+                        <ui:MaterialLabel Text="{Binding Text}"
+                                          VerticalOptions="Center"
+                                          HorizontalOptions="Center"
+                                          Style="{StaticResource Style.OnSurfaceBody}"/>
+                    </ui:MaterialCard>
+                </ContentView>
             </DataTemplate>
 
             <DataTemplate x:DataType="ms:IBigImageRecipeStep"
                           x:Key="BigImageRecipeStepTemplate">
-                <Frame Style="{StaticResource OuterFrameStyle}">
-                    <Frame Style="{StaticResource InnerFrameStyle}">
+                <ContentView Style="{StaticResource Style.StepWrappingView}">
+                    <ui:MaterialCard Style="{StaticResource Style.StepCard}">
                         <Image Aspect="AspectFill"
                                Source="{Binding Image}"/>
-                    </Frame>
-                </Frame>
+                    </ui:MaterialCard>
+                </ContentView>
             </DataTemplate>
 
             <DataTemplate x:DataType="ms:IRecipeStep"

@@ -6,6 +6,7 @@
              xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:vme="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.IngredientManagementView">
 
@@ -65,13 +66,13 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Text="Add"
-                        Command="{Binding AddCommand}"/>
+                <ui:MaterialButton Text="Add"
+                                   Command="{Binding AddCommand}"/>
 
-                <Button Grid.Column="1"
-                        Text="Remove"
-                        Command="{Binding RemoveCommand}"
-                        IsEnabled="{Binding SelectedObject, Converter={StaticResource NotNullToBoolConverter}}"/>
+                <ui:MaterialButton Grid.Column="1"
+                                   Text="Remove"
+                                   Command="{Binding RemoveCommand}"
+                                   IsEnabled="{Binding SelectedObject, Converter={StaticResource NotNullToBoolConverter}}"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

@@ -16,45 +16,49 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout Padding="15">
-            <CollectionView SelectionMode="Single"
-                            ItemsSource="{Binding Recipes}">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Span="2"
-                                     Orientation="Vertical"
-                                     VerticalItemSpacing="2"
-                                     HorizontalItemSpacing="2"/>
-                </CollectionView.ItemsLayout>
+        <CollectionView Margin="15"
+                        ItemsSource="{Binding Recipes}"
+                        ItemSizingStrategy="MeasureFirstItem">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="2"
+                                 Orientation="Vertical"
+                                 VerticalItemSpacing="2"
+                                 HorizontalItemSpacing="2"/>
+            </CollectionView.ItemsLayout>
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="m:IRecipe">
-                        <StackLayout Padding="4">
-                            <mtrl:MaterialCard Padding="0"
-                                               Style="{StaticResource Style.ClickableCard}"
-                                               ClickCommand="{Binding Source={x:Reference Name=Page},
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="m:IRecipe">
+                    <StackLayout Padding="4">
+                        <mtrl:MaterialCard Padding="0"
+                                           CornerRadius="10"
+                                           Style="{StaticResource Style.ClickableCard}"
+                                           ClickCommand="{Binding Source={x:Reference Name=Page},
                                                                 Path=BindingContext.OpenRecipeCommand}"
-                                               ClickCommandParameter="{Binding .}">
-                                <Grid RowSpacing="0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
+                                           ClickCommandParameter="{Binding .}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                                    <Image HeightRequest="150"
-                                           Aspect="AspectFill"
-                                           Source="{Binding Image}"/>
+                                <Image Grid.RowSpan="2"
+                                       HeightRequest="150"
+                                       Aspect="AspectFill"
+                                       Source="{Binding Image}"/>
 
-                                    <StackLayout Grid.Row="1"
-                                                 Padding="10">
-                                        <mtrl:MaterialLabel Text="{Binding Name}"
-                                                            Style="{StaticResource Style.OnSurfaceSubtitle}"/>
-                                    </StackLayout>
-                                </Grid>
-                            </mtrl:MaterialCard>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+                                <AbsoluteLayout Grid.Row="1"
+                                                Padding="6"
+                                                VerticalOptions="End"
+                                                BackgroundColor="#A0000000">
+                                    <mtrl:MaterialLabel TextColor="#F0FFFFFF"
+                                                        Text="{Binding Name}"
+                                                        Style="{StaticResource FontStyle.Subtitle}"/>
+                                </AbsoluteLayout>
+                            </Grid>
+                        </mtrl:MaterialCard>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </ContentPage.Content>
 </ContentPage>
