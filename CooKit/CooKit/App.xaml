@@ -27,7 +27,7 @@
             <Color x:Key="Color.OnError">#FFFFFF</Color>
             <Color x:Key="Color.Surface">#FFFFFF</Color>
             <Color x:Key="Color.OnSurface">#000000</Color>
-            <Color x:Key="Color.Background">#FFFFFF</Color>
+            <Color x:Key="Color.Background">#FAFAFA</Color>
             <Color x:Key="Color.OnBackground">#000000</Color>
 
             <mtrl:MaterialColorConfiguration x:Key="Material.Color"
@@ -81,7 +81,7 @@
                 <Setter Property="Shell.NavBarHasShadow" Value="True"/>
             </Style>
 
-            <Style x:Key="Style.Page" TargetType="Page">
+            <Style x:Key="Style.Page" TargetType="ContentPage">
                 <Setter Property="BackgroundColor" Value="{StaticResource Color.Background}"/>
             </Style>
             <!--#endregion-->

@@ -92,22 +92,18 @@
                         <StackLayout BindableLayout.ItemsSource="{Binding Recipe.Ingredients}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="m:IIngredient">
-                                    <Grid Padding="6"
-                                          ColumnSpacing="10">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
+                                    <StackLayout Padding="6"
+                                                 Spacing="10"
+                                                 Orientation="Horizontal">
 
                                         <Image WidthRequest="32"
                                                HeightRequest="32"
                                                Source="{Binding Icon}"/>
 
-                                        <ui:MaterialLabel Grid.Column="1"
-                                                          Text="{Binding Name}"
+                                        <ui:MaterialLabel Text="{Binding Name}"
                                                           VerticalOptions="Center"
                                                           Style="{StaticResource Style.OnSurfaceBody}"/>
-                                    </Grid>
+                                    </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>

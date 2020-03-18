@@ -6,7 +6,8 @@
              xmlns:vmes="clr-namespace:CooKit.ViewModels.Editor.Steps;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.Steps.TextStepDesignerView"
-             x:DataType="vmes:TextStepDesignerViewModel">
+             x:DataType="vmes:TextStepDesignerViewModel"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.Content>
         <Grid Padding="20">

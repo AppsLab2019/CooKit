@@ -6,7 +6,8 @@
              xmlns:vme="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.EditorMainView">
+             x:Class="CooKit.Views.Editor.EditorMainView"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.BindingContext>
         <vme:EditorMainViewModel/>

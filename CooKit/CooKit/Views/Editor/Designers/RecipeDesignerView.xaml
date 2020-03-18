@@ -5,8 +5,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:vm="clr-namespace:CooKit.ViewModels.Editor.Designers;assembly=CooKit"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:design="clr-namespace:CooKit.Views.Editor.Designers;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.Designers.RecipeDesignerView">
+             x:Class="CooKit.Views.Editor.Designers.RecipeDesignerView"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.BindingContext>
         <vm:RecipeDesignerViewModel/>
@@ -35,8 +38,9 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Entry Placeholder="Name"
-                       Text="{Binding Builder.Name.Value}"/>
+
+                <ui:MaterialTextField Placeholder="Name"
+                                      Text="{Binding Builder.Name.Value}"/>
 
                 <TimePicker Grid.Column="1"
                             Format="HH:mm"
@@ -48,20 +52,10 @@
                     Placeholder="Description"
                     Text="{Binding Builder.Description.Value}"/>
 
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Picker Title="Image Loader"
-                        ItemsSource="{Binding AvailableImageLoaders}"
-                        SelectedItem="{Binding Builder.ImageLoader.Value}"/>
-
-                <Entry Grid.Column="1"
-                       Placeholder="Image Source"
-                       Text="{Binding Builder.ImageSource.Value}"/>
-            </Grid>
+            <design:ImageSelector Grid.Row="3"
+                                  Loader="{Binding Builder.ImageLoader.Value}"
+                                  Source="{Binding Builder.ImageSource.Value}"
+                                  AvailableLoaders="{Binding AvailableImageLoaders}"/>
 
             <CollectionView Grid.Row="4"
                             SelectionMode="Multiple"

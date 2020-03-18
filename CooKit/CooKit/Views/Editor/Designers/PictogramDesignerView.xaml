@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:CooKit.ViewModels.Editor.Designers;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.Designers.PictogramDesignerView">
+             x:Class="CooKit.Views.Editor.Designers.PictogramDesignerView"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.BindingContext>
         <vm:PictogramDesignerViewModel/>
