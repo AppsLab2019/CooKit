@@ -8,15 +8,15 @@
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
              x:Class="CooKit.Views.MainView"
-             x:Name="Page">
+             x:Name="Page"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.BindingContext>
         <vm:MainViewModel/>
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <StackLayout Padding="15"
-                     BackgroundColor="#F0F0F0">
+        <StackLayout Padding="15">
             <CollectionView SelectionMode="Single"
                             ItemsSource="{Binding Recipes}">
                 <CollectionView.ItemsLayout>
@@ -30,8 +30,7 @@
                     <DataTemplate x:DataType="m:IRecipe">
                         <StackLayout Padding="4">
                             <mtrl:MaterialCard Padding="0"
-                                               Elevation="2"
-                                               IsClickable="True"
+                                               Style="{StaticResource Style.ClickableCard}"
                                                ClickCommand="{Binding Source={x:Reference Name=Page},
                                                                 Path=BindingContext.OpenRecipeCommand}"
                                                ClickCommandParameter="{Binding .}">
@@ -48,7 +47,7 @@
                                     <StackLayout Grid.Row="1"
                                                  Padding="10">
                                         <mtrl:MaterialLabel Text="{Binding Name}"
-                                                            Style="{StaticResource SubtitleLabelStyle}"/>
+                                                            Style="{StaticResource Style.OnSurfaceSubtitle}"/>
                                     </StackLayout>
                                 </Grid>
                             </mtrl:MaterialCard>

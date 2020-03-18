@@ -10,60 +10,44 @@
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
              x:Class="CooKit.Views.RecipeView"
-             x:DataType="vm:RecipeViewModel">
+             x:DataType="vm:RecipeViewModel"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style TargetType="ui:MaterialCard">
-                <Setter Property="Elevation"
-                        Value="2"/>
-            </Style>
-
+            <Style TargetType="ui:MaterialCard" BasedOn="{StaticResource Style.Card}"/>
             <c:TimeToFormattedMinutesStringConverter x:Key="RequiredTimeConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView Padding="20"
-                    BackgroundColor="#F0F0F0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
+        <ScrollView Padding="20">
+            <StackLayout>
                 <ui:MaterialCard Padding="0">
                     <Image Aspect="AspectFill"
                            HeightRequest="220"
                            Source="{Binding Recipe.Image}"/>
                 </ui:MaterialCard>
 
-                <Grid Grid.Row="1">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <ui:MaterialCard Padding="6">
-                        <Grid ColumnSpacing="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                        <StackLayout Spacing="2" 
+                                     Orientation="Horizontal">
+                            <ui:MaterialIcon WidthRequest="32"
+                                             HeightRequest="32"
+                                             Source="ic_timer.png"
+                                             Style="{StaticResource Style.OnSurfaceIcon}"/>
 
-                            <Image WidthRequest="32"
-                                   HeightRequest="32"
-                                   Source="ic_timer.png"/>
-
-                            <Label Grid.Column="1"
-                                   VerticalOptions="Center"
-                                   Style="{StaticResource SubtitleLabelStyle}"
-                                   Text="{Binding Recipe.RequiredTime,
-                                        Converter={StaticResource RequiredTimeConverter}}"/>
-                        </Grid>
+                            <ui:MaterialLabel VerticalOptions="Center"
+                                              Style="{StaticResource Style.OnSurfaceSubtitle}"
+                                              Text="{Binding Recipe.RequiredTime,
+                                                Converter={StaticResource RequiredTimeConverter}}"/>
+                        </StackLayout>
                     </ui:MaterialCard>
 
                     <ui:MaterialCard Grid.Column="1"
@@ -90,39 +74,22 @@
                     </ui:MaterialCard>
                 </Grid>
 
-                <ui:MaterialCard Grid.Row="2">
-                    <Grid RowSpacing="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
+                <ui:MaterialCard>
+                    <StackLayout Spacing="10">
                         <ui:MaterialLabel Text="{Binding Recipe.Name}"
-                                          Style="{StaticResource HeadlineSixLabelStyle}"/>
+                                          Style="{StaticResource Style.OnSurfaceSmallHeadline}"/>
 
-                        <BoxView Grid.Row="1"
-                                 Color="#CFCFCF"
-                                 HeightRequest="1"/>
-
-                        <ui:MaterialLabel Grid.Row="2"
-                                          Text="{Binding Recipe.Description}"
-                                          Style="{StaticResource BodyTwoLabelStyle}"/>
-                    </Grid>
+                        <ui:MaterialLabel Text="{Binding Recipe.Description}"
+                                          Style="{StaticResource Style.OnSurfaceSecondBody}"/>
+                    </StackLayout>
                 </ui:MaterialCard>
 
-                <ui:MaterialCard Grid.Row="3">
-                    <Grid RowSpacing="6">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
+                <ui:MaterialCard>
+                    <StackLayout Spacing="6">
                         <ui:MaterialLabel Text="You'll need:"
-                                          Style="{StaticResource SubtitleLabelStyle}"/>
+                                          Style="{StaticResource Style.OnSurfaceSubtitle}"/>
 
-                        <StackLayout Grid.Row="1"
-                                     BindableLayout.ItemsSource="{Binding Recipe.Ingredients}">
+                        <StackLayout BindableLayout.ItemsSource="{Binding Recipe.Ingredients}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate x:DataType="m:IIngredient">
                                     <Grid Padding="6"
@@ -136,18 +103,18 @@
                                                HeightRequest="32"
                                                Source="{Binding Icon}"/>
 
-                                        <Label Grid.Column="1"
-                                               Text="{Binding Name}"
-                                               VerticalOptions="Center"
-                                               Style="{StaticResource BodyLabelStyle}"/>
+                                        <ui:MaterialLabel Grid.Column="1"
+                                                          Text="{Binding Name}"
+                                                          VerticalOptions="Center"
+                                                          Style="{StaticResource Style.OnSurfaceBody}"/>
                                     </Grid>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>
-                    </Grid>
+                    </StackLayout>
                 </ui:MaterialCard>
 
-                <ui:MaterialCard Grid.Row="4">
+                <ui:MaterialCard Margin="0,0,0,2">
                     <StackLayout>
                         <controls:RecipeStepsView HeightRequest="350"
                                                   IndicatorView="StepsIndicator"
@@ -159,7 +126,7 @@
                                        SelectedIndicatorColor="DarkGray"/>
                     </StackLayout>
                 </ui:MaterialCard>
-            </Grid>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -16,28 +16,43 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <OnPlatform x:TypeArguments="x:String"
-                        x:Key="FontFamily.RobotoRegular">
-                <On Platform="Android" Value="Fonts/Roboto-Regular.ttf#Roboto-Regular"/>
-            </OnPlatform>
-
-            <OnPlatform x:TypeArguments="x:String"
-                        x:Key="FontFamily.RobotoMedium">
-                <On Platform="Android" Value="Fonts/Roboto-Medium.ttf#Roboto-Medium"/>
-            </OnPlatform>
-
+            <!--#region Colors-->
             <Color x:Key="Color.Primary">#6200EE</Color>
             <Color x:Key="Color.OnPrimary">#FFFFFF</Color>
-            <Color x:Key="Color.PrimaryVariant">#0000BA</Color>
+            <Color x:Key="Color.PrimaryVariant">#3700B3</Color>
             <Color x:Key="Color.Secondary">#03DAC6</Color>
             <Color x:Key="Color.OnSecondary">#000000</Color>
-            <Color x:Key="Color.SecondaryVariant">#00A896</Color>
+            <Color x:Key="Color.SecondaryVariant">#018786</Color>
             <Color x:Key="Color.Error">#B00020</Color>
             <Color x:Key="Color.OnError">#FFFFFF</Color>
             <Color x:Key="Color.Surface">#FFFFFF</Color>
             <Color x:Key="Color.OnSurface">#000000</Color>
             <Color x:Key="Color.Background">#FFFFFF</Color>
             <Color x:Key="Color.OnBackground">#000000</Color>
+
+            <mtrl:MaterialColorConfiguration x:Key="Material.Color"
+                                             Primary="{StaticResource Color.Primary}"
+                                             OnPrimary="{StaticResource Color.OnPrimary}"
+                                             PrimaryVariant="{StaticResource Color.PrimaryVariant}"
+                                             Secondary="{StaticResource Color.Secondary}"
+                                             OnSecondary="{StaticResource Color.OnSecondary}"
+                                             SecondaryVariant="{StaticResource Color.SecondaryVariant}"
+                                             Error="{StaticResource Color.Error}"
+                                             OnError="{StaticResource Color.OnError}"
+                                             Surface="{StaticResource Color.Surface}"
+                                             OnSurface="{StaticResource Color.OnSurface}"
+                                             Background="{StaticResource Color.Background}"
+                                             OnBackground="{StaticResource Color.OnBackground}"/>
+            <!--#endregion-->
+
+            <!--#region Fonts-->
+            <OnPlatform x:Key="FontFamily.RobotoRegular" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/Roboto-Regular.ttf#Roboto-Regular"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="FontFamily.RobotoMedium" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/Roboto-Medium.ttf#Roboto-Medium"/>
+            </OnPlatform>
 
             <mtrltypo:MaterialFontConfiguration x:Key="Material.Font"
                                                 Body1="{StaticResource FontFamily.RobotoRegular}"
@@ -53,52 +68,89 @@
                                                 Overline="{StaticResource FontFamily.RobotoRegular}"
                                                 Subtitle1="{StaticResource FontFamily.RobotoRegular}"
                                                 Subtitle2="{StaticResource FontFamily.RobotoMedium}" />
+            <!--#endregion-->
 
-            <mtrl:MaterialColorConfiguration x:Key="Material.Color"
-                                             Primary="{StaticResource Color.Primary}"
-                                             OnPrimary="{StaticResource Color.OnPrimary}"
-                                             PrimaryVariant="{StaticResource Color.PrimaryVariant}"
-                                             Secondary="{StaticResource Color.Secondary}"
-                                             OnSecondary="{StaticResource Color.OnSecondary}"
-                                             SecondaryVariant="{StaticResource Color.SecondaryVariant}"
-                                             Error="{StaticResource Color.Error}"
-                                             OnError="{StaticResource Color.OnError}"
-                                             Surface="{StaticResource Color.Surface}"
-                                             OnSurface="{StaticResource Color.OnSurface}"
-                                             Background="{StaticResource Color.Background}"
-                                             OnBackground="{StaticResource Color.OnBackground}"/>
-
+            <!--#region Essential Settings-->
             <mtrl:MaterialConfiguration x:Key="Material.Configuration"
                                         FontConfiguration="{StaticResource Material.Font}"
                                         ColorConfiguration="{StaticResource Material.Color}"/>
 
-            <Style x:Key="HeadlineSixLabelStyle"
-                   TargetType="ui:MaterialLabel">
+            <Style x:Key="Style.MainShell" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Color.Primary}"/>
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Color.OnPrimary}"/>
+                <Setter Property="Shell.NavBarHasShadow" Value="True"/>
+            </Style>
+
+            <Style x:Key="Style.Page" TargetType="Page">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.Background}"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Cards-->
+            <Style x:Key="Style.Card" TargetType="ui:MaterialCard">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.Surface}"/>
+            </Style>
+
+            <Style x:Key="Style.ClickableCard" TargetType="ui:MaterialCard" 
+                   BasedOn="{StaticResource Style.Card}">
+                <Setter Property="Elevation" Value="2"/>
+                <Setter Property="IsClickable" Value="True"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Icons-->
+            <Style x:Key="Style.OnSurfaceIcon" TargetType="ui:MaterialIcon">
+                <Setter Property="TintColor" Value="{StaticResource Color.OnSurface}"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Label Fonts-->
+            <Style x:Key="FontStyle.SmallHeadline" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="20"/>
                 <Setter Property="LetterSpacing" Value="0.15"/>
                 <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoMedium}"/>
             </Style>
 
-            <Style x:Key="SubtitleLabelStyle"
-                   TargetType="ui:MaterialLabel">
+            <Style x:Key="FontStyle.Subtitle" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="LetterSpacing" Value="0.15"/>
                 <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoRegular}"/>
             </Style>
 
-            <Style x:Key="BodyLabelStyle"
-                   TargetType="ui:MaterialLabel">
+            <Style x:Key="FontStyle.Body" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="LetterSpacing" Value="0.5"/>
                 <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoRegular}"/>
             </Style>
 
-            <Style x:Key="BodyTwoLabelStyle"
-                   TargetType="ui:MaterialLabel">
+            <Style x:Key="FontStyle.SecondBody" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="LetterSpacing" Value="0.25"/>
                 <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoRegular}"/>
             </Style>
+            <!--#endregion-->
+
+            <!--#region OnSurface Labels-->
+            <Style x:Key="Style.OnSurfaceSmallHeadline" TargetType="ui:MaterialLabel"
+                   BasedOn="{StaticResource FontStyle.SmallHeadline}">
+                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
+            </Style>
+
+            <Style x:Key="Style.OnSurfaceSubtitle" TargetType="ui:MaterialLabel"
+                   BasedOn="{StaticResource FontStyle.Subtitle}">
+                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
+            </Style>
+
+            <Style x:Key="Style.OnSurfaceBody" TargetType="ui:MaterialLabel"
+                   BasedOn="{StaticResource FontStyle.Body}">
+                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
+            </Style>
+
+            <Style x:Key="Style.OnSurfaceSecondBody" TargetType="ui:MaterialLabel"
+                   BasedOn="{StaticResource FontStyle.SecondBody}">
+                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
+            </Style>
+            <!--#endregion-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>
