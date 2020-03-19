@@ -54,9 +54,21 @@
                 <On Platform="Android" Value="Fonts/Roboto-Medium.ttf#Roboto-Medium"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="FontFamily.MerriweatherSansLight" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/MerriweatherSans-Light.tff#MerriweatherSans-Light"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="FontFamily.VarelaRoundRegular" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/VarelaRound-Regular.ttf#VarelaRound-Regular"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="FontFamily.OxygenRegular" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/Oxygen-Regular.ttf#Oxygen-Regular"/>
+            </OnPlatform>
+
             <mtrltypo:MaterialFontConfiguration x:Key="Material.Font"
-                                                Body1="{StaticResource FontFamily.RobotoRegular}"
-                                                Body2="{StaticResource FontFamily.RobotoRegular}"
+                                                Body1="{StaticResource FontFamily.MerriweatherSansLight}"
+                                                Body2="{StaticResource FontFamily.OxygenRegular}"
                                                 Button="{StaticResource FontFamily.RobotoMedium}"
                                                 Caption="{StaticResource FontFamily.RobotoRegular}"
                                                 H1="{StaticResource FontFamily.RobotoRegular}"
@@ -66,8 +78,8 @@
                                                 H5="{StaticResource FontFamily.RobotoRegular}"
                                                 H6="{StaticResource FontFamily.RobotoMedium}"
                                                 Overline="{StaticResource FontFamily.RobotoRegular}"
-                                                Subtitle1="{StaticResource FontFamily.RobotoRegular}"
-                                                Subtitle2="{StaticResource FontFamily.RobotoMedium}" />
+                                                Subtitle1="{StaticResource FontFamily.VarelaRoundRegular}"
+                                                Subtitle2="{StaticResource FontFamily.RobotoMedium}"/>
             <!--#endregion-->
 
             <!--#region Essential Settings-->
@@ -98,12 +110,6 @@
             </Style>
             <!--#endregion-->
 
-            <!--#region Icons-->
-            <Style x:Key="Style.OnSurfaceIcon" TargetType="ui:MaterialIcon">
-                <Setter Property="TintColor" Value="{StaticResource Color.OnSurface}"/>
-            </Style>
-            <!--#endregion-->
-
             <!--#region Label Fonts-->
             <Style x:Key="FontStyle.SmallHeadline" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="20"/>
@@ -114,41 +120,25 @@
             <Style x:Key="FontStyle.Subtitle" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="LetterSpacing" Value="0.15"/>
-                <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoRegular}"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.VarelaRoundRegular}"/>
+            </Style>
+
+            <Style x:Key="FontStyle.SecondSubtitle" TargetType="ui:MaterialLabel">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="LetterSpacing" Value="0.1"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoMedium}"/>
             </Style>
 
             <Style x:Key="FontStyle.Body" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="LetterSpacing" Value="0.5"/>
-                <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoRegular}"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.MerriweatherSansLight}"/>
             </Style>
 
             <Style x:Key="FontStyle.SecondBody" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="LetterSpacing" Value="0.25"/>
-                <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoRegular}"/>
-            </Style>
-            <!--#endregion-->
-
-            <!--#region OnSurface Labels-->
-            <Style x:Key="Style.OnSurfaceSmallHeadline" TargetType="ui:MaterialLabel"
-                   BasedOn="{StaticResource FontStyle.SmallHeadline}">
-                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
-            </Style>
-
-            <Style x:Key="Style.OnSurfaceSubtitle" TargetType="ui:MaterialLabel"
-                   BasedOn="{StaticResource FontStyle.Subtitle}">
-                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
-            </Style>
-
-            <Style x:Key="Style.OnSurfaceBody" TargetType="ui:MaterialLabel"
-                   BasedOn="{StaticResource FontStyle.Body}">
-                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
-            </Style>
-
-            <Style x:Key="Style.OnSurfaceSecondBody" TargetType="ui:MaterialLabel"
-                   BasedOn="{StaticResource FontStyle.SecondBody}">
-                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.OxygenRegular}"/>
             </Style>
             <!--#endregion-->
         </ResourceDictionary>

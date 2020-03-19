@@ -25,11 +25,13 @@
             <DataTemplate x:DataType="ms:ITextRecipeStep"
                           x:Key="TextRecipeStepTemplate">
                 <ContentView Style="{StaticResource Style.StepWrappingView}">
-                    <ui:MaterialCard Style="{StaticResource Style.StepCard}">
+                    <ui:MaterialCard Padding="4" 
+                                     Style="{StaticResource Style.StepCard}">
                         <ui:MaterialLabel Text="{Binding Text}"
                                           VerticalOptions="Center"
                                           HorizontalOptions="Center"
-                                          Style="{StaticResource Style.OnSurfaceBody}"/>
+                                          TextColor="{StaticResource Color.OnSurface}"
+                                          Style="{StaticResource FontStyle.Body}"/>
                     </ui:MaterialCard>
                 </ContentView>
             </DataTemplate>

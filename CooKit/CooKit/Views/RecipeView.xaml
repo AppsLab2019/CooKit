@@ -41,10 +41,11 @@
                             <ui:MaterialIcon WidthRequest="32"
                                              HeightRequest="32"
                                              Source="ic_timer.png"
-                                             Style="{StaticResource Style.OnSurfaceIcon}"/>
+                                             TintColor="{StaticResource Color.OnSurface}"/>
 
                             <ui:MaterialLabel VerticalOptions="Center"
-                                              Style="{StaticResource Style.OnSurfaceSubtitle}"
+                                              Style="{StaticResource FontStyle.Body}"
+                                              TextColor="{StaticResource Color.OnSurface}"
                                               Text="{Binding Recipe.RequiredTime,
                                                 Converter={StaticResource RequiredTimeConverter}}"/>
                         </StackLayout>
@@ -77,17 +78,20 @@
                 <ui:MaterialCard>
                     <StackLayout Spacing="10">
                         <ui:MaterialLabel Text="{Binding Recipe.Name}"
-                                          Style="{StaticResource Style.OnSurfaceSmallHeadline}"/>
+                                          TextColor="{StaticResource Color.OnSurface}"
+                                          Style="{StaticResource FontStyle.SmallHeadline}"/>
 
                         <ui:MaterialLabel Text="{Binding Recipe.Description}"
-                                          Style="{StaticResource Style.OnSurfaceSecondBody}"/>
+                                          TextColor="{StaticResource Color.OnSurface}"
+                                          Style="{StaticResource FontStyle.SecondBody}"/>
                     </StackLayout>
                 </ui:MaterialCard>
 
                 <ui:MaterialCard>
                     <StackLayout Spacing="6">
                         <ui:MaterialLabel Text="You'll need:"
-                                          Style="{StaticResource Style.OnSurfaceSubtitle}"/>
+                                          TextColor="{StaticResource Color.OnSurface}"
+                                          Style="{StaticResource FontStyle.Body}"/>
 
                         <StackLayout BindableLayout.ItemsSource="{Binding Recipe.Ingredients}">
                             <BindableLayout.ItemTemplate>
@@ -102,7 +106,8 @@
 
                                         <ui:MaterialLabel Text="{Binding Name}"
                                                           VerticalOptions="Center"
-                                                          Style="{StaticResource Style.OnSurfaceBody}"/>
+                                                          TextColor="{StaticResource Color.OnSurface}"
+                                                          Style="{StaticResource FontStyle.SecondSubtitle}"/>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
