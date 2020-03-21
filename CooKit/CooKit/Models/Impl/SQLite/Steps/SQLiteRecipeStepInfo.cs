@@ -4,6 +4,7 @@ using SQLite;
 
 namespace CooKit.Models.Impl.SQLite.Steps
 {
+    [Table("steps")]
     public sealed class SQLiteRecipeStepInfo
     {
         [PrimaryKey, NotNull, Unique]

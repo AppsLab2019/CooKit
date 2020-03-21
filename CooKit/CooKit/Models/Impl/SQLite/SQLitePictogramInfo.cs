@@ -3,6 +3,7 @@ using SQLite;
 
 namespace CooKit.Models.Impl.SQLite
 {
+    [Table("pictograms")]
     public class SQLitePictogramInfo
     {
         [PrimaryKey, NotNull, Unique]

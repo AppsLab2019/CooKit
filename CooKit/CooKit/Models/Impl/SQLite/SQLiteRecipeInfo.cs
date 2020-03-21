@@ -3,6 +3,7 @@ using SQLite;
 
 namespace CooKit.Models.Impl.SQLite
 {
+    [Table("recipes")]
     public sealed class SQLiteRecipeInfo
     {
         [PrimaryKey, NotNull, Unique]

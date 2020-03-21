@@ -3,6 +3,7 @@ using SQLite;
 
 namespace CooKit.Models.Impl.SQLite.Steps
 {
+    [Table("textSteps")]
     public sealed class SQLiteTextRecipeStepInfo
     {
         [PrimaryKey, Unique, NotNull]

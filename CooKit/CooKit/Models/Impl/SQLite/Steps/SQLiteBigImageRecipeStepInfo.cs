@@ -3,6 +3,7 @@ using SQLite;
 
 namespace CooKit.Models.Impl.SQLite.Steps
 {
+    [Table("bigImageSteps")]
     public sealed class SQLiteBigImageRecipeStepInfo
     {
         [PrimaryKey, NotNull, Unique]

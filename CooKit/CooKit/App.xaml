@@ -16,6 +16,12 @@
 
     <Application.Resources>
         <ResourceDictionary>
+            <!--#region Icons-->
+            <OnPlatform x:Key="Icon.Timer" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_timer.png"/>
+            </OnPlatform>
+            <!--#endregion-->
+
             <!--#region Colors-->
             <Color x:Key="Color.Primary">#6200EE</Color>
             <Color x:Key="Color.OnPrimary">#FFFFFF</Color>
@@ -83,6 +89,8 @@
             <!--#endregion-->
 
             <!--#region Essential Settings-->
+            <x:String x:Key="Resources.DbAssemblyPath">CooKit.CooKit.db3</x:String>
+
             <mtrl:MaterialConfiguration x:Key="Material.Configuration"
                                         FontConfiguration="{StaticResource Material.Font}"
                                         ColorConfiguration="{StaticResource Material.Color}"/>

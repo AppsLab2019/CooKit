@@ -40,7 +40,7 @@
                                      Orientation="Horizontal">
                             <ui:MaterialIcon WidthRequest="32"
                                              HeightRequest="32"
-                                             Source="ic_timer.png"
+                                             Source="{StaticResource Icon.Timer}"
                                              TintColor="{StaticResource Color.OnSurface}"/>
 
                             <ui:MaterialLabel VerticalOptions="Center"

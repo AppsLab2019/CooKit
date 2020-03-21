@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using CooKit.Services;
 using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
@@ -29,8 +31,7 @@ namespace CooKit
             ImageStore.RegisterLoader(new FileImageLoader());
             ImageStore.RegisterLoader(new UriImageLoader());
 
-            var dbConnection = new SQLiteAsyncConnection(
-                System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CooKit.db3"));
+            var dbConnection = await OpenDbConnection();
 
             IngredientStore = await new SQLiteIngredientStoreBuilder()
                 .ImageStore.Set(ImageStore)
@@ -58,8 +59,37 @@ namespace CooKit
             MainPage = new AppShell();
         }
 
-        #region Store Getters
+        private async Task<SQLiteAsyncConnection> OpenDbConnection()
+        {
+            var path = GetDefaultDbPath();
 
+            if (!File.Exists(path))
+                await ExtractDb(path);
+
+            return new SQLiteAsyncConnection(path);
+        }
+
+        private static string GetDefaultDbPath()
+        {
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            return Path.Combine(folder, "CooKit.db3");
+        }
+
+        private async Task ExtractDb(string path)
+        {
+            if (!Resources.ContainsKey("Resources.DbAssemblyPath"))
+                throw new Exception();
+
+            var assemblyResource = (string) Resources["Resources.DbAssemblyPath"];
+            await using var stream = GetType().Assembly.GetManifestResourceStream(assemblyResource) 
+                                     ?? throw new Exception();
+
+            await using var file = new FileStream(path, FileMode.Create, FileAccess.Write);
+
+            await stream.CopyToAsync(file);
+        }
+
+        #region Store Getters
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IIngredientStore GetIngredientStore() =>
             ((App) Current).IngredientStore;
@@ -79,7 +109,6 @@ namespace CooKit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static IImageStore GetImageStore() =>
             ((App) Current).ImageStore;
-
         #endregion
     }
 }
