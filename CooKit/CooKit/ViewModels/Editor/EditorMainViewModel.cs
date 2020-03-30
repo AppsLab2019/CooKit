@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Autofac;
+using CooKit.Services;
 using CooKit.Views.Editor;
 using Xamarin.Forms;
 
@@ -29,11 +31,10 @@ namespace CooKit.ViewModels.Editor
             if (!result)
                 return;
 
-            var loadedRecipes = App
-                .GetRecipeStore()
-                .LoadedObjects;
+            var container = App.Container;
 
-            var stepStore = App.GetRecipeStepStore();
+            var loadedRecipes = container.Resolve<IRecipeStore>().LoadedObjects;
+            var stepStore = container.Resolve<IRecipeStepStore>();
 
             var loadedSteps = stepStore
                 .LoadedObjects

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Autofac;
 using CooKit.Models.Steps;
+using CooKit.Services;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor.Steps
@@ -20,8 +22,8 @@ namespace CooKit.ViewModels.Editor.Steps
         {
             _steps = steps;
 
-            _builder = App
-                .GetRecipeStepStore()
+            _builder = App.Container
+                .Resolve<IRecipeStepStore>()
                 .CreateBuilder()
                 .ToTextBuilder();
 

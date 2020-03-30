@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Autofac;
 using CooKit.Models.Steps;
+using CooKit.Services;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor.Steps
@@ -24,13 +26,13 @@ namespace CooKit.ViewModels.Editor.Steps
         {
             _steps = steps;
 
-            _builder = App
-                .GetRecipeStepStore()
+            var container = App.Container;
+
+            _builder = container.Resolve<IRecipeStepStore>()
                 .CreateBuilder()
                 .ToBigImageBuilder();
 
-            var loaderNames = App
-                .GetImageStore()
+            var loaderNames = container.Resolve<IImageStore>()
                 .RegisteredLoaders
                 .Select(loader => loader.Name);
 

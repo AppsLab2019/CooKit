@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Autofac;
 using CooKit.Models;
 using CooKit.Services;
 using Xamarin.Forms;
@@ -24,7 +25,7 @@ namespace CooKit.ViewModels.Editor.Designers
             BuildCommand = new Command(HandleBuild);
 
             var loaderNames = App
-                .GetImageStore()
+                .Container.Resolve<IImageStore>()
                 .RegisteredLoaders
                 .Select(loader => loader.Name);
 

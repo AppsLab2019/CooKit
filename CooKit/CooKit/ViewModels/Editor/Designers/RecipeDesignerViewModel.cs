@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Autofac;
 using CooKit.Models;
 using CooKit.Models.Steps;
+using CooKit.Services;
 using CooKit.Views.Editor;
 using Xamarin.Forms;
 
@@ -20,10 +22,12 @@ namespace CooKit.ViewModels.Editor.Designers
         public ObservableCollection<IRecipeStep> Steps { get; }
         public ICommand EditStepsCommand { get; }
 
-        public RecipeDesignerViewModel() : base(App.GetRecipeStore())
+        public RecipeDesignerViewModel() : base(App.Container.Resolve<IRecipeStore>())
         {
-            AvailableIngredients = App.GetIngredientStore().LoadedObjects;
-            AvailablePictograms = App.GetPictogramStore().LoadedObjects;
+            var container = App.Container;
+
+            AvailableIngredients = container.Resolve<IIngredientStore>().LoadedObjects;
+            AvailablePictograms = container.Resolve<IPictogramStore>().LoadedObjects;
 
             SelectedIngredients = new ObservableCollection<object>();
             SelectedPictograms = new ObservableCollection<object>();

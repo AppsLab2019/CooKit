@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Autofac;
 using CooKit.Services;
 using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
@@ -13,11 +13,7 @@ namespace CooKit
 {
     public partial class App
     {
-        public IIngredientStore IngredientStore { get; private set; }
-        public IPictogramStore PictogramStore { get; private set; }
-        public IRecipeStepStore RecipeStepStore { get; private set; }
-        public IRecipeStore RecipeStore { get; private set; }
-        public IImageStore ImageStore { get; private set; }
+        public static IContainer Container { get; private set; }
 
         public App()
         {
@@ -27,35 +23,44 @@ namespace CooKit
 
         protected override async void OnStart()
         {
-            ImageStore = new ImageStoreImpl();
-            ImageStore.RegisterLoader(new FileImageLoader());
-            ImageStore.RegisterLoader(new UriImageLoader());
+            var imageStore = new ImageStoreImpl();
+            imageStore.RegisterLoader(new FileImageLoader());
+            imageStore.RegisterLoader(new UriImageLoader());
 
             var dbConnection = await OpenDbConnection();
 
-            IngredientStore = await new SQLiteIngredientStoreBuilder()
-                .ImageStore.Set(ImageStore)
+            var ingredientStore = await new SQLiteIngredientStoreBuilder()
+                .ImageStore.Set(imageStore)
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
-            PictogramStore = await new SQLitePictogramStoreBuilder()
-                .ImageStore.Set(ImageStore)
+            var pictogramStore = await new SQLitePictogramStoreBuilder()
+                .ImageStore.Set(imageStore)
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
-            RecipeStepStore = await new SQLiteRecipeStepStoreBuilder()
-                .ImageStore.Set(ImageStore)
+            var recipeStepStore = await new SQLiteRecipeStepStoreBuilder()
+                .ImageStore.Set(imageStore)
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
-            RecipeStore = await new SQLiteRecipeStoreBuilder()
-                .ImageStore.Set(ImageStore)
-                .IngredientStore.Set(IngredientStore)
-                .PictogramStore.Set(PictogramStore)
-                .RecipeStepStore.Set(RecipeStepStore)
+            var recipeStore = await new SQLiteRecipeStoreBuilder()
+                .ImageStore.Set(imageStore)
+                .IngredientStore.Set(ingredientStore)
+                .PictogramStore.Set(pictogramStore)
+                .RecipeStepStore.Set(recipeStepStore)
                 .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
+            var builder = new ContainerBuilder();
+
+            builder.RegisterInstance(imageStore).As<IImageStore>();
+            builder.RegisterInstance(pictogramStore).As<IPictogramStore>();
+            builder.RegisterInstance(ingredientStore).As<IIngredientStore>();
+            builder.RegisterInstance(recipeStepStore).As<IRecipeStepStore>();
+            builder.RegisterInstance(recipeStore).As<IRecipeStore>();
+
+            Container = builder.Build();
             MainPage = new AppShell();
         }
 
@@ -88,27 +93,5 @@ namespace CooKit
 
             await stream.CopyToAsync(file);
         }
-
-        #region Store Getters
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IIngredientStore GetIngredientStore() =>
-            ((App) Current).IngredientStore;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IPictogramStore GetPictogramStore() =>
-            ((App) Current).PictogramStore;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IRecipeStore GetRecipeStore() =>
-            ((App) Current).RecipeStore;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IRecipeStepStore GetRecipeStepStore() =>
-            ((App) Current).RecipeStepStore;
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static IImageStore GetImageStore() =>
-            ((App) Current).ImageStore;
-        #endregion
     }
 }

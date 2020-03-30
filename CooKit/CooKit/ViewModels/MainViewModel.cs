@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Autofac;
 using CooKit.Models;
+using CooKit.Services;
 using CooKit.Views;
 using Xamarin.Forms;
 
@@ -13,7 +15,7 @@ namespace CooKit.ViewModels
 
         public MainViewModel()
         {
-            Recipes = App.GetRecipeStore().LoadedObjects;
+            Recipes = App.Container.Resolve<IRecipeStore>().LoadedObjects;
             OpenRecipeCommand = new Command<IRecipe>(HandleOpenRecipe);
         }
 

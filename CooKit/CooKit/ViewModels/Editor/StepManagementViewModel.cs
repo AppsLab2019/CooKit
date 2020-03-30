@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Autofac;
 using CooKit.Models.Steps;
 using CooKit.Services;
 using CooKit.ViewModels.Editor.Steps;
@@ -35,7 +36,7 @@ namespace CooKit.ViewModels.Editor
             AddCommand = new Command(HandleAdd);
             RemoveCommand = new Command(HandleRemove);
 
-            _stepStore = App.GetRecipeStepStore();
+            _stepStore = App.Container.Resolve<IRecipeStepStore>();
 
             _options = new Dictionary<string, CreateViewMethod> {
             {
