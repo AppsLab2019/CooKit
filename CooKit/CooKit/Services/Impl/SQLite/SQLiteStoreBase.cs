@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CooKit.Models;
 using SQLite;
+using Xamarin.Forms;
 
 namespace CooKit.Services.Impl.SQLite
 {
@@ -13,11 +14,16 @@ namespace CooKit.Services.Impl.SQLite
         public ReadOnlyObservableCollection<T> LoadedObjects { get; private set; }
 
         private protected readonly SQLiteAsyncConnection Connection;
+        private protected readonly IImageStore ImageStore;
+
         private protected ObservableCollection<T> LoadedObjectsInternal;
         private protected IDictionary<Guid, T> IdToObject;
 
-        private protected SQLiteStoreBase(SQLiteAsyncConnection connection) => 
+        private protected SQLiteStoreBase(SQLiteAsyncConnection connection, IImageStore imageStore)
+        {
             Connection = connection;
+            ImageStore = imageStore;
+        }
 
         public abstract TBuilder CreateBuilder();
 
@@ -82,5 +88,13 @@ namespace CooKit.Services.Impl.SQLite
 
         private protected abstract Task<T> InternalInfoToObject(TInternal info);
         private protected abstract Task<TInternal> BuilderToInternalInfo(TBuilder builder);
+
+        private protected Task<ImageSource> SafeImageLoadAsync(string loader, string source, ImageSource defaultImage = null)
+        {
+            if (loader is null || source is null)
+                return Task.FromResult(defaultImage);
+
+            return ImageStore.LoadImageAsync(loader, source);
+        }
     }
 }

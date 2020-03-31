@@ -27,7 +27,6 @@ namespace CooKit.Services.Impl.SQLite
                 throw new ArgumentNullException(nameof(ImageStore));
 
             var store = new SQLiteIngredientStore(Connection.Value, ImageStore.Value);
-
             return store.InitAsync().ContinueWith(_ => store as IIngredientStore);
         }
     }

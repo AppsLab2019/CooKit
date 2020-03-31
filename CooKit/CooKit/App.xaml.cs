@@ -33,9 +33,10 @@ namespace CooKit
             //    .ImageStore.Set(imageStore)
             //    .BuildAsync();
 
-            //var pictogramStore = await new SQLitePictogramStoreBuilder()
+            //var pictogramStore = ISQLitePictogramStoreBuilder
+            //    .CreateDefault()
+            //    .Connection.Set(dbConnection)
             //    .ImageStore.Set(imageStore)
-            //    .DatabaseConnection.Set(dbConnection)
             //    .BuildAsync();
 
             //var recipeStepStore = await new SQLiteRecipeStepStoreBuilder()

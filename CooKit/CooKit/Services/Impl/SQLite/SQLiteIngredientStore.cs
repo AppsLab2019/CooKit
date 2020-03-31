@@ -11,13 +11,10 @@ namespace CooKit.Services.Impl.SQLite
 {
     internal sealed class SQLiteIngredientStore : SQLiteStoreBase<IIngredient, IIngredientBuilder, SQLiteIngredientInternalInfo>, IIngredientStore
     {
-        private readonly IImageStore _imageStore;
         private readonly ImageSource _defaultIcon;
 
-        internal SQLiteIngredientStore(SQLiteAsyncConnection connection, IImageStore imageStore) : base(connection)
+        internal SQLiteIngredientStore(SQLiteAsyncConnection connection, IImageStore imageStore) : base(connection, imageStore)
         {
-            _imageStore = imageStore;
-            
             // TODO: replace with default icon
             _defaultIcon = null;
         }
@@ -36,19 +33,11 @@ namespace CooKit.Services.Impl.SQLite
                 Name = info.Name
             };
 
-            return SafeLoadIcon(info.ImageLoader, info.ImageSource).ContinueWith(iconTask =>
+            return SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultIcon).ContinueWith(iconTask =>
             {
                 ingredient.Icon = iconTask.Result;
                 return ingredient as IIngredient;
             });
-        }
-
-        private Task<ImageSource> SafeLoadIcon(string loader, string source)
-        {
-            if (loader is null || source is null)
-                return Task.FromResult(_defaultIcon);
-
-            return _imageStore.LoadImageAsync(loader, source);
         }
 
         private protected override Task<SQLiteIngredientInternalInfo> BuilderToInternalInfo(IIngredientBuilder builder)
