@@ -47,16 +47,22 @@ namespace CooKit.Services.Impl.SQLite
             await Connection.InsertAsync(info);
         }
 
-        public Task<bool> RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(Guid id)
         {
             if (!IdToObject.ContainsKey(id))
-                return Task.FromResult(false);
+                return false;
 
             IdToObject.Remove(id, out var obj);
             LoadedObjectsInternal.Remove(obj);
 
-            return Connection.DeleteAsync<TInternal>(obj.Id).ContinueWith(_ => true);
+            await Connection.DeleteAsync<TInternal>(obj.Id);
+            await RemoveInternalAsync(obj);
+
+            return true;
         }
+
+        private protected virtual Task RemoveInternalAsync(T obj) =>
+            Task.CompletedTask;
 
         internal async Task InitAsync()
         {

@@ -46,6 +46,14 @@ namespace CooKit.Services.Impl.SQLite
             return infos.ToDictionary(info => info.Id);
         }
 
+        private protected override Task RemoveInternalAsync(IRecipeStep obj) =>
+            obj.Type switch
+            {
+                RecipeStepType.TextOnly => Connection.DeleteAsync<SQLiteTextStepInternalInfo>(obj.Id),
+                RecipeStepType.BigImage => Connection.DeleteAsync<SQLiteImageStepInternalInfo>(obj.Id),
+                _ => throw new NotSupportedException("Unknown step type!")
+            };
+
         private protected override async Task<IRecipeStep> InternalInfoToObject(SQLiteStepInternalInfo info)
         {
             if (info is null)
@@ -56,7 +64,7 @@ namespace CooKit.Services.Impl.SQLite
             {
                 RecipeStepType.TextOnly => MapTextStep(id),
                 RecipeStepType.BigImage => await MapImageStep(id),
-                _ => throw new Exception("Unknown step type!")
+                _ => throw new NotSupportedException("Unknown step type!")
             };
 
             return step;
@@ -71,7 +79,7 @@ namespace CooKit.Services.Impl.SQLite
             {
                 ITextRecipeStepBuilder specific => RegisterInfoFromBuilder(specific),
                 IBigImageRecipeStepBuilder specific => RegisterInfoFromBuilder(specific),
-                _ => throw new Exception("Unknown builder type!")
+                _ => throw new NotSupportedException("Unknown builder type!")
             };
         }
 
