@@ -4,7 +4,7 @@ using SQLite;
 namespace CooKit.Models.Impl.SQLite
 {
     [Table("pictograms")]
-    public sealed class SQLitePictogramInternalInfo
+    public sealed class SQLitePictogramInternalInfo : IStorable
     {
         [Column("id")]
         [PrimaryKey, NotNull, Unique]

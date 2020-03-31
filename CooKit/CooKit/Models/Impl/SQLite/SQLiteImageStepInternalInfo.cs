@@ -3,15 +3,13 @@ using SQLite;
 
 namespace CooKit.Models.Impl.SQLite
 {
-    [Table("ingredients")]
-    public sealed class SQLiteIngredientInternalInfo : IStorable
+    [Table("steps_image")]
+    public sealed class SQLiteImageStepInternalInfo : IStorable
     {
         [Column("id")]
         [PrimaryKey, NotNull, Unique]
         public Guid Id { get; set; }
-        [Column("name")]
-        public string Name { get; set; }
-
+        
         [Column("image_loader")]
         public string ImageLoader { get; set; }
         [Column("image_source")]

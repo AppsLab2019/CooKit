@@ -38,13 +38,13 @@ namespace CooKit.Services.Impl.SQLite
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
 
-            var info = await BuilderToInternalInfo(builder);
-            await Connection.InsertAsync(info);
-
+            var info = await BuilderToInternalInfo(builder); 
             var obj = await InternalInfoToObject(info);
 
             IdToObject[obj.Id] = obj;
             LoadedObjectsInternal.Add(obj);
+
+            await Connection.InsertAsync(info);
         }
 
         public Task<bool> RemoveAsync(Guid id)
@@ -55,7 +55,7 @@ namespace CooKit.Services.Impl.SQLite
             IdToObject.Remove(id, out var obj);
             LoadedObjectsInternal.Remove(obj);
 
-            return Connection.DeleteAsync(obj.Id).ContinueWith(_ => true);
+            return Connection.DeleteAsync<TInternal>(obj.Id).ContinueWith(_ => true);
         }
 
         internal async Task InitAsync()
