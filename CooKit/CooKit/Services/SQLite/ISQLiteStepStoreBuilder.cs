@@ -4,7 +4,7 @@ namespace CooKit.Services.SQLite
 {
     public interface ISQLiteStepStoreBuilder : ISQLiteStoreBuilderBase<ISQLiteStepStoreBuilder, IRecipeStepStore>
     {
-        ISQLiteStepStoreBuilder CreateDefault() =>
+        public static ISQLiteStepStoreBuilder CreateDefault() =>
             new SQLiteStepStoreBuilder();
     }
 }

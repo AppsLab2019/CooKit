@@ -4,7 +4,7 @@ namespace CooKit.Services.SQLite
 {
     public interface ISQLitePictogramStoreBuilder : ISQLiteStoreBuilderBase<ISQLitePictogramStoreBuilder, IPictogramStore>
     {
-        static ISQLitePictogramStoreBuilder CreateDefault() => 
+        public static ISQLitePictogramStoreBuilder CreateDefault() => 
             new SQLitePictogramStoreBuilder();
     }
 }

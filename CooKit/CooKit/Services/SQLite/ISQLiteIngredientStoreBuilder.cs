@@ -4,7 +4,7 @@ namespace CooKit.Services.SQLite
 {
     public interface ISQLiteIngredientStoreBuilder : ISQLiteStoreBuilderBase<ISQLiteIngredientStoreBuilder, IIngredientStore>
     {
-        static ISQLiteIngredientStoreBuilder CreateDefault() => 
+        public static ISQLiteIngredientStoreBuilder CreateDefault() => 
             new SQLiteIngredientStoreBuilder();
     }
 }
