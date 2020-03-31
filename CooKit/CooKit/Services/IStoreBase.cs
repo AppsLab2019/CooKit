@@ -5,8 +5,7 @@ using CooKit.Models;
 
 namespace CooKit.Services
 {
-    public interface IStoreBase<TStorable, TStorableBuilder>
-        where TStorable : IStorable
+    public interface IStoreBase<TStorable, TStorableBuilder> where TStorable : IStorable
     {
         ReadOnlyObservableCollection<TStorable> LoadedObjects { get; }
 

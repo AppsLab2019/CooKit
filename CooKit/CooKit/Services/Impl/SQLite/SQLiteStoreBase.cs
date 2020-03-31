@@ -8,91 +8,79 @@ using SQLite;
 
 namespace CooKit.Services.Impl.SQLite
 {
-    internal abstract class SQLiteStoreBase<TStorable, TStorableBuilder, TStorableInternal, TStorableInfo> : 
-        IStoreBase<TStorable, TStorableBuilder>
-        where TStorable : IStorable
-        where TStorableInternal : ISQLiteStorable<TStorableInfo>, TStorable
-        where TStorableInfo : new()
+    internal abstract class SQLiteStoreBase<T, TBuilder, TInternal> : IStoreBase<T, TBuilder> where T : IStorable where TInternal : new()
     {
+        public ReadOnlyObservableCollection<T> LoadedObjects { get; private set; }
+
         private protected readonly SQLiteAsyncConnection Connection;
-
-        private ObservableCollection<TStorable> _objects;
-        private Dictionary<Guid, TStorableInternal> _idToObject;
-
-        public ReadOnlyObservableCollection<TStorable> LoadedObjects { get; private protected set; }
+        private protected ObservableCollection<T> LoadedObjectsInternal;
+        private protected IDictionary<Guid, T> IdToObject;
 
         private protected SQLiteStoreBase(SQLiteAsyncConnection connection) => 
             Connection = connection;
 
-        public abstract TStorableBuilder CreateBuilder();
+        public abstract TBuilder CreateBuilder();
 
-        public virtual Task<TStorable> LoadNextAsync() =>
-            Task.FromResult(default(TStorable));
+        public Task<T> LoadAsync(Guid id) =>
+            Task.FromResult(IdToObject.TryGetValue(id, out var obj) ? obj : default);
 
-        public virtual Task<TStorable> LoadAsync(Guid id) =>
-            Task.FromResult((TStorable) (_idToObject.ContainsKey(id) ? _idToObject[id] : default));
+        public Task<T> LoadNextAsync() => 
+            Task.FromResult(default(T));
 
-        public virtual async Task AddAsync(TStorableBuilder builder)
+        public async Task AddAsync(TBuilder builder)
         {
-            var info = await CreateInfoFromBuilder(builder);
-            var obj = await CreateObjectFromInfo(info);
+            if (builder is null)
+                throw new ArgumentNullException(nameof(builder));
 
-            await AddObjectToDatabase(obj);
+            var info = await BuilderToInternalInfo(builder);
+            await Connection.InsertAsync(info);
 
-            _objects.Add(obj);
-            _idToObject.Add(obj.Id, obj);
+            var obj = await InternalInfoToObject(info);
+
+            IdToObject[obj.Id] = obj;
+            LoadedObjectsInternal.Add(obj);
         }
 
-        public virtual async Task<bool> RemoveAsync(Guid id)
+        public Task<bool> RemoveAsync(Guid id)
         {
-            if (!_idToObject.TryGetValue(id, out var obj))
-                return false;
+            if (!IdToObject.ContainsKey(id))
+                return Task.FromResult(false);
 
-            await RemoveObjectFromDatabase(obj);
+            IdToObject.Remove(id, out var obj);
+            LoadedObjectsInternal.Remove(obj);
 
-            _objects.Remove(obj);
-            _idToObject.Remove(obj.Id);
-
-            return true;
+            return Connection.DeleteAsync(obj.Id).ContinueWith(_ => true);
         }
 
         internal async Task InitAsync()
         {
-            await Connection.CreateTableAsync<TStorableInfo>();
-
             await PreInitAsync();
 
             var infos = await Connection
-                .Table<TStorableInfo>()
+                .Table<TInternal>()
                 .ToArrayAsync();
 
             var objectTasks = infos
-                .Select(CreateObjectFromInfo)
+                .Select(InternalInfoToObject)
                 .ToArray();
 
             await Task.WhenAll(objectTasks);
 
-            var objects = objectTasks
-                .Select(task => task.Result)
-                .ToArray();
+            LoadedObjectsInternal = new ObservableCollection<T>(objectTasks.Select(task => task.Result));
+            LoadedObjects = new ReadOnlyObservableCollection<T>(LoadedObjectsInternal);
 
-            _objects = new ObservableCollection<TStorable>(objects.Cast<TStorable>());
-            _idToObject = objects.ToDictionary(obj => obj.Id);
-            LoadedObjects = new ReadOnlyObservableCollection<TStorable>(_objects);
+            IdToObject = LoadedObjectsInternal.ToDictionary(obj => obj.Id);
 
             await PostInitAsync();
         }
 
-        private protected virtual Task AddObjectToDatabase(TStorableInternal storable) =>
-            Connection.InsertAsync(storable.InternalInfo);
+        private protected virtual Task PreInitAsync() =>
+            Connection.CreateTableAsync<TInternal>();
 
-        private protected virtual Task RemoveObjectFromDatabase(TStorableInternal storable) =>
-            Connection.DeleteAsync(storable.InternalInfo);
+        private protected virtual Task PostInitAsync() =>
+            Task.CompletedTask;
 
-        private protected virtual Task PreInitAsync() => Task.CompletedTask;
-        private protected virtual Task PostInitAsync() => Task.CompletedTask;
-
-        private protected abstract Task<TStorableInfo> CreateInfoFromBuilder(TStorableBuilder builder);
-        private protected abstract Task<TStorableInternal> CreateObjectFromInfo(TStorableInfo info);
+        private protected abstract Task<T> InternalInfoToObject(TInternal info);
+        private protected abstract Task<TInternal> BuilderToInternalInfo(TBuilder builder);
     }
 }

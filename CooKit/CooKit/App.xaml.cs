@@ -2,10 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Autofac;
-using CooKit.Services;
-using CooKit.Services.Impl;
-using CooKit.Services.Impl.ImageLoaders;
-using CooKit.Services.Impl.SQLite;
 using SQLite;
 using XF.Material.Forms;
 
@@ -21,47 +17,49 @@ namespace CooKit
             Material.Init(this, "Material.Configuration");
         }
 
-        protected override async void OnStart()
+        protected override void OnStart()
         {
-            var imageStore = new ImageStoreImpl();
-            imageStore.RegisterLoader(new FileImageLoader());
-            imageStore.RegisterLoader(new UriImageLoader());
+            throw new NotImplementedException("This app is not ready!");
 
-            var dbConnection = await OpenDbConnection();
+            //var imageStore = new ImageStoreImpl();
+            //imageStore.RegisterLoader(new FileImageLoader());
+            //imageStore.RegisterLoader(new UriImageLoader());
 
-            var ingredientStore = await new SQLiteIngredientStoreBuilder()
-                .ImageStore.Set(imageStore)
-                .DatabaseConnection.Set(dbConnection)
-                .BuildAsync();
+            //var dbConnection = await OpenDbConnection();
 
-            var pictogramStore = await new SQLitePictogramStoreBuilder()
-                .ImageStore.Set(imageStore)
-                .DatabaseConnection.Set(dbConnection)
-                .BuildAsync();
+            //var ingredientStore = await new SQLiteIngredientStoreBuilder()
+            //    .ImageStore.Set(imageStore)
+            //    .DatabaseConnection.Set(dbConnection)
+            //    .BuildAsync();
 
-            var recipeStepStore = await new SQLiteRecipeStepStoreBuilder()
-                .ImageStore.Set(imageStore)
-                .DatabaseConnection.Set(dbConnection)
-                .BuildAsync();
+            //var pictogramStore = await new SQLitePictogramStoreBuilder()
+            //    .ImageStore.Set(imageStore)
+            //    .DatabaseConnection.Set(dbConnection)
+            //    .BuildAsync();
 
-            var recipeStore = await new SQLiteRecipeStoreBuilder()
-                .ImageStore.Set(imageStore)
-                .IngredientStore.Set(ingredientStore)
-                .PictogramStore.Set(pictogramStore)
-                .RecipeStepStore.Set(recipeStepStore)
-                .DatabaseConnection.Set(dbConnection)
-                .BuildAsync();
+            //var recipeStepStore = await new SQLiteRecipeStepStoreBuilder()
+            //    .ImageStore.Set(imageStore)
+            //    .DatabaseConnection.Set(dbConnection)
+            //    .BuildAsync();
 
-            var builder = new ContainerBuilder();
+            //var recipeStore = await new SQLiteRecipeStoreBuilder()
+            //    .ImageStore.Set(imageStore)
+            //    .IngredientStore.Set(ingredientStore)
+            //    .PictogramStore.Set(pictogramStore)
+            //    .RecipeStepStore.Set(recipeStepStore)
+            //    .DatabaseConnection.Set(dbConnection)
+            //    .BuildAsync();
 
-            builder.RegisterInstance(imageStore).As<IImageStore>();
-            builder.RegisterInstance(pictogramStore).As<IPictogramStore>();
-            builder.RegisterInstance(ingredientStore).As<IIngredientStore>();
-            builder.RegisterInstance(recipeStepStore).As<IRecipeStepStore>();
-            builder.RegisterInstance(recipeStore).As<IRecipeStore>();
+            //var builder = new ContainerBuilder();
 
-            Container = builder.Build();
-            MainPage = new AppShell();
+            //builder.RegisterInstance(imageStore).As<IImageStore>();
+            //builder.RegisterInstance(pictogramStore).As<IPictogramStore>();
+            //builder.RegisterInstance(ingredientStore).As<IIngredientStore>();
+            //builder.RegisterInstance(recipeStepStore).As<IRecipeStepStore>();
+            //builder.RegisterInstance(recipeStore).As<IRecipeStore>();
+
+            //Container = builder.Build();
+            //MainPage = new AppShell();
         }
 
         private async Task<SQLiteAsyncConnection> OpenDbConnection()
