@@ -4,16 +4,17 @@ using SQLite;
 namespace CooKit.Models.Impl.SQLite
 {
     [Table("ingredients")]
-    public sealed class SQLiteIngredientInfo
+    public sealed class SQLiteIngredientInternalInfo : IStorable
     {
+        [Column("id")]
         [PrimaryKey, NotNull, Unique]
         public Guid Id { get; set; }
-        [NotNull]
+        [Column("name")]
         public string Name { get; set; }
 
-        [NotNull]
+        [Column("image_loader")]
         public string ImageLoader { get; set; }
-        [NotNull]
+        [Column("image_source")]
         public string ImageSource { get; set; }
     }
 }

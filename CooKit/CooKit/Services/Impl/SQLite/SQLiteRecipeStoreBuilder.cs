@@ -1,30 +1,34 @@
-﻿using CooKit.Models;
-using CooKit.Models.Impl;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using CooKit.Models;
+using CooKit.Models.Impl;
+using CooKit.Services.SQLite;
 using SQLite;
 
 namespace CooKit.Services.Impl.SQLite
 {
-    public sealed class SQLiteRecipeStoreBuilder : IAsyncBuilder<IRecipeStore>
+    public sealed class SQLiteRecipeStoreBuilder : ISQLiteRecipeStoreBuilder
     {
-        public IBuilderProperty<SQLiteRecipeStoreBuilder, IImageStore> ImageStore { get; }
-        public IBuilderProperty<SQLiteRecipeStoreBuilder, IIngredientStore> IngredientStore { get; }
-        public IBuilderProperty<SQLiteRecipeStoreBuilder, IPictogramStore> PictogramStore { get; }
-        public IBuilderProperty<SQLiteRecipeStoreBuilder, IRecipeStepStore> RecipeStepStore { get; }
-        public IBuilderProperty<SQLiteRecipeStoreBuilder, SQLiteAsyncConnection> DatabaseConnection { get; }
+        public IBuilderProperty<ISQLiteRecipeStoreBuilder, SQLiteAsyncConnection> Connection { get; }
+        public IBuilderProperty<ISQLiteRecipeStoreBuilder, IImageStore> ImageStore { get; }
+        public IBuilderProperty<ISQLiteRecipeStoreBuilder, IIngredientStore> IngredientStore { get; }
+        public IBuilderProperty<ISQLiteRecipeStoreBuilder, IPictogramStore> PictogramStore { get; }
+        public IBuilderProperty<ISQLiteRecipeStoreBuilder, IRecipeStepStore> StepStore { get; }
 
         public SQLiteRecipeStoreBuilder()
         {
-            ImageStore = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, IImageStore>(this);
-            IngredientStore = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, IIngredientStore>(this);
-            PictogramStore = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, IPictogramStore>(this);
-            RecipeStepStore = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, IRecipeStepStore>(this);
-            DatabaseConnection = new BuilderPropertyImpl<SQLiteRecipeStoreBuilder, SQLiteAsyncConnection>(this);
+            Connection = new BuilderPropertyImpl<ISQLiteRecipeStoreBuilder, SQLiteAsyncConnection>(this);
+            ImageStore = new BuilderPropertyImpl<ISQLiteRecipeStoreBuilder, IImageStore>(this);
+            IngredientStore = new BuilderPropertyImpl<ISQLiteRecipeStoreBuilder, IIngredientStore>(this);
+            PictogramStore = new BuilderPropertyImpl<ISQLiteRecipeStoreBuilder, IPictogramStore>(this);
+            StepStore = new BuilderPropertyImpl<ISQLiteRecipeStoreBuilder, IRecipeStepStore>(this);
         }
 
         public Task<IRecipeStore> BuildAsync()
         {
+            if (Connection.Value is null)
+                throw new ArgumentNullException(nameof(Connection));
+
             if (ImageStore.Value is null)
                 throw new ArgumentNullException(nameof(ImageStore));
 
@@ -34,18 +38,13 @@ namespace CooKit.Services.Impl.SQLite
             if (PictogramStore.Value is null)
                 throw new ArgumentNullException(nameof(PictogramStore));
 
-            if (RecipeStepStore.Value is null)
-                throw new ArgumentNullException(nameof(RecipeStepStore));
+            if (StepStore.Value is null)
+                throw new ArgumentNullException(nameof(StepStore));
 
-            if (DatabaseConnection.Value is null)
-                throw new ArgumentNullException(nameof(DatabaseConnection));
+            var store = new SQLiteRecipeStore(Connection.Value, ImageStore.Value,
+                IngredientStore.Value, PictogramStore.Value, StepStore.Value);
 
-            var store = new SQLiteRecipeStore(DatabaseConnection.Value, ImageStore.Value, 
-                IngredientStore.Value, PictogramStore.Value, RecipeStepStore.Value);
-
-            return store
-                .InitAsync()
-                .ContinueWith(_ => (IRecipeStore) store);
+            return store.InitAsync().ContinueWith(_ => store as IRecipeStore);
         }
     }
 }

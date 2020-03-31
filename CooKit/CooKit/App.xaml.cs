@@ -5,7 +5,7 @@ using Autofac;
 using CooKit.Services;
 using CooKit.Services.Impl;
 using CooKit.Services.Impl.ImageLoaders;
-using CooKit.Services.Impl.SQLite;
+using CooKit.Services.SQLite;
 using SQLite;
 using XF.Material.Forms;
 
@@ -29,27 +29,31 @@ namespace CooKit
 
             var dbConnection = await OpenDbConnection();
 
-            var ingredientStore = await new SQLiteIngredientStoreBuilder()
+            var ingredientStore = await ISQLiteIngredientStoreBuilder
+                .CreateDefault()
+                .Connection.Set(dbConnection)
                 .ImageStore.Set(imageStore)
-                .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
-            var pictogramStore = await new SQLitePictogramStoreBuilder()
+            var pictogramStore = await ISQLitePictogramStoreBuilder
+                .CreateDefault()
+                .Connection.Set(dbConnection)
                 .ImageStore.Set(imageStore)
-                .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
-            var recipeStepStore = await new SQLiteRecipeStepStoreBuilder()
+            var recipeStepStore = await ISQLiteStepStoreBuilder
+                .CreateDefault()
+                .Connection.Set(dbConnection)
                 .ImageStore.Set(imageStore)
-                .DatabaseConnection.Set(dbConnection)
                 .BuildAsync();
 
-            var recipeStore = await new SQLiteRecipeStoreBuilder()
+            var recipeStore = await ISQLiteRecipeStoreBuilder
+                .CreateDefault()
+                .Connection.Set(dbConnection)
                 .ImageStore.Set(imageStore)
                 .IngredientStore.Set(ingredientStore)
                 .PictogramStore.Set(pictogramStore)
-                .RecipeStepStore.Set(recipeStepStore)
-                .DatabaseConnection.Set(dbConnection)
+                .StepStore.Set(recipeStepStore)
                 .BuildAsync();
 
             var builder = new ContainerBuilder();

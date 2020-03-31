@@ -2,34 +2,32 @@
 using System.Threading.Tasks;
 using CooKit.Models;
 using CooKit.Models.Impl;
+using CooKit.Services.SQLite;
 using SQLite;
 
 namespace CooKit.Services.Impl.SQLite
 {
-    public sealed class SQLitePictogramStoreBuilder : IAsyncBuilder<IPictogramStore>
+    public sealed class SQLitePictogramStoreBuilder : ISQLitePictogramStoreBuilder
     {
-        public IBuilderProperty<SQLitePictogramStoreBuilder, IImageStore> ImageStore { get; }
-        public IBuilderProperty<SQLitePictogramStoreBuilder, SQLiteAsyncConnection> DatabaseConnection { get; }
+        public IBuilderProperty<ISQLitePictogramStoreBuilder, SQLiteAsyncConnection> Connection { get; }
+        public IBuilderProperty<ISQLitePictogramStoreBuilder, IImageStore> ImageStore { get; }
 
         public SQLitePictogramStoreBuilder()
         {
-            ImageStore = new BuilderPropertyImpl<SQLitePictogramStoreBuilder, IImageStore>(this);
-            DatabaseConnection = new BuilderPropertyImpl<SQLitePictogramStoreBuilder, SQLiteAsyncConnection>(this);
+            Connection = new BuilderPropertyImpl<ISQLitePictogramStoreBuilder, SQLiteAsyncConnection>(this);
+            ImageStore = new BuilderPropertyImpl<ISQLitePictogramStoreBuilder, IImageStore>(this);
         }
 
         public Task<IPictogramStore> BuildAsync()
         {
+            if (Connection.Value is null)
+                throw new ArgumentNullException(nameof(Connection));
+
             if (ImageStore.Value is null)
                 throw new ArgumentNullException(nameof(ImageStore));
 
-            if (DatabaseConnection.Value is null)
-                throw new ArgumentNullException(nameof(DatabaseConnection));
-
-            var store = new SQLitePictogramStore(DatabaseConnection.Value, ImageStore.Value);
-
-            return store
-                .InitAsync()
-                .ContinueWith(_ => (IPictogramStore) store);
+            var store = new SQLitePictogramStore(Connection.Value, ImageStore.Value);
+            return store.InitAsync().ContinueWith(_ => store as IPictogramStore);
         }
     }
 }

@@ -3,19 +3,16 @@ using SQLite;
 
 namespace CooKit.Models.Impl.SQLite
 {
-    [Table("pictograms")]
-    public class SQLitePictogramInfo
+    [Table("steps_image")]
+    public sealed class SQLiteImageStepInternalInfo : IStorable
     {
+        [Column("id")]
         [PrimaryKey, NotNull, Unique]
         public Guid Id { get; set; }
-        [NotNull]
-        public string Name { get; set; }
-        [NotNull]
-        public string Description { get; set; }
-
-        [NotNull]
+        
+        [Column("image_loader")]
         public string ImageLoader { get; set; }
-        [NotNull]
+        [Column("image_source")]
         public string ImageSource { get; set; }
     }
 }
