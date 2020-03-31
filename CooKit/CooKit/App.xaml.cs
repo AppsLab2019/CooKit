@@ -27,9 +27,10 @@ namespace CooKit
 
             //var dbConnection = await OpenDbConnection();
 
-            //var ingredientStore = await new SQLiteIngredientStoreBuilder()
+            //var ingredientStore = ISQLiteIngredientStoreBuilder
+            //    .CreateDefault()
+            //    .Connection.Set(dbConnection)
             //    .ImageStore.Set(imageStore)
-            //    .DatabaseConnection.Set(dbConnection)
             //    .BuildAsync();
 
             //var pictogramStore = await new SQLitePictogramStoreBuilder()
