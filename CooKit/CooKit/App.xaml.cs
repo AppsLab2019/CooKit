@@ -78,7 +78,7 @@ namespace CooKit
             return new SQLiteAsyncConnection(path);
         }
 
-        private static string GetDefaultDbPath()
+        internal static string GetDefaultDbPath()
         {
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             return Path.Combine(folder, "CooKit.db3");
