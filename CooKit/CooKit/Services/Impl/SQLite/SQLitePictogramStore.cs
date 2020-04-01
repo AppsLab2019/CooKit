@@ -36,7 +36,7 @@ namespace CooKit.Services.Impl.SQLite
 
             return SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultIcon).ContinueWith(imageTask =>
                 {
-                    obj.Image = imageTask.Result;
+                    obj.Icon = imageTask.Result;
                     return obj as IPictogram;
                 });
         }

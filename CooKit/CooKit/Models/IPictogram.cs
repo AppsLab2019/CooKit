@@ -6,6 +6,6 @@ namespace CooKit.Models
     {
         string Name { get; }
         string Description { get; }
-        ImageSource Image { get; }
+        ImageSource Icon { get; }
     }
 }

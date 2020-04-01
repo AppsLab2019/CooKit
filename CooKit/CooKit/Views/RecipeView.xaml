@@ -68,7 +68,7 @@
                                 <DataTemplate x:DataType="m:IPictogram">
                                     <Image WidthRequest="32"
                                            HeightRequest="32"
-                                           Source="{Binding Image}"/>
+                                           Source="{Binding Icon}"/>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

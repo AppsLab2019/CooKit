@@ -8,6 +8,6 @@ namespace CooKit.Models.Impl.Generic
         public Guid Id { get; internal set; }
         public string Name { get; internal set; }
         public string Description { get; internal set; }
-        public ImageSource Image { get; internal set; }
+        public ImageSource Icon { get; internal set; }
     }
 }
