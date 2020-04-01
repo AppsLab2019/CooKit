@@ -8,29 +8,20 @@ namespace CooKit.ViewModels
     {
         public IRecipe Recipe { get; }
 
-        public IPictogram SelectedPictogram
-        {
-            get => _selectedPictogram;
-            set => HandlePropertyChange(ref _selectedPictogram, value);
-        }
-        private IPictogram _selectedPictogram;
-
         public ICommand PictogramSelectedCommand { get; }
 
         public RecipeViewModel(IRecipe recipe)
         {
             Recipe = recipe;
-            PictogramSelectedCommand = new Command(HandlePictogramSelected);
+            PictogramSelectedCommand = new Command<IPictogram>(HandlePictogramSelected);
         }
 
-        private async void HandlePictogramSelected()
+        private async void HandlePictogramSelected(IPictogram pictogram)
         {
-            if (SelectedPictogram is null)
+            if (pictogram is null)
                 return;
 
-            await DisplayAlert(SelectedPictogram.Name, SelectedPictogram.Description, "Ok");
-
-            SelectedPictogram = null;
+            await DisplayAlert(pictogram.Name, pictogram.Description, "Ok");
         }
     }
 }

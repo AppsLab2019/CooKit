@@ -55,10 +55,8 @@
                                      Padding="6"
                                      HeightRequest="32">
                         <CollectionView IsEnabled="False"
-                                        SelectionMode="Single"
-                                        ItemsSource="{Binding Recipe.Pictograms}"
-                                        SelectedItem="{Binding SelectedPictogram, Mode=TwoWay}"
-                                        SelectionChangedCommand="{Binding PictogramSelectedCommand}">
+                                        x:Name="PictogramView"
+                                        ItemsSource="{Binding Recipe.Pictograms}">
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Horizontal"
                                                    ItemSpacing="6"/>
@@ -66,9 +64,15 @@
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="m:IPictogram">
-                                    <Image WidthRequest="32"
-                                           HeightRequest="32"
-                                           Source="{Binding Icon}"/>
+                                    <ui:MaterialCard Padding="0"
+                                                     Style="{StaticResource Style.ClickableCard}"
+                                                     ClickCommand="{Binding Source={x:Reference PictogramView},
+                                                        Path=BindingContext.PictogramSelectedCommand}"
+                                                     ClickCommandParameter="{Binding .}">
+                                        <Image WidthRequest="32"
+                                               HeightRequest="32"
+                                               Source="{Binding Icon}"/>
+                                    </ui:MaterialCard>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

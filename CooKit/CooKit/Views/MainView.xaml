@@ -16,9 +16,19 @@
     </ContentPage.BindingContext>
 
     <ContentPage.Content>
-        <CollectionView Margin="15"
+        <CollectionView Margin="15,0,15,0"
                         ItemsSource="{Binding Recipes}"
                         ItemSizingStrategy="MeasureFirstItem">
+            <CollectionView.Footer>
+                <StackLayout HeightRequest="200"
+                             HorizontalOptions="Center">
+                    <mtrl:MaterialLabel Text="You have reached the end!"
+                                        VerticalOptions="CenterAndExpand"
+                                        HorizontalOptions="CenterAndExpand"
+                                        Style="{StaticResource FontStyle.SecondSubtitle}"/>
+                </StackLayout>
+            </CollectionView.Footer>
+
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Span="2"
                                  Orientation="Vertical"
