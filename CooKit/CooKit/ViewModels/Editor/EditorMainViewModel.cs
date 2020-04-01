@@ -32,14 +32,15 @@ namespace CooKit.ViewModels.Editor
 
         public async void HandleExtractDb()
         {
-            if (!await RequestPermission<Permissions.StorageRead>())
+            if (!await RequestPermission<Permissions.StorageRead>("Read permissions are required!"))
                 return;
 
-            if (!await RequestPermission<Permissions.StorageWrite>())
+            if (!await RequestPermission<Permissions.StorageWrite>("Write permissions are required!"))
                 return;
-
+            
             try
             {
+                using var loadingDialog = await DisplayLoadingDialog("Extracting...");
                 File.Copy(App.GetDefaultDbPath(), @"/storage/emulated/0/CooKit.db3", true);
             }
             catch (Exception e)
@@ -49,20 +50,6 @@ namespace CooKit.ViewModels.Editor
             }
 
             await DisplayAlert("Success", "Database successfully extracted!", "Ok");
-        }
-
-        private async Task<bool> RequestPermission<T>() where T : Permissions.BasePermission, new()
-        {
-            var status = await Permissions.CheckStatusAsync<T>();
-
-            if (status != PermissionStatus.Granted)
-                status = await Permissions.RequestAsync<T>();
-
-            if (status == PermissionStatus.Granted) 
-                return true;
-
-            await DisplayAlert("Error", "Storage permissions needed!", "Cancel");
-            return false;
         }
 
         public async void HandlePurgeSteps()
