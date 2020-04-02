@@ -34,7 +34,7 @@ namespace CooKit.Services.Impl.SQLite
         public override IRecipeBuilder CreateBuilder() =>
             new StoreCallbackRecipeBuilder(this);
 
-        private protected override Task<IRecipe> InternalInfoToObject(SQLiteRecipeInternalInfo info)
+        private protected override async Task<IRecipe> InternalInfoToObject(SQLiteRecipeInternalInfo info)
         {
             if (info is null)
                 throw new ArgumentNullException(nameof(info));
@@ -52,14 +52,14 @@ namespace CooKit.Services.Impl.SQLite
             var pictogramsTask = ParseAndLoad(_pictogramStore, info.Pictograms);
             var stepsTask = ParseAndLoad(_stepStore, info.Steps);
 
-            return Task.WhenAll(imageTask, ingredientsTask, pictogramsTask, stepsTask).ContinueWith(_ =>
-                {
-                    recipe.Image = imageTask.Result;
-                    recipe.Ingredients = ingredientsTask.Result;
-                    recipe.Pictograms = pictogramsTask.Result;
-                    recipe.Steps = stepsTask.Result;
-                    return recipe as IRecipe;
-                });
+            await Task.WhenAll(imageTask, ingredientsTask, pictogramsTask, stepsTask);
+
+            recipe.Image = imageTask.Result;
+            recipe.Ingredients = ingredientsTask.Result;
+            recipe.Pictograms = pictogramsTask.Result;
+            recipe.Steps = stepsTask.Result;
+
+            return recipe;
         }
 
         private protected override Task<SQLiteRecipeInternalInfo> BuilderToInternalInfo(IRecipeBuilder builder)
@@ -97,14 +97,16 @@ namespace CooKit.Services.Impl.SQLite
             return StoreToStorables(store, ids);
         }
 
-        private static Task<IReadOnlyList<T>> StoreToStorables<T, TBuilder>(IStoreBase<T, TBuilder> store, IEnumerable<Guid> ids)
+        private static async Task<IReadOnlyList<T>> StoreToStorables<T, TBuilder>(IStoreBase<T, TBuilder> store, IEnumerable<Guid> ids)
             where T : IStorable
         {
             if (ids is null)
                 return null;
 
             var tasks = ids.Select(store.LoadAsync).ToArray();
-            return Task.WhenAll(tasks).ContinueWith(task => task.Result as IReadOnlyList<T>);
+            
+            await Task.WhenAll(tasks);
+            return tasks.Select(task => task.Result).ToArray();
         }
 
         private static string IdsToString(IEnumerable<Guid> ids)

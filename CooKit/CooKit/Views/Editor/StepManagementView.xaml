@@ -28,8 +28,8 @@
             </Grid.RowDefinitions>
 
             <c:StepsView HeightRequest="350"
-                               IndicatorView="StepsIndicator"
-                               ItemsSource="{Binding Steps}"/>
+                         IndicatorView="StepsIndicator"
+                         ItemsSource="{Binding Steps}"/>
 
             <IndicatorView Grid.Row="1"
                            x:Name="StepsIndicator"

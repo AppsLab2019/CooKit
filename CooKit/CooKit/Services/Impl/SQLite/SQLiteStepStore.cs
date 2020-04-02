@@ -98,22 +98,17 @@ namespace CooKit.Services.Impl.SQLite
             };
         }
 
-        private Task<IStep> MapImageStep(Guid id)
+        private async Task<IStep> MapImageStep(Guid id)
         {
             if (!_unhandledImageInfos.Remove(id, out var info))
                 throw new ArgumentException(nameof(id));
 
-            var step = new GenericImageStep
+            return new GenericImageStep
             {
                 Id = info.Id,
-                Type = StepType.Image
+                Type = StepType.Image,
+                Image = await SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultImage)
             };
-
-            return SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultImage).ContinueWith(imageTask =>
-                {
-                    step.Image = imageTask.Result;
-                    return step as IStep;
-                });
         }
 
         #endregion
@@ -145,8 +140,12 @@ namespace CooKit.Services.Impl.SQLite
             return InsertInfoAndCreateGeneric(info, StepType.Image);
         }
 
-        private Task<SQLiteStepInternalInfo> InsertInfoAndCreateGeneric<T>(T info, StepType type)
-            where T : IStorable => Connection.InsertAsync(info).ContinueWith(_ => CreateGenericInfo(info.Id, type));
+        private async Task<SQLiteStepInternalInfo> InsertInfoAndCreateGeneric<T>(T info, StepType type)
+            where T : IStorable
+        {
+            await Connection.InsertAsync(info);
+            return CreateGenericInfo(info.Id, type);
+        }
 
         private static SQLiteStepInternalInfo CreateGenericInfo(Guid id, StepType type) =>
             new SQLiteStepInternalInfo

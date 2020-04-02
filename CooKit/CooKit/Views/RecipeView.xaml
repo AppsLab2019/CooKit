@@ -122,8 +122,8 @@
                 <ui:MaterialCard Margin="0,0,0,2">
                     <StackLayout>
                         <controls:StepsView HeightRequest="350"
-                                                  IndicatorView="StepsIndicator"
-                                                  ItemsSource="{Binding Recipe.Steps}"/>
+                                            IndicatorView="StepsIndicator"
+                                            ItemsSource="{Binding Recipe.Steps}"/>
 
                         <IndicatorView x:Name="StepsIndicator"
                                        HorizontalOptions="Center"

@@ -22,22 +22,17 @@ namespace CooKit.Services.Impl.SQLite
         public override IIngredientBuilder CreateBuilder() =>
             new StoreCallbackIngredientBuilder(this);
 
-        private protected override Task<IIngredient> InternalInfoToObject(SQLiteIngredientInternalInfo info)
+        private protected override async Task<IIngredient> InternalInfoToObject(SQLiteIngredientInternalInfo info)
         {
             if (info is null)
                 throw new ArgumentNullException(nameof(info));
 
-            var ingredient = new GenericIngredient
+            return new GenericIngredient
             {
                 Id = info.Id,
-                Name = info.Name
+                Name = info.Name,
+                Icon = await SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultIcon)
             };
-
-            return SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultIcon).ContinueWith(iconTask =>
-            {
-                ingredient.Icon = iconTask.Result;
-                return ingredient as IIngredient;
-            });
         }
 
         private protected override Task<SQLiteIngredientInternalInfo> BuilderToInternalInfo(IIngredientBuilder builder)

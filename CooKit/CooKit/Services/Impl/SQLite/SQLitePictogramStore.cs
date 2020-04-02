@@ -22,23 +22,18 @@ namespace CooKit.Services.Impl.SQLite
         public override IPictogramBuilder CreateBuilder() =>
             new StoreCallbackPictogramBuilder(this);
 
-        private protected override Task<IPictogram> InternalInfoToObject(SQLitePictogramInternalInfo info)
+        private protected override async Task<IPictogram> InternalInfoToObject(SQLitePictogramInternalInfo info)
         {
             if (info is null)
                 throw new ArgumentNullException(nameof(info));
 
-            var obj = new GenericPictogram
+            return new GenericPictogram
             {
                 Id = info.Id,
                 Name = info.Name,
-                Description = info.Description
+                Description = info.Description,
+                Icon = await SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultIcon)
             };
-
-            return SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultIcon).ContinueWith(imageTask =>
-                {
-                    obj.Icon = imageTask.Result;
-                    return obj as IPictogram;
-                });
         }
 
         private protected override Task<SQLitePictogramInternalInfo> BuilderToInternalInfo(IPictogramBuilder builder)

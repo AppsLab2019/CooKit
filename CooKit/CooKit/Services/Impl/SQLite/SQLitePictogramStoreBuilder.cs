@@ -18,7 +18,7 @@ namespace CooKit.Services.Impl.SQLite
             ImageStore = new BuilderPropertyImpl<ISQLitePictogramStoreBuilder, IImageStore>(this);
         }
 
-        public Task<IPictogramStore> BuildAsync()
+        public async Task<IPictogramStore> BuildAsync()
         {
             if (Connection.Value is null)
                 throw new ArgumentNullException(nameof(Connection));
@@ -27,7 +27,9 @@ namespace CooKit.Services.Impl.SQLite
                 throw new ArgumentNullException(nameof(ImageStore));
 
             var store = new SQLitePictogramStore(Connection.Value, ImageStore.Value);
-            return store.InitAsync().ContinueWith(_ => store as IPictogramStore);
+
+            await store.InitAsync();
+            return store;
         }
     }
 }
