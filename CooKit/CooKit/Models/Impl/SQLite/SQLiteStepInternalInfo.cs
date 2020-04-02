@@ -12,6 +12,6 @@ namespace CooKit.Models.Impl.SQLite
         public Guid Id { get; set; }
         [NotNull]
         [Column("type")]
-        public RecipeStepType Type { get; set; }
+        public StepType Type { get; set; }
     }
 }

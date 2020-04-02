@@ -61,7 +61,7 @@ namespace CooKit
             builder.RegisterInstance(imageStore).As<IImageStore>();
             builder.RegisterInstance(pictogramStore).As<IPictogramStore>();
             builder.RegisterInstance(ingredientStore).As<IIngredientStore>();
-            builder.RegisterInstance(recipeStepStore).As<IRecipeStepStore>();
+            builder.RegisterInstance(recipeStepStore).As<IStepStore>();
             builder.RegisterInstance(recipeStore).As<IRecipeStore>();
 
             Container = builder.Build();

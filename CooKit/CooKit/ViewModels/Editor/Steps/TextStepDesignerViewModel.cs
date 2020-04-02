@@ -15,15 +15,15 @@ namespace CooKit.ViewModels.Editor.Steps
 
         public ICommand CreateCommand { get; }
 
-        private readonly ITextRecipeStepBuilder _builder;
-        private readonly ObservableCollection<IRecipeStep> _steps;
+        private readonly ITextStepBuilder _builder;
+        private readonly ObservableCollection<IStep> _steps;
 
-        public TextStepDesignerViewModel(ObservableCollection<IRecipeStep> steps)
+        public TextStepDesignerViewModel(ObservableCollection<IStep> steps)
         {
             _steps = steps;
 
             _builder = App.Container
-                .Resolve<IRecipeStepStore>()
+                .Resolve<IStepStore>()
                 .CreateBuilder()
                 .ToTextBuilder();
 

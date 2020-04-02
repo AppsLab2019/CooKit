@@ -2,7 +2,7 @@
 
 namespace CooKit.Models.Steps
 {
-    public interface IBigImageRecipeStep : IRecipeStep
+    public interface IImageStep : IStep
     {
         ImageSource Image { get; }
     }

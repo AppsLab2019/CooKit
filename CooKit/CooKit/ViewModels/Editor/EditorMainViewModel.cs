@@ -32,9 +32,6 @@ namespace CooKit.ViewModels.Editor
 
         public async void HandleExtractDb()
         {
-            if (!await RequestPermission<Permissions.StorageRead>("Read permissions are required!"))
-                return;
-
             if (!await RequestPermission<Permissions.StorageWrite>("Write permissions are required!"))
                 return;
             
@@ -63,7 +60,7 @@ namespace CooKit.ViewModels.Editor
             var container = App.Container;
 
             var loadedRecipes = container.Resolve<IRecipeStore>().LoadedObjects;
-            var stepStore = container.Resolve<IRecipeStepStore>();
+            var stepStore = container.Resolve<IStepStore>();
 
             var loadedSteps = stepStore
                 .LoadedObjects

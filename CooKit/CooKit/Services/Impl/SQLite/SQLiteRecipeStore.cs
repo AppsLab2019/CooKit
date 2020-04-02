@@ -16,12 +16,12 @@ namespace CooKit.Services.Impl.SQLite
     {
         private readonly IIngredientStore _ingredientStore;
         private readonly IPictogramStore _pictogramStore;
-        private readonly IRecipeStepStore _stepStore;
+        private readonly IStepStore _stepStore;
 
         private readonly ImageSource _defaultImage;
 
         internal SQLiteRecipeStore(SQLiteAsyncConnection connection, IImageStore imageStore, IIngredientStore ingredientStore,
-            IPictogramStore pictogramStore, IRecipeStepStore stepStore) : base(connection, imageStore)
+            IPictogramStore pictogramStore, IStepStore stepStore) : base(connection, imageStore)
         {
             _ingredientStore = ingredientStore;
             _pictogramStore = pictogramStore;

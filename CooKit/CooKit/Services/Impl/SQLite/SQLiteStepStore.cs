@@ -12,7 +12,7 @@ using Xamarin.Forms;
 
 namespace CooKit.Services.Impl.SQLite
 {
-    internal sealed class SQLiteStepStore : SQLiteStoreBase<IRecipeStep, IRecipeStepBuilder, SQLiteStepInternalInfo>, IRecipeStepStore
+    internal sealed class SQLiteStepStore : SQLiteStoreBase<IStep, IStepBuilder, SQLiteStepInternalInfo>, IStepStore
     {
         private IDictionary<Guid, SQLiteTextStepInternalInfo> _unhandledTextInfos;
         private IDictionary<Guid, SQLiteImageStepInternalInfo> _unhandledImageInfos;
@@ -25,8 +25,8 @@ namespace CooKit.Services.Impl.SQLite
             _defaultImage = null;
         }
 
-        public override IRecipeStepBuilder CreateBuilder() =>
-            new StoreCallbackRecipeStepBuilder(this);
+        public override IStepBuilder CreateBuilder() =>
+            new StoreCallbackStepBuilder(this);
 
         private protected override async Task PreInitAsync()
         {
@@ -46,15 +46,15 @@ namespace CooKit.Services.Impl.SQLite
             return infos.ToDictionary(info => info.Id);
         }
 
-        private protected override Task RemoveInternalAsync(IRecipeStep obj) =>
+        private protected override Task RemoveInternalAsync(IStep obj) =>
             obj.Type switch
             {
-                RecipeStepType.TextOnly => Connection.DeleteAsync<SQLiteTextStepInternalInfo>(obj.Id),
-                RecipeStepType.BigImage => Connection.DeleteAsync<SQLiteImageStepInternalInfo>(obj.Id),
+                StepType.Text => Connection.DeleteAsync<SQLiteTextStepInternalInfo>(obj.Id),
+                StepType.Image => Connection.DeleteAsync<SQLiteImageStepInternalInfo>(obj.Id),
                 _ => throw new NotSupportedException("Unknown step type!")
             };
 
-        private protected override async Task<IRecipeStep> InternalInfoToObject(SQLiteStepInternalInfo info)
+        private protected override async Task<IStep> InternalInfoToObject(SQLiteStepInternalInfo info)
         {
             if (info is null)
                 throw new ArgumentNullException(nameof(info));
@@ -62,30 +62,30 @@ namespace CooKit.Services.Impl.SQLite
             var id = info.Id;
             var step = info.Type switch
             {
-                RecipeStepType.TextOnly => MapTextStep(id),
-                RecipeStepType.BigImage => await MapImageStep(id),
+                StepType.Text => MapTextStep(id),
+                StepType.Image => await MapImageStep(id),
                 _ => throw new NotSupportedException("Unknown step type!")
             };
 
             return step;
         }
 
-        private protected override Task<SQLiteStepInternalInfo> BuilderToInternalInfo(IRecipeStepBuilder builder)
+        private protected override Task<SQLiteStepInternalInfo> BuilderToInternalInfo(IStepBuilder builder)
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
 
             return builder switch
             {
-                ITextRecipeStepBuilder specific => RegisterInfoFromBuilder(specific),
-                IBigImageRecipeStepBuilder specific => RegisterInfoFromBuilder(specific),
+                ITextStepBuilder specific => RegisterInfoFromBuilder(specific),
+                IImageStepBuilder specific => RegisterInfoFromBuilder(specific),
                 _ => throw new NotSupportedException("Unknown builder type!")
             };
         }
 
         #region Mapping functions
 
-        private IRecipeStep MapTextStep(Guid id)
+        private IStep MapTextStep(Guid id)
         {
             if (!_unhandledTextInfos.Remove(id, out var info))
                 throw new ArgumentException(nameof(id));
@@ -93,12 +93,12 @@ namespace CooKit.Services.Impl.SQLite
             return new GenericTextStep
             {
                 Id = info.Id,
-                Type = RecipeStepType.TextOnly,
+                Type = StepType.Text,
                 Text = info.Text
             };
         }
 
-        private Task<IRecipeStep> MapImageStep(Guid id)
+        private Task<IStep> MapImageStep(Guid id)
         {
             if (!_unhandledImageInfos.Remove(id, out var info))
                 throw new ArgumentException(nameof(id));
@@ -106,13 +106,13 @@ namespace CooKit.Services.Impl.SQLite
             var step = new GenericImageStep
             {
                 Id = info.Id,
-                Type = RecipeStepType.BigImage
+                Type = StepType.Image
             };
 
             return SafeImageLoadAsync(info.ImageLoader, info.ImageSource, _defaultImage).ContinueWith(imageTask =>
                 {
                     step.Image = imageTask.Result;
-                    return step as IRecipeStep;
+                    return step as IStep;
                 });
         }
 
@@ -120,7 +120,7 @@ namespace CooKit.Services.Impl.SQLite
 
         #region Building helper functions
 
-        private Task<SQLiteStepInternalInfo> RegisterInfoFromBuilder(ITextRecipeStepBuilder builder)
+        private Task<SQLiteStepInternalInfo> RegisterInfoFromBuilder(ITextStepBuilder builder)
         {
             var info = new SQLiteTextStepInternalInfo
             {
@@ -129,10 +129,10 @@ namespace CooKit.Services.Impl.SQLite
             };
 
             _unhandledTextInfos.Add(info.Id, info);
-            return InsertInfoAndCreateGeneric(info, RecipeStepType.TextOnly);
+            return InsertInfoAndCreateGeneric(info, StepType.Text);
         }
 
-        private Task<SQLiteStepInternalInfo> RegisterInfoFromBuilder(IBigImageRecipeStepBuilder builder)
+        private Task<SQLiteStepInternalInfo> RegisterInfoFromBuilder(IImageStepBuilder builder)
         {
             var info = new SQLiteImageStepInternalInfo
             {
@@ -142,13 +142,13 @@ namespace CooKit.Services.Impl.SQLite
             };
 
             _unhandledImageInfos.Add(info.Id, info);
-            return InsertInfoAndCreateGeneric(info, RecipeStepType.BigImage);
+            return InsertInfoAndCreateGeneric(info, StepType.Image);
         }
 
-        private Task<SQLiteStepInternalInfo> InsertInfoAndCreateGeneric<T>(T info, RecipeStepType type)
+        private Task<SQLiteStepInternalInfo> InsertInfoAndCreateGeneric<T>(T info, StepType type)
             where T : IStorable => Connection.InsertAsync(info).ContinueWith(_ => CreateGenericInfo(info.Id, type));
 
-        private static SQLiteStepInternalInfo CreateGenericInfo(Guid id, RecipeStepType type) =>
+        private static SQLiteStepInternalInfo CreateGenericInfo(Guid id, StepType type) =>
             new SQLiteStepInternalInfo
             {
                 Id = id,

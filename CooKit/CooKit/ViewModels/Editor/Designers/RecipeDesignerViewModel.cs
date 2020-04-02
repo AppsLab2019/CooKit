@@ -19,7 +19,7 @@ namespace CooKit.ViewModels.Editor.Designers
         public ReadOnlyObservableCollection<IPictogram> AvailablePictograms { get; }
         public ObservableCollection<object> SelectedPictograms { get; }
 
-        public ObservableCollection<IRecipeStep> Steps { get; }
+        public ObservableCollection<IStep> Steps { get; }
         public ICommand EditStepsCommand { get; }
 
         public RecipeDesignerViewModel() : base(App.Container.Resolve<IRecipeStore>())
@@ -32,7 +32,7 @@ namespace CooKit.ViewModels.Editor.Designers
             SelectedIngredients = new ObservableCollection<object>();
             SelectedPictograms = new ObservableCollection<object>();
 
-            Steps = new ObservableCollection<IRecipeStep>();
+            Steps = new ObservableCollection<IStep>();
             EditStepsCommand = new Command(HandleEditSteps);
         }
 

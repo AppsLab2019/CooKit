@@ -1,8 +1,8 @@
 ﻿namespace CooKit.Controls
 {
-    public partial class RecipeStepsView
+    public partial class StepsView
     {
-        public RecipeStepsView() => 
+        public StepsView() => 
             InitializeComponent();
     }
 }

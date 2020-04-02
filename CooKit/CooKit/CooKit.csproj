@@ -23,11 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controls\RecipeStepsView.xaml.cs">
-      <DependentUpon>RecipeStepsView.xaml</DependentUpon>
+    <Compile Update="Controls\StepsView.xaml.cs">
+      <DependentUpon>StepsView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Editor\Designers\ImageSelector.xaml.cs">
       <DependentUpon>ImageSelector.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Editor\Steps\ImageStepDesignerView.xaml.cs">
+      <DependentUpon>ImageStepDesignerView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -59,7 +62,7 @@
     <EmbeddedResource Update="Views\Editor\StepManagementView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\Editor\Steps\BigImageStepDesignerView.xaml">
+    <EmbeddedResource Update="Views\Editor\Steps\ImageStepDesignerView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Editor\Steps\TextStepDesignerView.xaml">
@@ -74,7 +77,7 @@
     <EmbeddedResource Update="Views\MainView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Controls\RecipeStepsView.xaml">
+    <EmbeddedResource Update="Controls\StepsView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\RecipeView.xaml">

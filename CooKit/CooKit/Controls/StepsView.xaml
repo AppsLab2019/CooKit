@@ -7,7 +7,7 @@
               xmlns:c="clr-namespace:CooKit.Controls;assembly=CooKit"
               xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
               mc:Ignorable="d"
-              x:Class="CooKit.Controls.RecipeStepsView">
+              x:Class="CooKit.Controls.StepsView">
 
     <CarouselView.Resources>
         <ResourceDictionary>
@@ -22,8 +22,8 @@
                 <Setter Property="CornerRadius" Value="20"/>
             </Style>
 
-            <DataTemplate x:DataType="ms:ITextRecipeStep"
-                          x:Key="TextRecipeStepTemplate">
+            <DataTemplate x:Key="TextStepTemplate"
+                          x:DataType="ms:ITextStep">
                 <ContentView Style="{StaticResource Style.StepWrappingView}">
                     <ui:MaterialCard Padding="4" 
                                      Style="{StaticResource Style.StepCard}">
@@ -36,8 +36,8 @@
                 </ContentView>
             </DataTemplate>
 
-            <DataTemplate x:DataType="ms:IBigImageRecipeStep"
-                          x:Key="BigImageRecipeStepTemplate">
+            <DataTemplate x:Key="ImageStepTemplate"
+                          x:DataType="ms:IImageStep">
                 <ContentView Style="{StaticResource Style.StepWrappingView}">
                     <ui:MaterialCard Style="{StaticResource Style.StepCard}">
                         <Image Aspect="AspectFill"
@@ -46,17 +46,17 @@
                 </ContentView>
             </DataTemplate>
 
-            <DataTemplate x:DataType="ms:IRecipeStep"
-                          x:Key="UnknownRecipeStepTemplate">
+            <DataTemplate x:DataType="ms:IStep"
+                          x:Key="UnknownStepTemplate">
                 
             </DataTemplate>
         </ResourceDictionary>
     </CarouselView.Resources>
 
     <CarouselView.ItemTemplate>
-        <c:RecipeStepTemplateSelector TextRecipeStepTemplate="{StaticResource TextRecipeStepTemplate}"
-                                      BigImageRecipeStepTemplate="{StaticResource BigImageRecipeStepTemplate}"
-                                      UnknownRecipeStepTemplate="{StaticResource UnknownRecipeStepTemplate}"/>
+        <c:StepTemplateSelector TextStepTemplate="{StaticResource TextStepTemplate}"
+                                ImageStepTemplate="{StaticResource ImageStepTemplate}"
+                                UnknownStepTemplate="{StaticResource UnknownStepTemplate}"/>
     </CarouselView.ItemTemplate>
 
 </CarouselView>

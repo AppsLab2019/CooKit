@@ -13,22 +13,22 @@ namespace CooKit.ViewModels.Editor
 {
     public sealed class StepManagementViewModel : BaseViewModel
     {
-        public IRecipeStep SelectedStep
+        public IStep SelectedStep
         {
             get => _selectedStep;
             set => HandlePropertyChange(ref _selectedStep, value);
         }
-        private IRecipeStep _selectedStep;
+        private IStep _selectedStep;
 
-        public ObservableCollection<IRecipeStep> Steps { get; }
+        public ObservableCollection<IStep> Steps { get; }
 
         public ICommand AddCommand { get; }
         public ICommand RemoveCommand { get; }
 
-        private readonly IRecipeStepStore _stepStore;
+        private readonly IStepStore _stepStore;
         private readonly Dictionary<string, CreateViewMethod> _options;
 
-        public StepManagementViewModel(ObservableCollection<IRecipeStep> steps)
+        public StepManagementViewModel(ObservableCollection<IStep> steps)
         {
             _selectedStep = null;
             Steps = steps;
@@ -36,14 +36,14 @@ namespace CooKit.ViewModels.Editor
             AddCommand = new Command(HandleAdd);
             RemoveCommand = new Command(HandleRemove);
 
-            _stepStore = App.Container.Resolve<IRecipeStepStore>();
+            _stepStore = App.Container.Resolve<IStepStore>();
 
             _options = new Dictionary<string, CreateViewMethod> {
             {
-                "Text Only", () => new TextStepDesignerView { BindingContext = new TextStepDesignerViewModel(steps) }
+                "Text", () => new TextStepDesignerView { BindingContext = new TextStepDesignerViewModel(steps) }
             },
             {
-                "Big Image", () => new BigImageStepDesignerView { BindingContext = new BigImageStepDesignerViewModel(steps) }
+                "Image", () => new ImageStepDesignerView { BindingContext = new ImageStepDesignerViewModel(steps) }
             }};
         }
 

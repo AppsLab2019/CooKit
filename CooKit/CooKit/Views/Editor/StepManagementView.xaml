@@ -27,7 +27,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <c:RecipeStepsView HeightRequest="350"
+            <c:StepsView HeightRequest="350"
                                IndicatorView="StepsIndicator"
                                ItemsSource="{Binding Steps}"/>
 
@@ -42,7 +42,7 @@
                             ItemsSource="{Binding Steps}"
                             SelectedItem="{Binding SelectedStep, Mode=TwoWay}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="ms:IRecipeStep">
+                    <DataTemplate x:DataType="ms:IStep">
                         <StackLayout Padding="6">
                             <Label Text="{Binding Type}"/>
                             <Label Text="{Binding Id}"/>

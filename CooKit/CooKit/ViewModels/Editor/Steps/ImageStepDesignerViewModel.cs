@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor.Steps
 {
-    public sealed class BigImageStepDesignerViewModel : BaseViewModel
+    public sealed class ImageStepDesignerViewModel : BaseViewModel
     {
         public Guid Id => _builder.Id.Value;
 
@@ -19,16 +19,16 @@ namespace CooKit.ViewModels.Editor.Steps
 
         public ICommand CreateCommand { get; }
 
-        private readonly IBigImageRecipeStepBuilder _builder;
-        private readonly ObservableCollection<IRecipeStep> _steps;
+        private readonly IImageStepBuilder _builder;
+        private readonly ObservableCollection<IStep> _steps;
 
-        public BigImageStepDesignerViewModel(ObservableCollection<IRecipeStep> steps)
+        public ImageStepDesignerViewModel(ObservableCollection<IStep> steps)
         {
             _steps = steps;
 
             var container = App.Container;
 
-            _builder = container.Resolve<IRecipeStepStore>()
+            _builder = container.Resolve<IStepStore>()
                 .CreateBuilder()
                 .ToBigImageBuilder();
 

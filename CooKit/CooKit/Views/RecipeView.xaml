@@ -121,7 +121,7 @@
 
                 <ui:MaterialCard Margin="0,0,0,2">
                     <StackLayout>
-                        <controls:RecipeStepsView HeightRequest="350"
+                        <controls:StepsView HeightRequest="350"
                                                   IndicatorView="StepsIndicator"
                                                   ItemsSource="{Binding Recipe.Steps}"/>
 

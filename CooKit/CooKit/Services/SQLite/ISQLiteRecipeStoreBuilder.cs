@@ -7,7 +7,7 @@ namespace CooKit.Services.SQLite
     {
         IBuilderProperty<ISQLiteRecipeStoreBuilder, IIngredientStore> IngredientStore { get; }
         IBuilderProperty<ISQLiteRecipeStoreBuilder, IPictogramStore> PictogramStore { get; }
-        IBuilderProperty<ISQLiteRecipeStoreBuilder, IRecipeStepStore> StepStore { get; }
+        IBuilderProperty<ISQLiteRecipeStoreBuilder, IStepStore> StepStore { get; }
         
         public static ISQLiteRecipeStoreBuilder CreateDefault() =>
             new SQLiteRecipeStoreBuilder();

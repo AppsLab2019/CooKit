@@ -14,6 +14,6 @@ namespace CooKit.Models
 
         IReadOnlyList<IIngredient> Ingredients { get; }
         IReadOnlyList<IPictogram> Pictograms { get; }
-        IReadOnlyList<IRecipeStep> Steps { get; }
+        IReadOnlyList<IStep> Steps { get; }
     }
 }

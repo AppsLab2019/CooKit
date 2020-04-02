@@ -17,6 +17,6 @@ namespace CooKit.Models.Impl.Generic
 
         public IReadOnlyList<IIngredient> Ingredients { get; internal set; }
         public IReadOnlyList<IPictogram> Pictograms { get; internal set; }
-        public IReadOnlyList<IRecipeStep> Steps { get; internal set; }
+        public IReadOnlyList<IStep> Steps { get; internal set; }
     }
 }

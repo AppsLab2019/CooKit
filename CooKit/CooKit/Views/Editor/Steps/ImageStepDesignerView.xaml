@@ -5,8 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vmes="clr-namespace:CooKit.ViewModels.Editor.Steps;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Editor.Steps.BigImageStepDesignerView"
-             x:DataType="vmes:BigImageStepDesignerViewModel"
+             x:Class="CooKit.Views.Editor.Steps.ImageStepDesignerView"
+             x:DataType="vmes:ImageStepDesignerViewModel"
              Style="{StaticResource Style.Page}">
 
     <ContentPage.Content>

@@ -1,6 +1,6 @@
 ﻿namespace CooKit.Models.Steps
 {
-    public interface ITextRecipeStep : IRecipeStep
+    public interface ITextStep : IStep
     {
         string Text { get; }
     }
