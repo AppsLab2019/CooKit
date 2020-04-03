@@ -5,7 +5,8 @@
         string FullName { get; }
         string Abbreviation { get; }
 
-        UnitType Type { get; }
+        UnitCategory Category { get; }
         float BaseMultiplier { get; }
+        bool IsConvertible { get; }
     }
 }
