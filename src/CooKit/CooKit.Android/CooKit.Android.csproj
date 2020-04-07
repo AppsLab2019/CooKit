@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E4319D9A-3B07-41C6-B91E-2FC8DE27EE47}</ProjectGuid>
+    <ProjectGuid>{62C04158-6B78-4996-A5ED-547848CE80B7}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{c9e5eea5-ca05-42a1-839b-61506e0a37df}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>CooKit.Mobile.Droid</RootNamespace>
-    <AssemblyName>CooKit.Mobile.Android</AssemblyName>
+    <RootNamespace>CooKit.Droid</RootNamespace>
+    <AssemblyName>CooKit.Android</AssemblyName>
     <Deterministic>True</Deterministic>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
@@ -33,11 +33,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-    <BundleAssemblies>false</BundleAssemblies>
-    <Debugger>Xamarin</Debugger>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,9 +89,9 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CooKit.Mobile\CooKit.Mobile.csproj">
-      <Project>{187F0FCD-5B3C-49D8-A0DC-D75DFC37557C}</Project>
-      <Name>CooKit.Mobile</Name>
+    <ProjectReference Include="..\CooKit\CooKit.csproj">
+      <Project>{C49134E2-5C7F-4F29-BD9D-527B8B9EDCF2}</Project>
+      <Name>CooKit</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
