@@ -11,5 +11,9 @@ namespace CooKit.Services.Repositories
 
         Task<T> GetById(Guid id);
         Task<IList<T>> GetByIds(IEnumerable<Guid> ids);
+
+        Task Add(T entity);
+        Task Remove(T entity);
+        Task Update(T entity);
     }
 }

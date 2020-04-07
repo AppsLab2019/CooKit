@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.Models.Recipes;
+using CooKit.Models;
 using CooKit.Services.Repositories.Recipes;
 using Xamarin.Forms;
 
@@ -10,7 +10,7 @@ namespace CooKit.ViewModels.Recipes
 {
     public sealed class RecipeListViewModel : IRecipeListViewModel
     {
-        public IEnumerable<IRecipe> Recipes { get; private set; }
+        public IEnumerable<Recipe> Recipes { get; private set; }
         public ICommand RefreshCommand { get; }
         public ICommand SelectCommand { get; }
 
@@ -22,7 +22,7 @@ namespace CooKit.ViewModels.Recipes
                 throw new ArgumentNullException(nameof(repository));
 
             RefreshCommand = new Command(async () => await RefreshRecipes());
-            SelectCommand = new Command<IRecipe>(async recipe => await SelectRecipe(recipe));
+            SelectCommand = new Command<Recipe>(async recipe => await SelectRecipe(recipe));
 
             _repository = repository;
         }
@@ -32,7 +32,7 @@ namespace CooKit.ViewModels.Recipes
             Recipes = await _repository.GetAllEntries();
         }
 
-        private Task SelectRecipe(IRecipe recipe)
+        private Task SelectRecipe(Recipe recipe)
         {
             throw new NotImplementedException();
         }
