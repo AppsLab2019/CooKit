@@ -30,7 +30,7 @@ namespace CooKit.ViewModels.Recipes
             Recipes = new []{ new Recipe
             {
                 Name = "Test Recipe",
-                PreviewImage = new Uri("https://blogs.biomedcentral.com/on-medicine/wp-content/uploads/sites/6/2019/09/iStock-1131794876.t5d482e40.m800.xtDADj9SvTVFjzuNeGuNUUGY4tm5d6UGU5tkKM0s3iPk-620x342.jpg")
+                PreviewImage = "https://blogs.biomedcentral.com/on-medicine/wp-content/uploads/sites/6/2019/09/iStock-1131794876.t5d482e40.m800.xtDADj9SvTVFjzuNeGuNUUGY4tm5d6UGU5tkKM0s3iPk-620x342.jpg"
             }};
         }
 

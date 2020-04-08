@@ -14,6 +14,6 @@ namespace CooKit.Models
         public string Name { get; set; }
 
         [Column("icon")]
-        public Uri Icon { get; set; }
+        public string Icon { get; set; }
     }
 }

@@ -9,8 +9,8 @@ namespace CooKit.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public Uri PreviewImage { get; set; }
-        //public IList<Uri> Images { get; set; }
+        public string PreviewImage { get; set; }
+        //public IList<string> Images { get; set; }
 
         public IList<Guid> IngredientIds { get; set; }
         public IList<Guid> PictogramIds { get; set; }

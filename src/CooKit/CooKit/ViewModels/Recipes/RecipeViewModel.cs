@@ -33,7 +33,7 @@ namespace CooKit.ViewModels.Recipes
 
             Pictograms = new []
             {
-                new Pictogram {Icon = new Uri("resource://breakfast.png")}
+                new Pictogram {Icon = "breakfast.png"}
             };
 
             Ingredients = null;
