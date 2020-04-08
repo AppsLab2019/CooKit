@@ -6,24 +6,92 @@
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
+             xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.RecipeView"
-             vm:ViewModelLocator.AutoWireVM="True">
+             x:DataType="recipes:RecipeViewModel"
+             vm:ViewModelLocator.AutoWireVM="True"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Margin="0,5,0,0">
-                <CarouselView HeightRequest="170"
-                              PeekAreaInsets="50"
-                              ItemsSource="{Binding Images}">
-                    <CarouselView.ItemTemplate>
-                        <DataTemplate x:DataType="x:Uri">
-                            <ui:MaterialCard Elevation="2">
-                                <forms:CachedImage Source="{Binding}"/>
-                            </ui:MaterialCard>
-                        </DataTemplate>
-                    </CarouselView.ItemTemplate>
-                </CarouselView>
+            <StackLayout>
+                <ui:MaterialCard Padding="0"
+                                 Elevation="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="0.01*"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <CarouselView Grid.RowSpan="3"
+                                      Grid.ColumnSpan="3"
+                                      HeightRequest="250"
+                                      IndicatorView="ImageIndicator"
+                                      ItemsSource="{Binding Images}">
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate x:DataType="x:Uri">
+                                    <forms:CachedImage Source="{Binding}"
+                                                       Aspect="AspectFill"/>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <IndicatorView Grid.Row="1"
+                                       Grid.Column="1"
+                                       x:Name="ImageIndicator"
+                                       SelectedIndicatorColor="White"
+                                       IndicatorColor="LightGray"/>
+                    </Grid>
+                </ui:MaterialCard>
+
+                <StackLayout Margin="20"
+                             Spacing="10">
+                    <ui:MaterialCard Padding="4"
+                                     Elevation="1"
+                                     CornerRadius="5"
+                                     HeightRequest="40"
+                                     BackgroundColor="{StaticResource Color.Surface}">
+                        <CollectionView ItemsSource="{Binding Pictograms}">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Horizontal"/>
+                            </CollectionView.ItemsLayout>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Pictogram">
+                                    <forms:CachedImage WidthRequest="32"
+                                                       HeightRequest="32"
+                                                       Source="{Binding Icon}"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ui:MaterialCard>
+
+                    <ui:MaterialCard Elevation="1"
+                                     CornerRadius="5"
+                                     BackgroundColor="{StaticResource Color.Surface}">
+                        <StackLayout>
+                            <ui:MaterialLabel Text="{Binding Name}"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Style="{StaticResource FontStyle.SmallHeadline}"/>
+
+                            <BoxView HeightRequest="2"
+                                     BackgroundColor="#F0F0F0F0"/>
+
+                            <ui:MaterialLabel Text="{Binding Description}"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Style="{StaticResource FontStyle.SecondBody}"/>
+                        </StackLayout>
+                    </ui:MaterialCard>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

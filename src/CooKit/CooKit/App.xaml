@@ -3,9 +3,148 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.Resources;assembly=XF.Material"
+             xmlns:mtrltypo="clr-namespace:XF.Material.Forms.Resources.Typography;assembly=XF.Material"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
              x:Class="CooKit.App">
-    <Application.Resources>
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--#region Icons-->
+            <OnPlatform x:Key="Icon.Timer" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_timer.png"/>
+            </OnPlatform>
+            <!--#endregion-->
+
+            <!--#region Colors-->
+            <Color x:Key="Color.Primary">#6200EE</Color>
+            <Color x:Key="Color.OnPrimary">#FFFFFF</Color>
+            <Color x:Key="Color.PrimaryVariant">#3700B3</Color>
+            <Color x:Key="Color.Secondary">#03DAC6</Color>
+            <Color x:Key="Color.OnSecondary">#000000</Color>
+            <Color x:Key="Color.SecondaryVariant">#018786</Color>
+            <Color x:Key="Color.Error">#B00020</Color>
+            <Color x:Key="Color.OnError">#FFFFFF</Color>
+            <Color x:Key="Color.Surface">#FFFFFF</Color>
+            <Color x:Key="Color.OnSurface">#000000</Color>
+            <Color x:Key="Color.Background">#FAFAFA</Color>
+            <Color x:Key="Color.OnBackground">#000000</Color>
+
+            <mtrl:MaterialColorConfiguration x:Key="Material.Color"
+                                             Primary="{StaticResource Color.Primary}"
+                                             OnPrimary="{StaticResource Color.OnPrimary}"
+                                             PrimaryVariant="{StaticResource Color.PrimaryVariant}"
+                                             Secondary="{StaticResource Color.Secondary}"
+                                             OnSecondary="{StaticResource Color.OnSecondary}"
+                                             SecondaryVariant="{StaticResource Color.SecondaryVariant}"
+                                             Error="{StaticResource Color.Error}"
+                                             OnError="{StaticResource Color.OnError}"
+                                             Surface="{StaticResource Color.Surface}"
+                                             OnSurface="{StaticResource Color.OnSurface}"
+                                             Background="{StaticResource Color.Background}"
+                                             OnBackground="{StaticResource Color.OnBackground}"/>
+            <!--#endregion-->
+
+            <!--#region Fonts-->
+            <OnPlatform x:Key="FontFamily.RobotoRegular" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/Roboto-Regular.ttf#Roboto-Regular"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="FontFamily.RobotoMedium" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/Roboto-Medium.ttf#Roboto-Medium"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="FontFamily.MerriweatherSansLight" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/MerriweatherSans-Light.tff#MerriweatherSans-Light"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="FontFamily.VarelaRoundRegular" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/VarelaRound-Regular.ttf#VarelaRound-Regular"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="FontFamily.OxygenRegular" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Fonts/Oxygen-Regular.ttf#Oxygen-Regular"/>
+            </OnPlatform>
+
+            <mtrltypo:MaterialFontConfiguration x:Key="Material.Font"
+                                                Body1="{StaticResource FontFamily.MerriweatherSansLight}"
+                                                Body2="{StaticResource FontFamily.OxygenRegular}"
+                                                Button="{StaticResource FontFamily.RobotoMedium}"
+                                                Caption="{StaticResource FontFamily.RobotoRegular}"
+                                                H1="{StaticResource FontFamily.RobotoRegular}"
+                                                H2="{StaticResource FontFamily.RobotoRegular}"
+                                                H3="{StaticResource FontFamily.RobotoRegular}"
+                                                H4="{StaticResource FontFamily.RobotoRegular}"
+                                                H5="{StaticResource FontFamily.RobotoRegular}"
+                                                H6="{StaticResource FontFamily.RobotoMedium}"
+                                                Overline="{StaticResource FontFamily.RobotoRegular}"
+                                                Subtitle1="{StaticResource FontFamily.VarelaRoundRegular}"
+                                                Subtitle2="{StaticResource FontFamily.RobotoMedium}"/>
+            <!--#endregion-->
+
+            <!--#region Essential Settings-->
+            <x:String x:Key="Resources.DbAssemblyPath">CooKit.CooKit.db3</x:String>
+
+            <mtrl:MaterialConfiguration x:Key="Material.Configuration"
+                                        FontConfiguration="{StaticResource Material.Font}"
+                                        ColorConfiguration="{StaticResource Material.Color}"/>
+
+            <Style x:Key="Style.MainShell" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{StaticResource Color.Primary}"/>
+                <Setter Property="Shell.ForegroundColor" Value="{StaticResource Color.OnPrimary}"/>
+                <Setter Property="Shell.TitleColor" Value="{StaticResource Color.OnPrimary}"/>
+                <Setter Property="Shell.NavBarHasShadow" Value="True"/>
+            </Style>
+
+            <Style x:Key="Style.Page" TargetType="ContentPage">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.Background}"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Cards-->
+            <Style x:Key="Style.Card" TargetType="ui:MaterialCard">
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.Surface}"/>
+            </Style>
+
+            <Style x:Key="Style.ClickableCard" TargetType="ui:MaterialCard" 
+                   BasedOn="{StaticResource Style.Card}">
+                <Setter Property="Elevation" Value="2"/>
+                <Setter Property="IsClickable" Value="True"/>
+            </Style>
+            <!--#endregion-->
+
+            <!--#region Label Fonts-->
+            <Style x:Key="FontStyle.SmallHeadline" TargetType="ui:MaterialLabel">
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="LetterSpacing" Value="0.15"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoMedium}"/>
+            </Style>
+
+            <Style x:Key="FontStyle.Subtitle" TargetType="ui:MaterialLabel">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="LetterSpacing" Value="0.15"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.VarelaRoundRegular}"/>
+            </Style>
+
+            <Style x:Key="FontStyle.SecondSubtitle" TargetType="ui:MaterialLabel">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="LetterSpacing" Value="0.1"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.RobotoMedium}"/>
+            </Style>
+
+            <Style x:Key="FontStyle.Body" TargetType="ui:MaterialLabel">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="LetterSpacing" Value="0.5"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.MerriweatherSansLight}"/>
+            </Style>
+
+            <Style x:Key="FontStyle.SecondBody" TargetType="ui:MaterialLabel">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="LetterSpacing" Value="0.25"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamily.OxygenRegular}"/>
+            </Style>
+            <!--#endregion-->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

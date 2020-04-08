@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:recipes="clr-namespace:CooKit.Views.Recipes;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.AppShell">
+             x:Class="CooKit.AppShell"
+             Style="{StaticResource Style.MainShell}">
     
     <FlyoutItem Title="Recipes">
         <Tab Title="All">
