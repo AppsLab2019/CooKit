@@ -1,5 +1,4 @@
-﻿using Autofac;
-using CooKit.Views.Recipes;
+﻿using CooKit.ViewModels;
 
 namespace CooKit
 {
@@ -12,8 +11,10 @@ namespace CooKit
         {
             base.OnStart();
 
-            var container = BootstrapIoC.BuildIoC();
-            MainPage = container.Resolve<RecipeListView>();
+            var container = Bootstrap.BuildIoC();
+            ViewModelLocator.Initialize(container);
+
+            MainPage = new AppShell();
         }
     }
 }

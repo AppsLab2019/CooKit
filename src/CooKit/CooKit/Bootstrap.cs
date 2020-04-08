@@ -1,16 +1,18 @@
 ﻿using System;
 using Autofac;
 using CooKit.Mappers;
+using CooKit.Mappers.Converters.Guids;
+using CooKit.Mappers.Converters.Uris;
+using CooKit.Mappers.Profiles;
 using CooKit.Services.Alerts;
 using CooKit.Services.Repositories.Ingredients;
 using CooKit.Services.Repositories.Pictograms;
 using CooKit.Services.Repositories.Recipes;
-using CooKit.ViewModels.Recipes;
-using CooKit.Views.Recipes;
+using CooKit.ViewModels;
 
 namespace CooKit
 {
-    public static class BootstrapIoC
+    public static class Bootstrap
     {
         public static IContainer BuildIoC()
         {
@@ -18,14 +20,21 @@ namespace CooKit
 
             RegisterMapper(builder);
             RegisterServices(builder);
-            RegisterViews(builder);
-            RegisterViewModels(builder);
+            builder.RegisterModule<ViewModelModule>();
 
             return builder.Build();
         }
 
         private static void RegisterMapper(ContainerBuilder builder)
         {
+            builder.RegisterType<GuidListToStringConverter>().As<IGuidListToStringConverter>();
+            builder.RegisterType<StringToGuidListConverter>().As<IStringToGuidListConverter>();
+
+            builder.RegisterType<UriListToStringConverter>().As<IUriListToStringConverter>();
+            builder.RegisterType<StringToUriListConverter>().As<IStringToUriListConverter>();
+
+            builder.RegisterType<SQLiteMappingProfile>();
+
             builder.RegisterType<MapperFactory>().As<IMapperFactory>();
             builder.Register(c => c.Resolve<IMapperFactory>().CreateMapper())
                 .As<AutoMapper.IMapper>().SingleInstance();
@@ -33,7 +42,7 @@ namespace CooKit
 
         private static void RegisterServices(ContainerBuilder builder)
         {
-            builder.RegisterType<AlertService>().As<IAlertService>();
+            builder.RegisterType<AlertService>().As<IAlertService>().SingleInstance();
 
             // TODO: move path resolving to configuration class
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -42,22 +51,12 @@ namespace CooKit
 
             builder.RegisterInstance(connection);
 
-            builder.RegisterType<SQLiteIngredientRepository>().As<IIngredientRepository>();
-            builder.RegisterType<SQLitePictogramRepository>().As<IPictogramRepository>();
-            builder.RegisterType<SQLiteRecipeRepository>().As<IRecipeRepository>();
+            builder.RegisterType<SQLiteIngredientRepository>().As<IIngredientRepository>().SingleInstance();
+            builder.RegisterType<SQLitePictogramRepository>().As<IPictogramRepository>().SingleInstance();
+            builder.RegisterType<SQLiteRecipeRepository>().As<IRecipeRepository>().SingleInstance();
 
             // dependencies of SQLiteRecipeRepository
-            builder.RegisterType<SQLiteRecipeDtoRepository>().As<ISQLiteRecipeDtoRepository>();
-        }
-
-        private static void RegisterViews(ContainerBuilder builder)
-        {
-            builder.RegisterType<RecipeListView>();
-        }
-
-        private static void RegisterViewModels(ContainerBuilder builder)
-        {
-            builder.RegisterType<RecipeListViewModel>().As<IRecipeListViewModel>();
+            builder.RegisterType<SQLiteRecipeDtoRepository>().As<ISQLiteRecipeDtoRepository>().SingleInstance();
         }
     }
 }

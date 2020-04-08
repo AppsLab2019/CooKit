@@ -19,8 +19,8 @@ namespace CooKit.Models
         [Column("preview_image")]
         public Uri PreviewImage { get; set; }
 
-        [Column("images")]
-        public string Images { get; set; }
+        //[Column("images")]
+        //public string Images { get; set; }
 
         [Column("pictograms")]
         public string Pictograms { get; set; }

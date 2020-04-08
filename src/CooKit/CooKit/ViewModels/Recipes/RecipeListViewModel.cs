@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Services.Repositories.Recipes;
+using CooKit.Views.Recipes;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
 {
-    public sealed class RecipeListViewModel : IRecipeListViewModel
+    public sealed class RecipeListViewModel : BaseViewModel
     {
         public IEnumerable<Recipe> Recipes { get; private set; }
         public ICommand RefreshCommand { get; }
@@ -21,20 +22,28 @@ namespace CooKit.ViewModels.Recipes
             if (repository is null)
                 throw new ArgumentNullException(nameof(repository));
 
+            _repository = repository;
+                    
             RefreshCommand = new Command(async () => await RefreshRecipes());
             SelectCommand = new Command<Recipe>(async recipe => await SelectRecipe(recipe));
 
-            _repository = repository;
+            Recipes = new []{ new Recipe
+            {
+                Name = "Test Recipe",
+                PreviewImage = new Uri("https://blogs.biomedcentral.com/on-medicine/wp-content/uploads/sites/6/2019/09/iStock-1131794876.t5d482e40.m800.xtDADj9SvTVFjzuNeGuNUUGY4tm5d6UGU5tkKM0s3iPk-620x342.jpg")
+            }};
         }
 
-        private async Task RefreshRecipes()
+        private Task RefreshRecipes()
         {
-            Recipes = await _repository.GetAllEntries();
+            //Recipes = await _repository.GetAllEntries();
+            RaisePropertyChanged(nameof(Recipes));
+            return Task.CompletedTask;
         }
 
-        private Task SelectRecipe(Recipe recipe)
+        private async Task SelectRecipe(Recipe recipe)
         {
-            throw new NotImplementedException();
+            await Shell.Current.Navigation.PushAsync(new RecipeView());
         }
     }
 }

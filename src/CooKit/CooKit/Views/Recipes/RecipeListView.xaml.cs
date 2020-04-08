@@ -1,25 +1,20 @@
-﻿using System;
-using CooKit.ViewModels.Recipes;
+﻿using CooKit.ViewModels.Recipes;
 
 namespace CooKit.Views.Recipes
 {
     public partial class RecipeListView
     {
-        private readonly IRecipeListViewModel _viewModel;
-
-        public RecipeListView(IRecipeListViewModel viewModel)
+        public RecipeListView()
         {
-            if (viewModel is null)
-                throw new ArgumentNullException(nameof(viewModel));
-
             InitializeComponent();
-            _viewModel = viewModel;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            _viewModel.RefreshCommand.Execute(null);
+            
+            if (BindingContext is RecipeListViewModel vm)
+                vm.RefreshCommand.Execute(null);
         }
     }
 }
