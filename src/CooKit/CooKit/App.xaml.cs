@@ -4,8 +4,11 @@ namespace CooKit
 {
     public partial class App
     {
-        public App() => 
+        public App()
+        {
             InitializeComponent();
+            XF.Material.Forms.Material.Init(this, "Material.Configuration");
+        }
 
         protected override void OnStart()
         {

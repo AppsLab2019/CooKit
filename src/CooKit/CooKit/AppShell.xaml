@@ -4,18 +4,27 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:recipes="clr-namespace:CooKit.Views.Recipes;assembly=CooKit"
+             xmlns:editor="clr-namespace:CooKit.Views.Editor;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.AppShell"
              Style="{StaticResource Style.MainShell}">
     
-    <FlyoutItem Title="Recipes">
-        <Tab Title="All">
+    <FlyoutItem Title="Recipes" Route="recipes">
+        <Tab Title="All" Route="all">
             <ShellContent ContentTemplate="{DataTemplate recipes:RecipeListView}"/>
         </Tab>
 
         <Tab Title="Search"/>
         <Tab Title="Categories"/>
         <Tab Title="Favorites"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Editor">
+        <ShellContent ContentTemplate="{DataTemplate editor:EditorStartView}"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Temp">
+        <ShellContent ContentTemplate="{DataTemplate editor:EditorMainView}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="About"/>

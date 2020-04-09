@@ -6,8 +6,10 @@
              xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.RecipeListView"
+             x:DataType="recipes:RecipeListViewModel"
              x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">

@@ -1,42 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using CooKit.Models;
+using CooKit.Services.Recipes;
+using CooKit.Services.Repositories.Ingredients;
+using CooKit.Services.Repositories.Pictograms;
+using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
 {
-    public sealed class RecipeViewModel
+    public sealed class RecipeViewModel : BaseViewModel
     {
-        public string Name { get; }
-        public string Description { get; }
-        public IEnumerable<Uri> Images { get; }
-        public IEnumerable<Pictogram> Pictograms { get; }
-        public IEnumerable<Ingredient> Ingredients { get; }
+        #region Properties
+        
+        public string Name { get; private set; }
+        public string Description { get; private set; }
+        public int EstimatedTime { get; private set; }
+        public bool IsFavorite { get; private set; }
+        public IEnumerable<string> Images { get; private set; }
+        public IEnumerable<Pictogram> Pictograms { get; private set; }
+        public IEnumerable<Ingredient> Ingredients { get; private set; }
 
-        public RecipeViewModel()
+        #endregion
+
+        public ICommand UpdateCommand { get; }
+
+        private readonly IRecipeSelectService _selectService;
+        private readonly IPictogramRepository _pictogramRepository;
+        private readonly IIngredientRepository _ingredientRepository;
+
+        public RecipeViewModel(IRecipeSelectService selectService,
+            IPictogramRepository pictogramRepository,
+            IIngredientRepository ingredientRepository)
         {
-            Name = "Test Recipe";
-            Description = "Lorem ipsum atd";
-            Images = new[]
-            {
-                new Uri("https://blogs.biomedcentral.com/on-medicine/wp-content/uploads/sites/6/2019/09/iStock-1131794876.t5d482e40.m800.xtDADj9SvTVFjzuNeGuNUUGY4tm5d6UGU5tkKM0s3iPk-620x342.jpg"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHnbv.img?h=552&w=750&m=6&q=60&u=t&o=f&l=f&x=1163&y=707"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABH94v.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f&x=432&y=390"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHio8.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHio8.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHio8.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHio8.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHio8.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHio8.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f"),
-                new Uri("https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AABHio8.img?h=416&w=799&m=6&q=60&u=t&o=f&l=f"),
-            };
+            if (selectService is null)
+                throw new ArgumentNullException(nameof(selectService));
 
-            Pictograms = new []
-            {
-                new Pictogram {Icon = "breakfast.png"}
-            };
+            if (pictogramRepository is null)
+                throw new ArgumentNullException(nameof(pictogramRepository));
 
-            Ingredients = null;
+            if (ingredientRepository is null)
+                throw new ArgumentNullException(nameof(ingredientRepository));
+
+            _selectService = selectService;
+            _pictogramRepository = pictogramRepository;
+            _ingredientRepository = ingredientRepository;
+
+            UpdateCommand = new Command(HandleUpdate);
+        }
+
+        private async void HandleUpdate()
+        {
+            var recipe = _selectService.GetSelectedRecipe();
+            var pictogramTask = _pictogramRepository.GetByIds(recipe.PictogramIds);
+            var ingredientTask = _ingredientRepository.GetByIds(recipe.IngredientIds);
+
+            Name = recipe.Name;
+            Description = recipe.Description;
+            EstimatedTime = recipe.EstimatedTime;
+            IsFavorite = recipe.IsFavorite;
+            //Images = recipe.Images;
+
+            await Task.WhenAll(pictogramTask, ingredientTask);
+
+            Pictograms = pictogramTask.Result;
+            Ingredients = ingredientTask.Result;
+
+            RaiseAllPropertiesChanged();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using CooKit.ViewModels.Editor;
 using CooKit.ViewModels.Recipes;
 
 namespace CooKit.ViewModels
@@ -9,6 +10,8 @@ namespace CooKit.ViewModels
         {
             builder.RegisterType<RecipeListViewModel>();
             builder.RegisterType<RecipeViewModel>();
+
+            builder.RegisterType<EditorMainViewModel>();
         }
     }
 }

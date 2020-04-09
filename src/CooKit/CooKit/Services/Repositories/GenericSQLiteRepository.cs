@@ -33,6 +33,9 @@ namespace CooKit.Services.Repositories
 
         public async Task<IList<T>> GetByIds(IEnumerable<Guid> ids)
         {
+            if (ids is null)
+                return null;
+
             var entities = await Connection.Table<T>().ToArrayAsync();
             var dictionary = entities.ToDictionary(entity => entity.Id);
 

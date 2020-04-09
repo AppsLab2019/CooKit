@@ -5,12 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
-             xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
+             xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Recipes.RecipeView"
-             x:DataType="recipes:RecipeViewModel"
+             x:Class="CooKit.Views.Editor.EditorMainView"
+             x:DataType="editor:EditorMainViewModel"
              vm:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
 
@@ -19,6 +19,18 @@
             <Style x:Key="Style.FloatingCard" TargetType="ui:MaterialCard"
                    BasedOn="{StaticResource Style.SurfaceCard}">
                 <Setter Property="CornerRadius" Value="5"/>
+            </Style>
+
+            <Style x:Key="Style.FloatingClickableCard" TargetType="ui:MaterialCard"
+                   BasedOn="{StaticResource Style.FloatingCard}">
+                <Setter Property="IsClickable" Value="True"/>
+            </Style>
+
+            <Style x:Key="Style.SealedCard" TargetType="ui:MaterialCard">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Elevation" Value="0"/>
+                <Setter Property="IsClickable" Value="True"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.Surface}"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -37,13 +49,16 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="4*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <CarouselView Grid.RowSpan="3"
-                                      Grid.ColumnSpan="3"
+                                      Grid.ColumnSpan="6"
                                       IndicatorView="ImageIndicator"
                                       ItemsSource="{Binding Images}">
                             <CarouselView.ItemTemplate>
@@ -57,9 +72,31 @@
 
                         <IndicatorView Grid.Row="1"
                                        Grid.Column="1"
+                                       VerticalOptions="End"
                                        x:Name="ImageIndicator"
                                        SelectedIndicatorColor="White"
                                        IndicatorColor="LightGray"/>
+
+                        <ui:MaterialIconButton Grid.Row="1"
+                                               Grid.Column="3"
+                                               ButtonType="Text"
+                                               WidthRequest="32"
+                                               HeightRequest="32"
+                                               TintColor="White"/>
+
+                        <ui:MaterialIconButton Grid.Row="1"
+                                               Grid.Column="4"
+                                               ButtonType="Text"
+                                               WidthRequest="32"
+                                               HeightRequest="32"
+                                               TintColor="White"/>
+
+                        <ui:MaterialIconButton Grid.Row="1"
+                                               Grid.Column="5"
+                                               ButtonType="Text"
+                                               WidthRequest="32"
+                                               HeightRequest="32"
+                                               TintColor="White"/>
                     </Grid>
                 </ui:MaterialCard>
 
@@ -71,7 +108,7 @@
                     </Grid.ColumnDefinitions>
 
                     <ui:MaterialCard Padding="4"
-                                     Style="{StaticResource Style.FloatingCard}">
+                                     Style="{StaticResource Style.FloatingClickableCard}">
                         <StackLayout Orientation="Horizontal">
                             <ui:MaterialIcon Source="{StaticResource Icon.Timer}"
                                              TintColor="{StaticResource Color.OnSurface}"/>
@@ -92,7 +129,7 @@
 
                     <ui:MaterialCard Grid.Column="1"
                                      Padding="4"
-                                     Style="{StaticResource Style.FloatingCard}">
+                                     Style="{StaticResource Style.FloatingClickableCard}">
                         <CollectionView ItemsSource="{Binding Pictograms}">
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Horizontal"
@@ -113,16 +150,20 @@
                 <ui:MaterialCard Margin="20,0,20,0"
                                  Style="{StaticResource Style.FloatingCard}">
                     <StackLayout>
-                        <ui:MaterialLabel Text="{Binding Name}"
-                                          TextColor="{StaticResource Color.OnSurface}"
-                                          Style="{StaticResource FontStyle.SmallHeadline}"/>
+                        <ui:MaterialCard Style="{StaticResource Style.SealedCard}">
+                            <ui:MaterialLabel Text="{Binding Name}"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Style="{StaticResource FontStyle.SmallHeadline}"/>
+                        </ui:MaterialCard>
 
                         <BoxView HeightRequest="2"
                                  BackgroundColor="#F0F0F0F0"/>
 
-                        <ui:MaterialLabel Text="{Binding Description}"
-                                          TextColor="{StaticResource Color.OnSurface}"
-                                          Style="{StaticResource FontStyle.SecondBody}"/>
+                        <ui:MaterialCard Style="{StaticResource Style.SealedCard}">
+                            <ui:MaterialLabel Text="{Binding Description}"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Style="{StaticResource FontStyle.SecondBody}"/>
+                        </ui:MaterialCard>
                     </StackLayout>
                 </ui:MaterialCard>
 
@@ -149,6 +190,14 @@
                                                           VerticalOptions="Center"
                                                           Style="{StaticResource FontStyle.Body}"
                                                           TextColor="{StaticResource Color.OnSurface}"/>
+
+                                        <ui:MaterialIconButton ButtonType="Text"
+                                                               WidthRequest="32"
+                                                               HeightRequest="32"
+                                                               VerticalOptions="Center"
+                                                               TintColor="{StaticResource Color.OnSurface}"/>
+                                        <!--Image="{StaticResource Icon.Add}"-->
+                                        <!--TODO: Replace with path-->
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>

@@ -12,12 +12,27 @@
     <Application.Resources>
         <ResourceDictionary>
             <!--#region Icons-->
-            <OnPlatform x:Key="Icon.Timer" x:TypeArguments="ImageSource">
-                <On Platform="Android" Value="ic_timer.png"/>
+
+            <OnPlatform x:Key="Icon.Add" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_add.png"/>
             </OnPlatform>
+            
+            <OnPlatform x:Key="Icon.Edit" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_edit.png"/>
+            </OnPlatform>
+            
+            <OnPlatform x:Key="Icon.Delete" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_delete.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.Timer" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_timer.png"/>
+            </OnPlatform>
+
             <!--#endregion-->
 
             <!--#region Colors-->
+
             <Color x:Key="Color.Primary">#6200EE</Color>
             <Color x:Key="Color.OnPrimary">#FFFFFF</Color>
             <Color x:Key="Color.PrimaryVariant">#3700B3</Color>
@@ -44,9 +59,11 @@
                                              OnSurface="{StaticResource Color.OnSurface}"
                                              Background="{StaticResource Color.Background}"
                                              OnBackground="{StaticResource Color.OnBackground}"/>
+
             <!--#endregion-->
 
             <!--#region Fonts-->
+
             <OnPlatform x:Key="FontFamily.RobotoRegular" x:TypeArguments="x:String">
                 <On Platform="Android" Value="Fonts/Roboto-Regular.ttf#Roboto-Regular"/>
             </OnPlatform>
@@ -81,9 +98,11 @@
                                                 Overline="{StaticResource FontFamily.RobotoRegular}"
                                                 Subtitle1="{StaticResource FontFamily.VarelaRoundRegular}"
                                                 Subtitle2="{StaticResource FontFamily.RobotoMedium}"/>
+
             <!--#endregion-->
 
             <!--#region Essential Settings-->
+
             <x:String x:Key="Resources.DbAssemblyPath">CooKit.CooKit.db3</x:String>
 
             <mtrl:MaterialConfiguration x:Key="Material.Configuration"
@@ -100,21 +119,25 @@
             <Style x:Key="Style.Page" TargetType="ContentPage">
                 <Setter Property="BackgroundColor" Value="{StaticResource Color.Background}"/>
             </Style>
+
             <!--#endregion-->
 
             <!--#region Cards-->
-            <Style x:Key="Style.Card" TargetType="ui:MaterialCard">
+
+            <Style x:Key="Style.SurfaceCard" TargetType="ui:MaterialCard">
+                <Setter Property="Elevation" Value="1"/>
                 <Setter Property="BackgroundColor" Value="{StaticResource Color.Surface}"/>
             </Style>
 
-            <Style x:Key="Style.ClickableCard" TargetType="ui:MaterialCard" 
-                   BasedOn="{StaticResource Style.Card}">
+            <Style x:Key="Style.ClickableSurfaceCard" TargetType="ui:MaterialCard">
                 <Setter Property="Elevation" Value="2"/>
                 <Setter Property="IsClickable" Value="True"/>
             </Style>
+
             <!--#endregion-->
 
             <!--#region Label Fonts-->
+
             <Style x:Key="FontStyle.SmallHeadline" TargetType="ui:MaterialLabel">
                 <Setter Property="FontSize" Value="20"/>
                 <Setter Property="LetterSpacing" Value="0.15"/>
@@ -144,6 +167,7 @@
                 <Setter Property="LetterSpacing" Value="0.25"/>
                 <Setter Property="FontFamily" Value="{StaticResource FontFamily.OxygenRegular}"/>
             </Style>
+
             <!--#endregion-->
         </ResourceDictionary>
     </Application.Resources>

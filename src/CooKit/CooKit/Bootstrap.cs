@@ -5,6 +5,7 @@ using CooKit.Mappers.Converters.Guids;
 using CooKit.Mappers.Converters.Uris;
 using CooKit.Mappers.Profiles;
 using CooKit.Services.Alerts;
+using CooKit.Services.Recipes;
 using CooKit.Services.Repositories.Ingredients;
 using CooKit.Services.Repositories.Pictograms;
 using CooKit.Services.Repositories.Recipes;
@@ -43,6 +44,7 @@ namespace CooKit
         private static void RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterType<AlertService>().As<IAlertService>().SingleInstance();
+            builder.RegisterType<RecipeSelectService>().As<IRecipeSelectService>().SingleInstance();
 
             // TODO: move path resolving to configuration class
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

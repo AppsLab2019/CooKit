@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Editor.EditorStartView"
+             Style="{StaticResource Style.Page}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="ui:MaterialButton">
+                <Setter Property="ButtonType" Value="Outlined"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <CollectionView Grid.ColumnSpan="3">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Recipe">
+                        <StackLayout Spacing="5"
+                                     Padding="5"
+                                     BackgroundColor="{StaticResource Color.Surface}">
+                            <ui:MaterialLabel Text="{Binding Name}"
+                                              Style="{StaticResource FontStyle.SmallHeadline}"
+                                              TextColor="{StaticResource Color.OnSurface}"/>
+
+                            <ui:MaterialLabel Text="{Binding Id}"
+                                              Style="{StaticResource FontStyle.Body}"
+                                              TextColor="{StaticResource Color.OnSurface}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ui:MaterialButton Grid.Row="1"
+                               Grid.Column="0"
+                               Text="Add"/>
+
+            <ui:MaterialButton Grid.Row="1"
+                               Grid.Column="1"
+                               Text="Edit"/>
+
+            <ui:MaterialButton Grid.Row="1"
+                               Grid.Column="2"
+                               Text="Remove"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

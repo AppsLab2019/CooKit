@@ -8,6 +8,9 @@ namespace CooKit.Models
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int EstimatedTime { get; set; }
+
+        public bool IsFavorite { get; set; }
 
         public string PreviewImage { get; set; }
         //public IList<string> Images { get; set; }

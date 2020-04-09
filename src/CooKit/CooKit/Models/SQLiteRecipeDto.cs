@@ -16,6 +16,12 @@ namespace CooKit.Models
         [Column("description")]
         public string Description { get; set; }
 
+        [Column("estimated_time")]
+        public int EstimatedTime { get; set; }
+
+        [Column("is_favorite")]
+        public bool IsFavorite { get; set; }
+
         [Column("preview_image")]
         public Uri PreviewImage { get; set; }
 
