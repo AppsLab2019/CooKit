@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Services.Recipes;
-using CooKit.Services.Repositories.Ingredients;
-using CooKit.Services.Repositories.Pictograms;
+using CooKit.Services.Stores.Ingredients;
+using CooKit.Services.Stores.Pictograms;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
@@ -27,25 +27,23 @@ namespace CooKit.ViewModels.Recipes
         public ICommand UpdateCommand { get; }
 
         private readonly IRecipeSelectService _selectService;
-        private readonly IPictogramRepository _pictogramRepository;
-        private readonly IIngredientRepository _ingredientRepository;
+        private readonly IIngredientStore _ingredientStore;
+        private readonly IPictogramStore _pictogramStore;
 
-        public RecipeViewModel(IRecipeSelectService selectService,
-            IPictogramRepository pictogramRepository,
-            IIngredientRepository ingredientRepository)
+        public RecipeViewModel(IRecipeSelectService selectService, IIngredientStore ingredientStore, IPictogramStore pictogramStore)
         {
             if (selectService is null)
                 throw new ArgumentNullException(nameof(selectService));
 
-            if (pictogramRepository is null)
-                throw new ArgumentNullException(nameof(pictogramRepository));
+            if (ingredientStore is null)
+                throw new ArgumentNullException(nameof(ingredientStore));
 
-            if (ingredientRepository is null)
-                throw new ArgumentNullException(nameof(ingredientRepository));
+            if (pictogramStore is null)
+                throw new ArgumentNullException(nameof(pictogramStore));
 
             _selectService = selectService;
-            _pictogramRepository = pictogramRepository;
-            _ingredientRepository = ingredientRepository;
+            _ingredientStore = ingredientStore;
+            _pictogramStore = pictogramStore;
 
             UpdateCommand = new Command(HandleUpdate);
         }
@@ -53,8 +51,8 @@ namespace CooKit.ViewModels.Recipes
         private async void HandleUpdate()
         {
             var recipe = _selectService.GetSelectedRecipe();
-            var pictogramTask = _pictogramRepository.GetByIds(recipe.PictogramIds);
-            var ingredientTask = _ingredientRepository.GetByIds(recipe.IngredientIds);
+            var pictogramTask = _pictogramStore.GetByIds(recipe.PictogramIds);
+            var ingredientTask = _ingredientStore.GetByIds(recipe.IngredientIds);
 
             Name = recipe.Name;
             Description = recipe.Description;

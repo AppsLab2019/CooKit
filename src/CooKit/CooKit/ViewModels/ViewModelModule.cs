@@ -11,7 +11,10 @@ namespace CooKit.ViewModels
             builder.RegisterType<RecipeListViewModel>();
             builder.RegisterType<RecipeViewModel>();
 
+            builder.RegisterType<EditorStartViewModel>();
             builder.RegisterType<EditorMainViewModel>();
+
+            builder.RegisterType<EditorPictogramMenuViewModel>();
         }
     }
 }

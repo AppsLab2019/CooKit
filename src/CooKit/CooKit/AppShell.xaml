@@ -19,12 +19,8 @@
         <Tab Title="Favorites"/>
     </FlyoutItem>
 
-    <FlyoutItem Title="Editor">
+    <FlyoutItem Title="Editor" Route="editorMenu">
         <ShellContent ContentTemplate="{DataTemplate editor:EditorStartView}"/>
-    </FlyoutItem>
-
-    <FlyoutItem Title="Temp">
-        <ShellContent ContentTemplate="{DataTemplate editor:EditorMainView}"/>
     </FlyoutItem>
 
     <FlyoutItem Title="About"/>

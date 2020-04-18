@@ -47,7 +47,7 @@
                                       IndicatorView="ImageIndicator"
                                       ItemsSource="{Binding Images}">
                             <CarouselView.ItemTemplate>
-                                <DataTemplate x:DataType="x:Uri">
+                                <DataTemplate x:DataType="x:String">
                                     <forms:CachedImage Source="{Binding}"
                                                        Aspect="AspectFill"
                                                        DownsampleToViewSize="True"/>

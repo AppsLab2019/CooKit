@@ -11,8 +11,13 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditorMainView"
              x:DataType="editor:EditorMainViewModel"
+             x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding DiscardCommand}"/>
+    </Shell.BackButtonBehavior>
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -59,10 +64,11 @@
 
                         <CarouselView Grid.RowSpan="3"
                                       Grid.ColumnSpan="6"
+                                      x:Name="ImageCarousel"
                                       IndicatorView="ImageIndicator"
                                       ItemsSource="{Binding Images}">
                             <CarouselView.ItemTemplate>
-                                <DataTemplate x:DataType="x:Uri">
+                                <DataTemplate x:DataType="x:String">
                                     <forms:CachedImage Source="{Binding}"
                                                        Aspect="AspectFill"
                                                        DownsampleToViewSize="True"/>
@@ -82,21 +88,17 @@
                                                ButtonType="Text"
                                                WidthRequest="32"
                                                HeightRequest="32"
-                                               TintColor="White"/>
+                                               TintColor="White"
+                                               Command="{Binding AddImageCommand}"/>
 
                         <ui:MaterialIconButton Grid.Row="1"
                                                Grid.Column="4"
                                                ButtonType="Text"
                                                WidthRequest="32"
                                                HeightRequest="32"
-                                               TintColor="White"/>
-
-                        <ui:MaterialIconButton Grid.Row="1"
-                                               Grid.Column="5"
-                                               ButtonType="Text"
-                                               WidthRequest="32"
-                                               HeightRequest="32"
-                                               TintColor="White"/>
+                                               TintColor="White"
+                                               Command="{Binding DeleteImageCommand}"/>
+                                               <!--CommandParameter="{Binding CurrentItem, Source={x:Reference ImageCarousel}, Mode=OneWayToSource}"/>-->
                     </Grid>
                 </ui:MaterialCard>
 
@@ -108,7 +110,8 @@
                     </Grid.ColumnDefinitions>
 
                     <ui:MaterialCard Padding="4"
-                                     Style="{StaticResource Style.FloatingClickableCard}">
+                                     Style="{StaticResource Style.FloatingClickableCard}"
+                                     ClickCommand="{Binding ChangeEstimatedTimeCommand}">
                         <StackLayout Orientation="Horizontal">
                             <ui:MaterialIcon Source="{StaticResource Icon.Timer}"
                                              TintColor="{StaticResource Color.OnSurface}"/>
@@ -129,6 +132,7 @@
 
                     <ui:MaterialCard Grid.Column="1"
                                      Padding="4"
+                                     ClickCommand="{Binding AddPictogramCommand}"
                                      Style="{StaticResource Style.FloatingClickableCard}">
                         <CollectionView ItemsSource="{Binding Pictograms}">
                             <CollectionView.ItemsLayout>
@@ -140,7 +144,9 @@
                                 <DataTemplate x:DataType="models:Pictogram">
                                     <ui:MaterialIconButton WidthRequest="32"
                                                            HeightRequest="32"
-                                                           Image="{Binding Icon}"/>
+                                                           Image="{Binding Icon}"
+                                                           Command="{Binding BindingContext.SelectPictogramCommand, Source={x:Reference Root}}"
+                                                           CommandParameter="{Binding}"/>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
@@ -150,7 +156,8 @@
                 <ui:MaterialCard Margin="20,0,20,0"
                                  Style="{StaticResource Style.FloatingCard}">
                     <StackLayout>
-                        <ui:MaterialCard Style="{StaticResource Style.SealedCard}">
+                        <ui:MaterialCard Style="{StaticResource Style.SealedCard}"
+                                         ClickCommand="{Binding ChangeNameCommand}">
                             <ui:MaterialLabel Text="{Binding Name}"
                                               TextColor="{StaticResource Color.OnSurface}"
                                               Style="{StaticResource FontStyle.SmallHeadline}"/>
@@ -159,7 +166,8 @@
                         <BoxView HeightRequest="2"
                                  BackgroundColor="#F0F0F0F0"/>
 
-                        <ui:MaterialCard Style="{StaticResource Style.SealedCard}">
+                        <ui:MaterialCard Style="{StaticResource Style.SealedCard}"
+                                         ClickCommand="{Binding ChangeDescriptionCommand}">
                             <ui:MaterialLabel Text="{Binding Description}"
                                               TextColor="{StaticResource Color.OnSurface}"
                                               Style="{StaticResource FontStyle.SecondBody}"/>
@@ -173,6 +181,25 @@
                         <ui:MaterialLabel Text="You'll need:"
                                           Style="{StaticResource FontStyle.SecondSubtitle}"
                                           TextColor="{StaticResource Color.OnSurface}"/>
+
+                        <ui:MaterialCard Style="{StaticResource Style.SealedCard}"
+                                         ClickCommand="{Binding AddIngredientCommand}">
+                            <StackLayout Padding="4"
+                                         Spacing="10"
+                                         HeightRequest="40"
+                                         Orientation="Horizontal">
+                                <ui:MaterialIcon WidthRequest="32"
+                                                 HeightRequest="32"
+                                                 VerticalOptions="Center"
+                                                 Source="{StaticResource Icon.Add}"
+                                                 TintColor="{StaticResource Color.OnSurface}"/>
+
+                                <ui:MaterialLabel Text="Add new"
+                                                  VerticalOptions="Center"
+                                                  Style="{StaticResource FontStyle.Body}"
+                                                  TextColor="{StaticResource Color.OnSurface}"/>
+                            </StackLayout>
+                        </ui:MaterialCard>
 
                         <StackLayout BindableLayout.ItemsSource="{Binding Ingredients}">
                             <BindableLayout.ItemTemplate>
@@ -195,7 +222,9 @@
                                                                WidthRequest="32"
                                                                HeightRequest="32"
                                                                VerticalOptions="Center"
-                                                               TintColor="{StaticResource Color.OnSurface}"/>
+                                                               TintColor="{StaticResource Color.OnSurface}"
+                                                               Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference Root}}"
+                                                               CommandParameter="{Binding}"/>
                                         <!--Image="{StaticResource Icon.Add}"-->
                                         <!--TODO: Replace with path-->
                                     </StackLayout>

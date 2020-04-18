@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using CooKit.Models;
 using CooKit.Services.Recipes;
-using CooKit.Services.Repositories.Recipes;
+using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
@@ -14,34 +14,27 @@ namespace CooKit.ViewModels.Recipes
         public ICommand RefreshCommand { get; }
         public ICommand SelectCommand { get; }
 
-        private readonly IRecipeRepository _repository;
+        private readonly IRecipeStore _store;
         private readonly IRecipeSelectService _selectService;
 
-        public RecipeListViewModel(IRecipeRepository repository,
-            IRecipeSelectService selectService)
+        public RecipeListViewModel(IRecipeStore store, IRecipeSelectService selectService)
         {
-            if (repository is null)
-                throw new ArgumentNullException(nameof(repository));
+            if (store is null)
+                throw new ArgumentNullException(nameof(store));
 
             if (selectService is null)
                 throw new ArgumentNullException(nameof(selectService));
 
-            _repository = repository;
+            _store = store;
             _selectService = selectService;
                     
             RefreshCommand = new Command(RefreshRecipes);
             SelectCommand = new Command<Recipe>(SelectRecipe);
-
-            Recipes = new []{ new Recipe
-            {
-                Name = "Test Recipe",
-                PreviewImage = "https://blogs.biomedcentral.com/on-medicine/wp-content/uploads/sites/6/2019/09/iStock-1131794876.t5d482e40.m800.xtDADj9SvTVFjzuNeGuNUUGY4tm5d6UGU5tkKM0s3iPk-620x342.jpg"
-            }};
         }
 
-        private void RefreshRecipes()
+        private async void RefreshRecipes()
         {
-            //Recipes = await _repository.GetAllEntries();
+            Recipes = await _store.GetAll();
             RaisePropertyChanged(nameof(Recipes));
         }
 

@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using CooKit.ViewModels.Editor;
 
 namespace CooKit.Views.Editor
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditorMainView : ContentPage
+    public partial class EditorMainView
     {
-        public EditorMainView()
-        {
+        public EditorMainView() => 
             InitializeComponent();
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (BindingContext is EditorMainViewModel vm)
+                vm.InitCommand.Execute(null);
         }
     }
 }

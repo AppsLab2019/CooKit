@@ -5,8 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
+             xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditorStartView"
+             x:DataType="editor:EditorStartViewModel"
+             viewModels:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
 
     <ContentPage.Resources>
@@ -30,7 +34,10 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <CollectionView Grid.ColumnSpan="3">
+            <CollectionView Grid.ColumnSpan="3"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedRecipe}"
+                            ItemsSource="{Binding Recipes}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:Recipe">
                         <StackLayout Spacing="5"
@@ -50,15 +57,18 @@
 
             <ui:MaterialButton Grid.Row="1"
                                Grid.Column="0"
-                               Text="Add"/>
+                               Text="Add"
+                               Command="{Binding AddCommand}"/>
 
             <ui:MaterialButton Grid.Row="1"
                                Grid.Column="1"
-                               Text="Edit"/>
+                               Text="Edit"
+                               Command="{Binding EditCommand}"/>
 
             <ui:MaterialButton Grid.Row="1"
                                Grid.Column="2"
-                               Text="Remove"/>
+                               Text="Remove"
+                               Command="{Binding DeleteCommand}"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

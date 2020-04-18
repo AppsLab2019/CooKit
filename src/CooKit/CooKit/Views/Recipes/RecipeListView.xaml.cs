@@ -4,10 +4,8 @@ namespace CooKit.Views.Recipes
 {
     public partial class RecipeListView
     {
-        public RecipeListView()
-        {
+        public RecipeListView() => 
             InitializeComponent();
-        }
 
         protected override void OnAppearing()
         {

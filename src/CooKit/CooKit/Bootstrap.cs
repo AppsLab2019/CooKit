@@ -5,10 +5,14 @@ using CooKit.Mappers.Converters.Guids;
 using CooKit.Mappers.Converters.Uris;
 using CooKit.Mappers.Profiles;
 using CooKit.Services.Alerts;
+using CooKit.Services.Editor;
 using CooKit.Services.Recipes;
 using CooKit.Services.Repositories.Ingredients;
 using CooKit.Services.Repositories.Pictograms;
 using CooKit.Services.Repositories.Recipes;
+using CooKit.Services.Stores.Ingredients;
+using CooKit.Services.Stores.Pictograms;
+using CooKit.Services.Stores.Recipes;
 using CooKit.ViewModels;
 
 namespace CooKit
@@ -44,6 +48,7 @@ namespace CooKit
         private static void RegisterServices(ContainerBuilder builder)
         {
             builder.RegisterType<AlertService>().As<IAlertService>().SingleInstance();
+            builder.RegisterType<EditorService>().As<IEditorService>().SingleInstance();
             builder.RegisterType<RecipeSelectService>().As<IRecipeSelectService>().SingleInstance();
 
             // TODO: move path resolving to configuration class
@@ -59,6 +64,10 @@ namespace CooKit
 
             // dependencies of SQLiteRecipeRepository
             builder.RegisterType<SQLiteRecipeDtoRepository>().As<ISQLiteRecipeDtoRepository>().SingleInstance();
+
+            builder.RegisterType<IngredientStore>().As<IIngredientStore>().SingleInstance();
+            builder.RegisterType<PictogramStore>().As<IPictogramStore>().SingleInstance();
+            builder.RegisterType<RecipeStore>().As<IRecipeStore>().SingleInstance();
         }
     }
 }
