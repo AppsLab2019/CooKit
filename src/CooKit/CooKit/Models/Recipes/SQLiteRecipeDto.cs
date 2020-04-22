@@ -1,7 +1,7 @@
 ﻿using System;
 using SQLite;
 
-namespace CooKit.Models
+namespace CooKit.Models.Recipes
 {
     [Table("recipes")]
     public sealed class SQLiteRecipeDto : IEntity

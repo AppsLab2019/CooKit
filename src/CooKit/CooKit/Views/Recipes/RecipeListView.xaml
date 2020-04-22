@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
-             xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
+             xmlns:recipes="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
+             xmlns:recipesvm="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.RecipeListView"
-             x:DataType="recipes:RecipeListViewModel"
+             x:DataType="recipesvm:RecipeListViewModel"
              x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
@@ -24,7 +24,7 @@
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Recipe">
+                <DataTemplate x:DataType="recipes:IRecipe">
                     <StackLayout Padding="6"
                                  HeightRequest="150">
                         <ui:MaterialCard Padding="0"

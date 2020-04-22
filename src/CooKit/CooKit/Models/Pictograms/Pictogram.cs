@@ -1,10 +1,10 @@
 ﻿using System;
 using SQLite;
 
-namespace CooKit.Models
+namespace CooKit.Models.Pictograms
 {
     [Table("pictograms")]
-    public sealed class Pictogram : IEntity
+    public sealed class Pictogram : IPictogram
     {
         [Column("id")]
         [PrimaryKey, NotNull, Unique]

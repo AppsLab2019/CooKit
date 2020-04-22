@@ -13,8 +13,6 @@ namespace CooKit.ViewModels
 
             builder.RegisterType<EditorStartViewModel>();
             builder.RegisterType<EditorMainViewModel>();
-
-            builder.RegisterType<EditorPictogramMenuViewModel>();
         }
     }
 }

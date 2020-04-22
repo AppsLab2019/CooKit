@@ -1,9 +1,9 @@
-﻿using CooKit.Models;
+﻿using CooKit.Models.Ingredients;
 using SQLite;
 
 namespace CooKit.Services.Repositories.Ingredients
 {
-    public sealed class SQLiteIngredientRepository : GenericSQLiteRepository<Ingredient>, IIngredientRepository
+    public sealed class SQLiteIngredientRepository : SQLiteRepository<IIngredient, Ingredient>, IIngredientRepository
     {
         public SQLiteIngredientRepository(SQLiteAsyncConnection connection) : base(connection)
         {

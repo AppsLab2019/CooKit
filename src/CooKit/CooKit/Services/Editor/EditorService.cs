@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using CooKit.Models;
+using System.Collections.Generic;
+using CooKit.Models.Recipes;
 
 namespace CooKit.Services.Editor
 {
@@ -11,62 +11,39 @@ namespace CooKit.Services.Editor
         private const string DefaultDescription = "";
         private const int DefaultEstimatedTime = 0;
 
-        private Recipe _recipe;
-        private IRecipeTemplate _template;
+        private IRecipe _recipe;
 
-        public void CreateTemplate()
+        public void CreateNewRecipe()
         {
-            ThrowIfAlreadyHolding();
-
-            _recipe = null;
-            _template = CreateDefaultTemplate();
-        }
-
-        public IRecipeTemplate GetTemplate()
-        {
-            return _template;
-        }
-
-        public void SetTemplate(Recipe recipe)
-        {
-            ThrowIfAlreadyHolding();
-
-            _recipe = recipe;
-            throw new NotImplementedException();
-        }
-
-        public void ClearTemplate()
-        {
-            _recipe = null;
-            _template = null;
-        }
-
-        public Recipe TemplateToRecipe()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void ThrowIfAlreadyHolding()
-        {
-            if (_template is null)
-                return;
-
-            throw new Exception();
-        }
-
-        // TODO: move this into a factory
-        private static IRecipeTemplate CreateDefaultTemplate()
-        {
-            return new RecipeTemplate
+            // TODO: move this to factory
+            _recipe = new Recipe
             {
                 Name = DefaultName,
                 Description = DefaultDescription,
                 EstimatedTime = DefaultEstimatedTime,
+                IsFavorite = false,
 
-                Images = new ObservableCollection<string>(),
-                Pictograms = new ObservableCollection<Pictogram>(),
-                Ingredients = new ObservableCollection<Ingredient>()
+                PreviewImage = null,
+                //Images = new List<string>(),
+
+                IngredientIds = new List<Guid>(),
+                PictogramIds = new List<Guid>()
             };
+        }
+
+        public IRecipe GetWorkingRecipe()
+        {
+            return _recipe;
+        }
+
+        public void SetWorkingRecipe(IRecipe recipe)
+        {
+            _recipe = recipe;
+        }
+
+        public void ClearWorkingRecipe()
+        {
+            _recipe = null;
         }
     }
 }

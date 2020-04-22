@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using CooKit.Models;
+using CooKit.Models.Recipes;
 
 namespace CooKit.Services.Repositories.Recipes
 {
@@ -24,46 +24,46 @@ namespace CooKit.Services.Repositories.Recipes
             _mapper = mapper;
         }
 
-        public async Task<IList<Recipe>> GetAllEntries()
+        public async Task<IList<IRecipe>> GetAllEntries()
         {
             var dtos = await _dtoRepository.GetAllEntries();
             return dtos.Select(MapDtoToRecipe).ToList();
         }
 
-        public async Task<Recipe> GetById(Guid id)
+        public async Task<IRecipe> GetById(Guid id)
         {
             var dto = await _dtoRepository.GetById(id);
             return MapDtoToRecipe(dto);
         }
 
-        public async Task<IList<Recipe>> GetByIds(IEnumerable<Guid> ids)
+        public async Task<IList<IRecipe>> GetByIds(IEnumerable<Guid> ids)
         {
             var dtos = await _dtoRepository.GetByIds(ids);
             return dtos.Select(MapDtoToRecipe).ToList();
         }
 
-        public Task Add(Recipe entity)
+        public Task Add(IRecipe entity)
         {
             var dto = MapRecipeToDto(entity);
             return _dtoRepository.Add(dto);
         }
 
-        public Task Remove(Recipe entity)
+        public Task Remove(IRecipe entity)
         {
             var dto = MapRecipeToDto(entity);
             return _dtoRepository.Remove(dto);
         }
 
-        public Task Update(Recipe entity)
+        public Task Update(IRecipe entity)
         {
             var dto = MapRecipeToDto(entity);
             return _dtoRepository.Update(dto);
         }
 
-        private Recipe MapDtoToRecipe(SQLiteRecipeDto dto) =>
-            _mapper.Map<Recipe>(dto);
+        private IRecipe MapDtoToRecipe(SQLiteRecipeDto dto) =>
+            _mapper.Map<IRecipe>(dto);
 
-        private SQLiteRecipeDto MapRecipeToDto(Recipe recipe) =>
+        private SQLiteRecipeDto MapRecipeToDto(IRecipe recipe) =>
             _mapper.Map<SQLiteRecipeDto>(recipe);
     }
 }

@@ -7,12 +7,11 @@ using SQLite;
 
 namespace CooKit.Services.Repositories
 {
-    public class GenericSQLiteRepository<T> : IRepository<T> 
-        where T : IEntity, new()
+    public class SQLiteConcreteRepository<T> : IRepository<T> where T : IEntity, new()
     {
         protected readonly SQLiteAsyncConnection Connection;
 
-        public GenericSQLiteRepository(SQLiteAsyncConnection connection)
+        public SQLiteConcreteRepository(SQLiteAsyncConnection connection)
         {
             if (connection is null)
                 throw new ArgumentNullException(nameof(connection));
@@ -27,8 +26,7 @@ namespace CooKit.Services.Repositories
 
         public Task<T> GetById(Guid id)
         {
-            return Connection.Table<T>()
-                .FirstOrDefaultAsync(entity => entity.Id == id);
+            return Connection.Table<T>().FirstOrDefaultAsync(entity => entity.Id == id);
         }
 
         public async Task<IList<T>> GetByIds(IEnumerable<Guid> ids)

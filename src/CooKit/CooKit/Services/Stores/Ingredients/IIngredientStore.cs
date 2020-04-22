@@ -1,8 +1,8 @@
-﻿using CooKit.Models;
+﻿using CooKit.Models.Ingredients;
 
 namespace CooKit.Services.Stores.Ingredients
 {
-    public interface IIngredientStore : IEntityStore<Ingredient>
+    public interface IIngredientStore : IEntityStore<IIngredient>
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Input;
-using CooKit.Models;
+using CooKit.Models.Recipes;
 using CooKit.Services.Recipes;
 using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
@@ -10,7 +10,7 @@ namespace CooKit.ViewModels.Recipes
 {
     public sealed class RecipeListViewModel : BaseViewModel
     {
-        public IEnumerable<Recipe> Recipes { get; private set; }
+        public IEnumerable<IRecipe> Recipes { get; private set; }
         public ICommand RefreshCommand { get; }
         public ICommand SelectCommand { get; }
 

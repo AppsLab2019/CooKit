@@ -12,8 +12,6 @@ namespace CooKit
 
             Routing.RegisterRoute("recipes/all/recipe", typeof(RecipeView));
             Routing.RegisterRoute("editorMenu/editor", typeof(EditorMainView));
-
-            Routing.RegisterRoute("editorMenu/editor/pictogramMenu", typeof(EditorPictogramMenuView));
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using CooKit.Models;
+﻿using CooKit.Models.Recipes;
 
 namespace CooKit.Services.Recipes
 {
     public interface IRecipeSelectService
     {
-        Recipe GetSelectedRecipe();
-        void SetSelectedRecipe(Recipe recipe);
+        IRecipe GetSelectedRecipe();
+        void SetSelectedRecipe(IRecipe recipe);
         void ClearSelectedRecipe();
     }
 }

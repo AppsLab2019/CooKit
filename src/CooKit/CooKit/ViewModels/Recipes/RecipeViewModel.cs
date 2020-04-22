@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.Models;
+using CooKit.Models.Ingredients;
+using CooKit.Models.Pictograms;
 using CooKit.Services.Recipes;
 using CooKit.Services.Stores.Ingredients;
 using CooKit.Services.Stores.Pictograms;
@@ -19,8 +20,8 @@ namespace CooKit.ViewModels.Recipes
         public int EstimatedTime { get; private set; }
         public bool IsFavorite { get; private set; }
         public IEnumerable<string> Images { get; private set; }
-        public IEnumerable<Pictogram> Pictograms { get; private set; }
-        public IEnumerable<Ingredient> Ingredients { get; private set; }
+        public IEnumerable<IPictogram> Pictograms { get; private set; }
+        public IEnumerable<IIngredient> Ingredients { get; private set; }
 
         #endregion
 

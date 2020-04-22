@@ -5,9 +5,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
+             xmlns:pictograms="clr-namespace:CooKit.Models.Pictograms;assembly=CooKit"
+             xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditorMainView"
              x:DataType="editor:EditorMainViewModel"
@@ -54,16 +55,13 @@
                         </Grid.RowDefinitions>
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <CarouselView Grid.RowSpan="3"
-                                      Grid.ColumnSpan="6"
+                                      Grid.ColumnSpan="3"
                                       x:Name="ImageCarousel"
                                       IndicatorView="ImageIndicator"
                                       ItemsSource="{Binding Images}">
@@ -78,27 +76,9 @@
 
                         <IndicatorView Grid.Row="1"
                                        Grid.Column="1"
-                                       VerticalOptions="End"
                                        x:Name="ImageIndicator"
                                        SelectedIndicatorColor="White"
                                        IndicatorColor="LightGray"/>
-
-                        <ui:MaterialIconButton Grid.Row="1"
-                                               Grid.Column="3"
-                                               ButtonType="Text"
-                                               WidthRequest="32"
-                                               HeightRequest="32"
-                                               TintColor="White"
-                                               Command="{Binding AddImageCommand}"/>
-
-                        <ui:MaterialIconButton Grid.Row="1"
-                                               Grid.Column="4"
-                                               ButtonType="Text"
-                                               WidthRequest="32"
-                                               HeightRequest="32"
-                                               TintColor="White"
-                                               Command="{Binding DeleteImageCommand}"/>
-                                               <!--CommandParameter="{Binding CurrentItem, Source={x:Reference ImageCarousel}, Mode=OneWayToSource}"/>-->
                     </Grid>
                 </ui:MaterialCard>
 
@@ -141,7 +121,7 @@
                             </CollectionView.ItemsLayout>
 
                             <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="models:Pictogram">
+                                <DataTemplate x:DataType="pictograms:Pictogram">
                                     <ui:MaterialIconButton WidthRequest="32"
                                                            HeightRequest="32"
                                                            Image="{Binding Icon}"
@@ -203,7 +183,7 @@
 
                         <StackLayout BindableLayout.ItemsSource="{Binding Ingredients}">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="models:Ingredient">
+                                <DataTemplate x:DataType="ingredients:Ingredient">
                                     <StackLayout Padding="4"
                                                  Spacing="10"
                                                  HeightRequest="40"
@@ -222,11 +202,10 @@
                                                                WidthRequest="32"
                                                                HeightRequest="32"
                                                                VerticalOptions="Center"
+                                                               Image="{StaticResource IconPath.Delete}"
                                                                TintColor="{StaticResource Color.OnSurface}"
                                                                Command="{Binding BindingContext.DeleteIngredientCommand, Source={x:Reference Root}}"
                                                                CommandParameter="{Binding}"/>
-                                        <!--Image="{StaticResource Icon.Add}"-->
-                                        <!--TODO: Replace with path-->
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>

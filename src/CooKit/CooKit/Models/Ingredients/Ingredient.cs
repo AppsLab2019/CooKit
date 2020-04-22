@@ -1,10 +1,10 @@
 ﻿using System;
 using SQLite;
 
-namespace CooKit.Models
+namespace CooKit.Models.Ingredients
 {
     [Table("ingredients")]
-    public sealed class Ingredient : IEntity
+    public sealed class Ingredient : IIngredient
     {
         [Column("id")]
         [PrimaryKey, NotNull, Unique]

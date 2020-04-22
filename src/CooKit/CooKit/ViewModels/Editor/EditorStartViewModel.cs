@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.Models;
+using CooKit.Models.Recipes;
 using CooKit.Services.Editor;
 using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
@@ -16,8 +16,8 @@ namespace CooKit.ViewModels.Editor
         public ICommand DeleteCommand { get; }
         public ICommand RefreshCommand { get; }
 
-        public Recipe SelectedRecipe { get; set; }
-        public IEnumerable<Recipe> Recipes { get; private set; }
+        public IRecipe SelectedRecipe { get; set; }
+        public IEnumerable<IRecipe> Recipes { get; private set; }
 
         private readonly IRecipeStore _store;
         private readonly IEditorService _editorService;
@@ -49,7 +49,7 @@ namespace CooKit.ViewModels.Editor
 
         private void HandleAdd()
         {
-            _editorService.CreateTemplate();
+            _editorService.CreateNewRecipe();
             GoToEditor();
         }
 
@@ -58,7 +58,7 @@ namespace CooKit.ViewModels.Editor
             if (SelectedRecipe is null)
                 return;
 
-            _editorService.SetTemplate(SelectedRecipe);
+            _editorService.SetWorkingRecipe(SelectedRecipe);
             GoToEditor();
         }
 

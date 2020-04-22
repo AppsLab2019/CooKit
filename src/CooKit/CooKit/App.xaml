@@ -13,6 +13,27 @@
         <ResourceDictionary>
             <!--#region Icons-->
 
+            <!--#region Paths-->
+
+            <OnPlatform x:Key="IconPath.Add" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_add.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="IconPath.Edit" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_edit.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="IconPath.Delete" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_delete.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="IconPath.Timer" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_timer.png"/>
+            </OnPlatform>
+
+            <!--#endregion-->
+
+            <!--TODO: replace this with paths-->
             <OnPlatform x:Key="Icon.Add" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_add.png"/>
             </OnPlatform>

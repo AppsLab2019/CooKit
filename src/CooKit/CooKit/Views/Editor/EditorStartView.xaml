@@ -4,9 +4,9 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             xmlns:models="clr-namespace:CooKit.Models;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
+             xmlns:recipes="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditorStartView"
              x:DataType="editor:EditorStartViewModel"
@@ -39,7 +39,7 @@
                             SelectedItem="{Binding SelectedRecipe}"
                             ItemsSource="{Binding Recipes}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Recipe">
+                    <DataTemplate x:DataType="recipes:Recipe">
                         <StackLayout Spacing="5"
                                      Padding="5"
                                      BackgroundColor="{StaticResource Color.Surface}">

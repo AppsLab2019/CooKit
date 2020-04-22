@@ -1,8 +1,8 @@
-﻿using CooKit.Models;
+﻿using CooKit.Models.Pictograms;
 
 namespace CooKit.Services.Repositories.Pictograms
 {
-    public interface IPictogramRepository : IRepository<Pictogram>
+    public interface IPictogramRepository : IRepository<IPictogram>
     {
     }
 }

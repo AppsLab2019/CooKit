@@ -1,9 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Models;
+using CooKit.Models.Ingredients;
+using CooKit.Models.Pictograms;
+using CooKit.Models.Recipes;
 using CooKit.Services.Alerts;
 using CooKit.Services.Editor;
+using CooKit.Services.Stores;
+using CooKit.Services.Stores.Ingredients;
+using CooKit.Services.Stores.Pictograms;
+using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
@@ -13,9 +22,15 @@ namespace CooKit.ViewModels.Editor
         private readonly IAlertService _alertService;
         private readonly IEditorService _editorService;
 
-        private IRecipeTemplate _template;
+        // TODO: inject these dependencies
+        private readonly IIngredientStore _ingredientStore;
+        private readonly IPictogramStore _pictogramStore;
+        private readonly IRecipeStore _recipeStore;
 
-        public EditorMainViewModel(IAlertService alertService, IEditorService editorService)
+        private IRecipe _recipe;
+
+        public EditorMainViewModel(IAlertService alertService, IEditorService editorService,
+            IIngredientStore ingredientStore, IPictogramStore pictogramStore, IRecipeStore recipeStore)
         {
             if (alertService is null)
                 throw new ArgumentNullException(nameof(alertService));
@@ -23,8 +38,21 @@ namespace CooKit.ViewModels.Editor
             if (editorService is null)
                 throw new ArgumentNullException(nameof(editorService));
 
+            if (ingredientStore is null)
+                throw new ArgumentNullException(nameof(ingredientStore));
+
+            if (pictogramStore is null)
+                throw new ArgumentNullException(nameof(pictogramStore));
+
+            if (recipeStore is null)
+                throw new ArgumentNullException(nameof(recipeStore));
+
             _alertService = alertService;
             _editorService = editorService;
+
+            _ingredientStore = ingredientStore;
+            _pictogramStore = pictogramStore;
+            _recipeStore = recipeStore;
 
             InitCommand = new Command(HandleInit);
             SaveCommand = new Command(HandleSave);
@@ -38,34 +66,45 @@ namespace CooKit.ViewModels.Editor
             DeleteImageCommand = new Command<string>(HandleDeleteImage);
 
             AddPictogramCommand = new Command(HandleAddPictogram);
-            SelectPictogramCommand = new Command<Pictogram>(HandleSelectPictogram);
+            SelectPictogramCommand = new Command<IPictogram>(HandleSelectPictogram);
 
             AddIngredientCommand = new Command(HandleAddIngredient);
-            DeleteIngredientCommand = new Command<Ingredient>(HandleDeleteIngredient);
+            DeleteIngredientCommand = new Command<IIngredient>(HandleDeleteIngredient);
         }
 
-        private void HandleInit()
+        private async void HandleInit()
         {
-            _template = _editorService.GetTemplate();
+            _recipe = _editorService.GetWorkingRecipe();
 
-            if (_template is null)
+            if (_recipe is null)
                 throw new Exception();
 
-            // TODO: move this to auto mapper
-            _name = _template.Name;
-            _description = _template.Description;
-            _estimatedTime = _template.EstimatedTime;
+            _name = _recipe.Name;
+            _description = _recipe.Description;
+            _estimatedTime = _recipe.EstimatedTime;
 
-            Images = _template.Images;
-            Pictograms = _template.Pictograms;
-            Ingredients = _template.Ingredients;
+            //Images = new ObservableCollection<string>(_recipe.Images);
+            var pictogramTask = IdsToCollection(_pictogramStore, _recipe.PictogramIds);
+            var ingredientTask = IdsToCollection(_ingredientStore, _recipe.IngredientIds);
+
+            await Task.WhenAll(pictogramTask, ingredientTask);
+
+            Pictograms = pictogramTask.Result;
+            Ingredients = ingredientTask.Result;
 
             RaiseAllPropertiesChanged();
         }
 
-        private void HandleSave()
+        private static async Task<ObservableCollection<T>> IdsToCollection<T>(
+            IEntityStore<T> store, IEnumerable<Guid> ids) where T : IEntity
         {
-            _editorService.ClearTemplate();
+            return new ObservableCollection<T>(await store.GetByIds(ids));
+        }
+
+        private async void HandleSave()
+        {
+            await _recipeStore.Update(_recipe);
+            await CleanUpAndExit();
         }
 
         private async void HandleDiscard()
@@ -76,8 +115,13 @@ namespace CooKit.ViewModels.Editor
             if (!response)
                 return;
 
-            _editorService.ClearTemplate();
-            await Shell.Current.GoToAsync("editorMenu");
+            await CleanUpAndExit();
+        }
+
+        private Task CleanUpAndExit()
+        {
+            _editorService.ClearWorkingRecipe();
+            return Shell.Current.Navigation.PopAsync();
         }
 
         #region General
@@ -158,7 +202,7 @@ namespace CooKit.ViewModels.Editor
             await _alertService.DisplayAlert("Error", "Not implemented!", "Ok");
         }
 
-        public async void HandleSelectPictogram(Pictogram pictogram)
+        public async void HandleSelectPictogram(IPictogram pictogram)
         {
             if (pictogram is null)
                 return;
@@ -181,7 +225,7 @@ namespace CooKit.ViewModels.Editor
             await _alertService.DisplayAlert("Error", "Not implemented!", "Ok");
         }
 
-        private async void HandleDeleteIngredient(Ingredient ingredient)
+        private async void HandleDeleteIngredient(IIngredient ingredient)
         {
             if (ingredient is null)
                 return;
@@ -240,9 +284,9 @@ namespace CooKit.ViewModels.Editor
 
         public ObservableCollection<string> Images { get; private set; }
 
-        public ObservableCollection<Pictogram> Pictograms { get; private set; }
+        public ObservableCollection<IPictogram> Pictograms { get; private set; }
 
-        public ObservableCollection<Ingredient> Ingredients { get; private set; }
+        public ObservableCollection<IIngredient> Ingredients { get; private set; }
 
         #endregion
 

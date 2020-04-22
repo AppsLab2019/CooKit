@@ -2,7 +2,7 @@
 using AutoMapper;
 using CooKit.Mappers.Converters.Guids;
 using CooKit.Mappers.Converters.Uris;
-using CooKit.Models;
+using CooKit.Models.Recipes;
 
 namespace CooKit.Mappers.Profiles
 {
@@ -44,7 +44,7 @@ namespace CooKit.Mappers.Profiles
         private void MapRecipeToDto()
         {
             // TODO: finish map (converters for properties)
-            CreateMap<Recipe, SQLiteRecipeDto>()
+            CreateMap<IRecipe, SQLiteRecipeDto>()
                 .ForMember(dest => dest.Pictograms, opt =>
                 {
                     opt.ConvertUsing(_guidToString, src => src.PictogramIds);
@@ -67,6 +67,8 @@ namespace CooKit.Mappers.Profiles
                 {
                     opt.ConvertUsing(_stringToGuid, src => src.Ingredients);
                 });
+            
+            CreateMap<SQLiteRecipeDto, IRecipe>().As<Recipe>();
         }
     }
 }

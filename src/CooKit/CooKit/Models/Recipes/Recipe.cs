@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CooKit.Models
+namespace CooKit.Models.Recipes
 {
-    public sealed class Recipe : IEntity
+    public sealed class Recipe : IRecipe
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

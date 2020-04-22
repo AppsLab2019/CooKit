@@ -1,8 +1,8 @@
-﻿using CooKit.Models;
+﻿using CooKit.Models.Recipes;
 
 namespace CooKit.Services.Stores.Recipes
 {
-    public interface IRecipeStore : IEntityStore<Recipe>
+    public interface IRecipeStore : IEntityStore<IRecipe>
     {
     }
 }

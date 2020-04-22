@@ -1,8 +1,8 @@
-﻿using CooKit.Models;
+﻿using CooKit.Models.Pictograms;
 
 namespace CooKit.Services.Stores.Pictograms
 {
-    public interface IPictogramStore : IEntityStore<Pictogram>
+    public interface IPictogramStore : IEntityStore<IPictogram>
     {
     }
 }
