@@ -143,10 +143,10 @@
                                                  Orientation="Horizontal">
                                         <forms:CachedImage WidthRequest="32"
                                                            HeightRequest="32"
-                                                           Source="{Binding Icon}"
+                                                           Source="{Binding Template.Icon}"
                                                            DownsampleToViewSize="True"/>
 
-                                        <ui:MaterialLabel Text="{Binding Name}"
+                                        <ui:MaterialLabel Text="{Binding Template.Name}"
                                                           VerticalOptions="Center"
                                                           Style="{StaticResource FontStyle.Body}"
                                                           TextColor="{StaticResource Color.OnSurface}"/>

@@ -2,7 +2,8 @@
 {
     public interface IIngredient : IEntity
     {
-        string Name { get; set; }
-        string Icon { get; set; }
+        IIngredientTemplate Template { get; set; }
+        string Note { get; set; }
+        float Quantity { get; set; }
     }
 }

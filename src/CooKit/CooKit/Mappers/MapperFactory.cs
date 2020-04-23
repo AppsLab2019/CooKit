@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Autofac;
 using AutoMapper;
 using CooKit.Mappers.Profiles;
 
@@ -7,21 +8,18 @@ namespace CooKit.Mappers
 {
     public class MapperFactory : IMapperFactory
     {
-        private readonly SQLiteMappingProfile _sqLiteMappingProfile;
-
-        public MapperFactory(SQLiteMappingProfile sqLiteMapping)
+        public IMapper CreateMapper(IComponentContext ctx)
         {
-            if (sqLiteMapping is null)
-                throw new ArgumentNullException(nameof(sqLiteMapping));
+            if (ctx is null)
+                throw new ArgumentNullException(nameof(ctx));
 
-            _sqLiteMappingProfile = sqLiteMapping;
-        }
-
-        public IMapper CreateMapper()
-        {
             var configuration = new MapperConfiguration(conf =>
             {
-                conf.AddProfile(_sqLiteMappingProfile);
+                conf.ConstructServicesUsing(ctx.Resolve);
+
+                // TODO: register using reflection
+                conf.AddProfile(ctx.Resolve<SQLiteRecipeProfile>());
+                conf.AddProfile(ctx.Resolve<SQLiteIngredientProfile>());
             });
 
             AssertConfigurationIfDebug(configuration);

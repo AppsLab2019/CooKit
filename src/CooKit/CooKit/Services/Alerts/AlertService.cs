@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using XF.Material.Forms.UI.Dialogs;
 
 namespace CooKit.Services.Alerts
@@ -23,6 +24,11 @@ namespace CooKit.Services.Alerts
         {
             return MaterialDialog.Instance.InputAsync(title, message, inputText, 
                 inputPlaceholder, confirm, cancel);
+        }
+
+        public async Task<IDisposable> DisplayLoading(string message)
+        {
+            return await MaterialDialog.Instance.LoadingDialogAsync(message);
         }
     }
 }

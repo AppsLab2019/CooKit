@@ -2,8 +2,7 @@
 
 namespace CooKit.Models
 {
-    public interface IEntity
+    public interface IEntity : IIdentifiable<Guid>
     {
-        Guid Id { get; set; }
     }
 }

@@ -1,11 +1,11 @@
-﻿using CooKit.Models.Ingredients;
-using SQLite;
+﻿using AutoMapper;
+using CooKit.Models.Ingredients;
 
 namespace CooKit.Services.Repositories.Ingredients
 {
-    public sealed class SQLiteIngredientRepository : SQLiteRepository<IIngredient, Ingredient>, IIngredientRepository
+    public sealed class SQLiteIngredientRepository : MappingRepository<IIngredient, SQLiteIngredientDto>, IIngredientRepository
     {
-        public SQLiteIngredientRepository(SQLiteAsyncConnection connection) : base(connection)
+        public SQLiteIngredientRepository(IMapper mapper, ISQLiteIngredientDtoRepository repository) : base(mapper, repository)
         {
         }
     }

@@ -103,6 +103,8 @@ namespace CooKit.ViewModels.Editor
 
         private async void HandleSave()
         {
+            using var loadingDisposable = await _alertService.DisplayLoading("Saving...");
+
             await _recipeStore.Update(_recipe);
             await CleanUpAndExit();
         }

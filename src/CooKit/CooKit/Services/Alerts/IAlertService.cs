@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace CooKit.Services.Alerts
 {
@@ -10,5 +11,8 @@ namespace CooKit.Services.Alerts
 
         Task<string> DisplayInput(string title = null, string message = null, string inputText = null,
             string inputPlaceholder = null, string confirm = null, string cancel = null);
+
+        // TODO: replace output with custom class
+        Task<IDisposable> DisplayLoading(string message);
     }
 }

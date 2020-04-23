@@ -6,7 +6,7 @@ using CooKit.Models.Recipes;
 
 namespace CooKit.Mappers.Profiles
 {
-    public sealed class SQLiteMappingProfile : Profile
+    public sealed class SQLiteRecipeProfile : Profile
     {
         private readonly IGuidListToStringConverter _guidToString;
         private readonly IStringToGuidListConverter _stringToGuid;
@@ -14,7 +14,7 @@ namespace CooKit.Mappers.Profiles
         private readonly IUriListToStringConverter _uriToString;
         private readonly IStringToUriListConverter _stringToUri;
 
-        public SQLiteMappingProfile(IGuidListToStringConverter guidToString,
+        public SQLiteRecipeProfile(IGuidListToStringConverter guidToString,
             IStringToGuidListConverter stringToGuid,
             IUriListToStringConverter uriToString,
             IStringToUriListConverter stringToUri)
@@ -27,7 +27,7 @@ namespace CooKit.Mappers.Profiles
 
             if (uriToString is null)
                 throw new ArgumentNullException(nameof(uriToString));
-
+            
             if (stringToUri is null)
                 throw new ArgumentNullException(nameof(stringToUri));
 

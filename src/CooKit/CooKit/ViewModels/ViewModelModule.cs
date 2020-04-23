@@ -1,6 +1,4 @@
 ﻿using Autofac;
-using CooKit.ViewModels.Editor;
-using CooKit.ViewModels.Recipes;
 
 namespace CooKit.ViewModels
 {
@@ -8,11 +6,9 @@ namespace CooKit.ViewModels
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<RecipeListViewModel>();
-            builder.RegisterType<RecipeViewModel>();
-
-            builder.RegisterType<EditorStartViewModel>();
-            builder.RegisterType<EditorMainViewModel>();
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(type => type.Name.EndsWith("ViewModel"))
+                .AsSelf();
         }
     }
 }
