@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
+using CooKit.Services.Alerts;
 using CooKit.Services.Recipes;
 using CooKit.Services.Stores.Ingredients;
 using CooKit.Services.Stores.Pictograms;
@@ -26,15 +27,23 @@ namespace CooKit.ViewModels.Recipes
         #endregion
 
         public ICommand UpdateCommand { get; }
+        public ICommand BackCommand { get; }
+        public ICommand SelectPictogramCommand { get; }
 
         private readonly IRecipeSelectService _selectService;
+        private readonly IAlertService _alertService;
+
         private readonly IIngredientStore _ingredientStore;
         private readonly IPictogramStore _pictogramStore;
 
-        public RecipeViewModel(IRecipeSelectService selectService, IIngredientStore ingredientStore, IPictogramStore pictogramStore)
+        public RecipeViewModel(IRecipeSelectService selectService, IAlertService alertService,
+            IIngredientStore ingredientStore, IPictogramStore pictogramStore)
         {
             if (selectService is null)
                 throw new ArgumentNullException(nameof(selectService));
+
+            if (alertService is null)
+                throw new ArgumentNullException(nameof(alertService));
 
             if (ingredientStore is null)
                 throw new ArgumentNullException(nameof(ingredientStore));
@@ -43,10 +52,14 @@ namespace CooKit.ViewModels.Recipes
                 throw new ArgumentNullException(nameof(pictogramStore));
 
             _selectService = selectService;
+            _alertService = alertService;
+
             _ingredientStore = ingredientStore;
             _pictogramStore = pictogramStore;
 
             UpdateCommand = new Command(HandleUpdate);
+            BackCommand = new Command(HandleBack);
+            SelectPictogramCommand = new Command<IPictogram>(HandlePictogramSelect);
         }
 
         private async void HandleUpdate()
@@ -67,6 +80,20 @@ namespace CooKit.ViewModels.Recipes
             Ingredients = ingredientTask.Result;
 
             RaiseAllPropertiesChanged();
+        }
+
+        private async void HandleBack()
+        {
+            _selectService.ClearSelectedRecipe();
+            await Shell.Current.Navigation.PopAsync();
+        }
+
+        private async void HandlePictogramSelect(IPictogram pictogram)
+        {
+            if (pictogram is null)
+                return;
+
+            await _alertService.DisplayAlert(pictogram.Name, pictogram.Description, "Close");
         }
     }
 }

@@ -1,26 +1,27 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using CooKit.Models.Ingredients;
+using CooKit.Services.Queries;
 
 namespace CooKit.Services.Repositories.Ingredients
 {
     public sealed class SQLiteIngredientRepository : MappingRepository<IIngredient, SQLiteIngredientDto>, IIngredientRepository
     {
-        private readonly IIngredientTemplateRepository _templateRepository;
+        private readonly IQueryEntityById<IIngredientTemplate> _ingredientTemplateQuery;
 
         public SQLiteIngredientRepository(IMapper mapper, ISQLiteIngredientDtoRepository repository,
-            IIngredientTemplateRepository templateRepository) : base(mapper, repository)
+            IQueryEntityById<IIngredientTemplate> ingredientTemplateQuery) : base(mapper, repository)
         {
-            if (templateRepository is null)
-                throw new System.ArgumentNullException(nameof(templateRepository));
+            if (ingredientTemplateQuery is null)
+                throw new System.ArgumentNullException(nameof(ingredientTemplateQuery));
 
-            _templateRepository = templateRepository;
+            _ingredientTemplateQuery = ingredientTemplateQuery;
         }
 
         protected override async Task<IIngredient> MapDtoToEntity(SQLiteIngredientDto dto)
         {
             var entity = await base.MapDtoToEntity(dto);
-            entity.Template = await _templateRepository.GetById(dto.TemplateId);
+            entity.Template = await _ingredientTemplateQuery.GetById(dto.TemplateId);
             return entity;
         }
 

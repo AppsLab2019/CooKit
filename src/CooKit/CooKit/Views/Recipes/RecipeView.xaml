@@ -9,11 +9,17 @@
              xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:pictograms="clr-namespace:CooKit.Models.Pictograms;assembly=CooKit"
              xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
+             xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.RecipeView"
              x:DataType="recipes:RecipeViewModel"
+             x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior Command="{Binding BackCommand}"/>
+    </Shell.BackButtonBehavior>
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -21,6 +27,8 @@
                    BasedOn="{StaticResource Style.SurfaceCard}">
                 <Setter Property="CornerRadius" Value="5"/>
             </Style>
+
+            <converters:IngredientToFormattedStringConverter x:Key="Converter.IngredientToFormattedStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -102,9 +110,11 @@
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="pictograms:IPictogram">
-                                    <ui:MaterialIconButton WidthRequest="32"
-                                                           HeightRequest="32"
-                                                           Image="{Binding Icon}"/>
+                                    <ui:MaterialIconButton ButtonType="Text"
+                                                           Image="{Binding Icon}"
+                                                           CommandParameter="{Binding}"
+                                                           Style="{StaticResource Style.IconSize}"
+                                                           Command="{Binding BindingContext.SelectPictogramCommand, Source={x:Reference Root}}"/>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
@@ -141,15 +151,14 @@
                                                  Spacing="10"
                                                  HeightRequest="40"
                                                  Orientation="Horizontal">
-                                        <forms:CachedImage WidthRequest="32"
-                                                           HeightRequest="32"
+                                        <forms:CachedImage DownsampleToViewSize="True"
                                                            Source="{Binding Template.Icon}"
-                                                           DownsampleToViewSize="True"/>
+                                                           Style="{StaticResource Style.IconSize}"/>
 
-                                        <ui:MaterialLabel Text="{Binding Template.Name}"
-                                                          VerticalOptions="Center"
+                                        <ui:MaterialLabel VerticalOptions="Center"
                                                           Style="{StaticResource FontStyle.Body}"
-                                                          TextColor="{StaticResource Color.OnSurface}"/>
+                                                          TextColor="{StaticResource Color.OnSurface}"
+                                                          Text="{Binding Converter={StaticResource Converter.IngredientToFormattedStringConverter}}"/>
                                     </StackLayout>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>

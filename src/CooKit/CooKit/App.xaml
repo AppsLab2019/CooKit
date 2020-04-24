@@ -155,6 +155,11 @@
                 <Setter Property="IsClickable" Value="True"/>
             </Style>
 
+            <Style x:Key="Style.IconSize" TargetType="ContentView">
+                <Setter Property="WidthRequest" Value="32"/>
+                <Setter Property="HeightRequest" Value="32"/>
+            </Style>
+
             <!--#endregion-->
 
             <!--#region Label Fonts-->
