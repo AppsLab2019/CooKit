@@ -10,7 +10,7 @@ namespace CooKit.Extensions
             if (container is null)
                 throw new ArgumentNullException(nameof(container));
 
-            return new Lazy<T>(container.Resolve<T>());
+            return new Lazy<T>(container.Resolve<T>);
         }
     }
 }
