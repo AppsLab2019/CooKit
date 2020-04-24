@@ -12,8 +12,8 @@ namespace CooKit.Services.Repositories
         where T : IEntity 
         where TDto : IEntity
     {
-        private readonly IMapper _mapper;
-        private readonly IRepository<TDto> _dtoRepository;
+        protected readonly IMapper Mapper;
+        protected readonly IRepository<TDto> DtoRepository;
 
         public MappingRepository(IMapper mapper, IRepository<TDto> repository)
         {
@@ -23,58 +23,71 @@ namespace CooKit.Services.Repositories
             if (repository is null)
                 throw new ArgumentNullException(nameof(repository));
 
-            _mapper = mapper;
-            _dtoRepository = repository;
+            Mapper = mapper;
+            DtoRepository = repository;
         }
 
         public async Task<IList<T>> GetAllEntries()
         {
-            var dtos = await _dtoRepository.GetAllEntries();
-            return dtos.Select(MapDtoToEntity).ToList();
+            var dtos = await DtoRepository.GetAllEntries();
+            return await MapDtosToEntity(dtos);
         }
 
         public async Task<T> GetById(Guid id)
         {
-            var dto = await _dtoRepository.GetById(id);
-            return MapDtoToEntity(dto);
+            var dto = await DtoRepository.GetById(id);
+            return await MapDtoToEntity(dto);
         }
 
         public async Task<IList<T>> GetByIds(IEnumerable<Guid> ids)
         {
-            var dtos = await _dtoRepository.GetByIds(ids);
-            return dtos.Select(MapDtoToEntity).ToList();
+            var dtos = await DtoRepository.GetByIds(ids);
+            return await MapDtosToEntity(dtos);
         }
 
-        public Task Add(T entity)
+        public async Task Add(T entity)
         {
-            var dto = MapEntityToDto(entity);
-            return _dtoRepository.Add(dto);
+            var dto = await MapEntityToDto(entity);
+            await DtoRepository.Add(dto);
         }
 
-        public Task Remove(T entity)
+        public async Task Remove(T entity)
         {
-            var dto = MapEntityToDto(entity);
-            return _dtoRepository.Remove(dto);
+            var dto = await MapEntityToDto(entity);
+            await DtoRepository.Remove(dto);
         }
 
-        public Task Update(T entity)
+        public async Task Update(T entity)
         {
-            var dto = MapEntityToDto(entity);
-            return _dtoRepository.Update(dto);
+            var dto = await MapEntityToDto(entity);
+            await DtoRepository.Update(dto);
         }
 
         #region Helper Functions
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private T MapDtoToEntity(TDto dto)
+        protected virtual Task<T> MapDtoToEntity(TDto dto)
         {
-            return dto is null ? default : _mapper.Map<T>(dto);
+            var entity = dto is null ? default : Mapper.Map<T>(dto);
+            return Task.FromResult(entity);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private TDto MapEntityToDto(T entity)
+        protected virtual Task<TDto> MapEntityToDto(T entity)
         {
-            return entity is null ? default : _mapper.Map<TDto>(entity);
+            var dto = entity is null ? default : Mapper.Map<TDto>(entity);
+            return Task.FromResult(dto);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private async Task<IList<T>> MapDtosToEntity(IEnumerable<TDto> dtos)
+        {
+            if (dtos is null)
+                return null;
+
+            var tasks = dtos.Select(MapDtoToEntity).ToArray();
+            await Task.WhenAll(tasks);
+            return tasks.Select(task => task.Result).ToArray();
         }
 
         #endregion

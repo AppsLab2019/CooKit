@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CooKit.Models.Ingredients;
 
 namespace CooKit.Mappers.Profiles
 {
@@ -12,12 +13,16 @@ namespace CooKit.Mappers.Profiles
 
         private void MapDtoToIngredient()
         {
-            // TODO: finish this
+            CreateMap<SQLiteIngredientDto, Ingredient>()
+                .ForMember(dest => dest.Template, opt => opt.Ignore());
+
+            CreateMap<SQLiteIngredientDto, IIngredient>().As<Ingredient>();
         }
 
         private void MapIngredientToDto()
         {
-            // TODO: finish this
+            CreateMap<IIngredient, SQLiteIngredientDto>()
+                .ForMember(dest => dest.TemplateId, opt => opt.Ignore());
         }
     }
 }

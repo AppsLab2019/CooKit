@@ -9,6 +9,8 @@ namespace CooKit.Services
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<SQLiteIngredientTemplateRepository>().As<IIngredientTemplateRepository>().SingleInstance();
+
             builder.RegisterType<SQLiteIngredientDtoRepository>().As<ISQLiteIngredientDtoRepository>().SingleInstance();
             builder.RegisterType<SQLiteIngredientRepository>().As<IIngredientRepository>().SingleInstance();
 
