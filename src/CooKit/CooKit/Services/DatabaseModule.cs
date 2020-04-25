@@ -1,6 +1,5 @@
-﻿using System;
-using Autofac;
-using SQLite;
+﻿using Autofac;
+using CooKit.Services.Factories;
 
 namespace CooKit.Services
 {
@@ -8,21 +7,8 @@ namespace CooKit.Services
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.Register(_ => OpenSQLiteConnection()).SingleInstance();
-        }
-
-        // TODO: move this to a factory
-        private static SQLiteAsyncConnection OpenSQLiteConnection()
-        {
-            var path = GetSQLitePath();
-            return new SQLiteAsyncConnection(path);
-        }
-
-        // TODO: move this to the configuration class
-        private static string GetSQLitePath()
-        {
-            var folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            return System.IO.Path.Combine(folder, "CooKit.db3");
+            builder.RegisterType<SQLiteConnectionFactory>().As<ISQLiteConnectionFactory>().SingleInstance();
+            builder.Register(ctx => ctx.Resolve<ISQLiteConnectionFactory>().CreateConnection()).SingleInstance();
         }
     }
 }

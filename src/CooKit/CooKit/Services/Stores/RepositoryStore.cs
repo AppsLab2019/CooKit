@@ -11,6 +11,7 @@ namespace CooKit.Services.Stores
     {
         private readonly IRepository<T> _repository;
         private IDictionary<Guid, T> _entries;
+
         public RepositoryStore(IRepository<T> repository)
         {
             if (repository is null)

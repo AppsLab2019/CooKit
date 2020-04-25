@@ -1,10 +1,6 @@
-﻿using System;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Autofac;
-using CooKit.Extensions;
-using CooKit.ViewModels;
-using SQLite;
+using CooKit.Strategies.Initialization.App;
 using Xamarin.Forms;
 
 namespace CooKit
@@ -24,11 +20,10 @@ namespace CooKit
         protected override async void OnStart()
         {
             base.OnStart();
-
             var container = BuildIoC();
-            ViewModelLocator.Initialize(container);
 
-            await InitDb(container);
+            var initStrategy = container.Resolve<IAppInitializationStrategy>();
+            await initStrategy.InitializeApp(container);
 
             MainPage = new AppShell();
         }
@@ -41,25 +36,6 @@ namespace CooKit
             builder.RegisterAssemblyModules(assembly);
 
             return builder.Build();
-        }
-
-        [Obsolete("Initialization class should be used!")]
-        private static async Task InitDb(IContainer container)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var types = assembly.GetTypes();
-
-            var lazyConnection = container.LazyResolve<SQLiteAsyncConnection>();
-
-            foreach (var type in types)
-            {
-                var attribute = type.GetCustomAttribute<TableAttribute>();
-
-                if (attribute is null)
-                    continue;
-
-                await lazyConnection.Value.CreateTableAsync(type);
-            }
         }
     }
 }

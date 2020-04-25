@@ -28,6 +28,7 @@ namespace CooKit.ViewModels.Recipes
 
         public ICommand UpdateCommand { get; }
         public ICommand BackCommand { get; }
+        public ICommand ToggleFavoriteCommand { get; }
         public ICommand SelectPictogramCommand { get; }
 
         private readonly IRecipeSelectService _selectService;
@@ -59,6 +60,7 @@ namespace CooKit.ViewModels.Recipes
 
             UpdateCommand = new Command(HandleUpdate);
             BackCommand = new Command(HandleBack);
+            ToggleFavoriteCommand = new Command(HandleToggleFavorite);
             SelectPictogramCommand = new Command<IPictogram>(HandlePictogramSelect);
         }
 
@@ -86,6 +88,13 @@ namespace CooKit.ViewModels.Recipes
         {
             _selectService.ClearSelectedRecipe();
             await Shell.Current.Navigation.PopAsync();
+        }
+
+        private async void HandleToggleFavorite()
+        {
+            IsFavorite = !IsFavorite;
+            RaisePropertyChanged(nameof(IsFavorite));
+            await _alertService.DisplayAlert("Not Finished!", "Title", "lmao");
         }
 
         private async void HandlePictogramSelect(IPictogram pictogram)

@@ -15,11 +15,43 @@
              x:DataType="recipes:RecipeViewModel"
              x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             d:Shell.TabBarIsVisible="False">
 
     <Shell.BackButtonBehavior>
         <BackButtonBehavior Command="{Binding BackCommand}"/>
     </Shell.BackButtonBehavior>
+
+    <Shell.TitleView>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ui:MaterialIconButton Grid.Column="1"
+                                   ButtonType="Text"
+                                   HorizontalOptions="End"
+                                   VerticalOptions="Center"
+                                   Image="{StaticResource IconPath.Add}"
+                                   Command="{Binding ToggleFavoriteCommand}"
+                                   TintColor="{StaticResource Color.OnPrimary}">
+                <ui:MaterialIconButton.Triggers>
+                    <DataTrigger TargetType="ui:MaterialIconButton"
+                                 Binding="{Binding IsFavorite}"
+                                 Value="True">
+                        <Setter Property="Image" Value="{StaticResource IconPath.Delete}"/>
+                    </DataTrigger>
+
+                    <DataTrigger TargetType="ui:MaterialIconButton"
+                                 Binding="{Binding IsFavorite}"
+                                 Value="False">
+                        <Setter Property="Image" Value="{StaticResource IconPath.Add}"/>
+                    </DataTrigger>
+                </ui:MaterialIconButton.Triggers>
+            </ui:MaterialIconButton>
+        </Grid>
+    </Shell.TitleView>
 
     <ContentPage.Resources>
         <ResourceDictionary>
