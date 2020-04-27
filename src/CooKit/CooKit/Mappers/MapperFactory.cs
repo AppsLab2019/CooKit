@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using Autofac;
 using AutoMapper;
-using CooKit.Mappers.Profiles;
 
 namespace CooKit.Mappers
 {
@@ -15,15 +17,25 @@ namespace CooKit.Mappers
 
             var configuration = new MapperConfiguration(conf =>
             {
-                conf.ConstructServicesUsing(ctx.Resolve);
-
-                // TODO: register using reflection
-                conf.AddProfile(ctx.Resolve<SQLiteRecipeProfile>());
-                conf.AddProfile(ctx.Resolve<SQLiteIngredientProfile>());
+                var profiles = ResolveProfilesFromExecutingAssembly(ctx);
+                conf.AddProfiles(profiles);
             });
 
             AssertConfigurationIfDebug(configuration);
             return configuration.CreateMapper();
+        }
+
+        private static IEnumerable<Profile> ResolveProfilesFromExecutingAssembly(IComponentContext ctx)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var profileTypes = GetProfileTypesFromAssembly(assembly);
+            return profileTypes.Select(ctx.Resolve).Cast<Profile>();
+        }
+
+        private static IEnumerable<Type> GetProfileTypesFromAssembly(Assembly assembly)
+        {
+            var types = assembly.GetTypes();
+            return types.Where(type => type.IsAssignableFrom(typeof(Profile)));
         }
         
         [Conditional("DEBUG")]

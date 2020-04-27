@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using CooKit.Mappers.Profiles;
 
 namespace CooKit.Mappers
 {
@@ -14,9 +13,9 @@ namespace CooKit.Mappers
                 .AsImplementedInterfaces()
                 .SingleInstance();
 
-            // TODO: remove this later
-            builder.RegisterType<SQLiteRecipeProfile>();
-            builder.RegisterType<SQLiteIngredientProfile>();
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(type => type.Namespace?.StartsWith("CooKit.Mappers.Profiles") ?? false)
+                .AsSelf();
 
             builder.Register(ctx => ctx.Resolve<IMapperFactory>().CreateMapper(ctx)).SingleInstance();
         }
