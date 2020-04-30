@@ -111,8 +111,10 @@ namespace CooKit.Services.Navigation
             else
                 application.MainPage = new RootView(new MaterialNavigationPage(page));
 
-            var viewModel = page.BindingContext as IViewModel;
-            viewModel?.InitializeAsync(parameter);
+            if (!(page.BindingContext is IViewModel viewModel))
+                return;
+
+            await viewModel.InitializeAsync(parameter);
         }
 
         private Page CreatePage(Type viewModel)
