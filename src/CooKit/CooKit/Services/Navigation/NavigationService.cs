@@ -62,45 +62,14 @@ namespace CooKit.Services.Navigation
 
         #endregion
 
-        #region PushAsync Overloads
-
-        public Task PushAsync(Type viewModel)
-        {
-            return PushAsync(viewModel, null);
-        }
-
-        public Task PushAsync(Type viewModel, object parameter)
+        public Task PushAsync(Type viewModel, object parameter, bool animated)
         {
             return InternalNavigateToAsync(viewModel, parameter);
         }
 
-        public Task PushAsync<T>() where T : IViewModel
+        public Task PushAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
         {
-            return PushAsync(typeof(T));
-        }
-
-        public Task PushAsync<T>(object parameter) where T : IViewModel
-        {
-            return PushAsync(typeof(T), parameter);
-        }
-
-        #endregion
-
-        private async Task InternalNavigateToAsync(Type viewModelType, object parameter)
-        {
-            var page = CreatePage(viewModelType);
-            var application = Application.Current;
-
-            if (application.MainPage is MasterDetailPage root)
-            {
-                var navigation = root.Detail.Navigation;
-                await navigation.PushAsync(page);
-            }
-            else
-                application.MainPage = new RootView(new MaterialNavigationPage(page));
-
-            var viewModel = page.BindingContext as IViewModel;
-            viewModel?.InitializeAsync(parameter);
+            return PushAsync(typeof(T), parameter, animated);
         }
 
         public Task PopAsync()
@@ -119,14 +88,31 @@ namespace CooKit.Services.Navigation
             return Task.CompletedTask;
         }
 
-        public Task SetRootAsync(Type viewModel)
+        public Task SetRootAsync(Type viewModel, object parameter = null, bool animated = true)
         {
             throw new NotImplementedException();
         }
 
-        public Task SetRootAsync<T>() where T : IViewModel
+        public Task SetRootAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
         {
-            return SetRootAsync(typeof(T));
+            return SetRootAsync(typeof(T), parameter, animated);
+        }
+
+        private async Task InternalNavigateToAsync(Type viewModelType, object parameter)
+        {
+            var page = CreatePage(viewModelType);
+            var application = Application.Current;
+
+            if (application.MainPage is MasterDetailPage root)
+            {
+                var navigation = root.Detail.Navigation;
+                await navigation.PushAsync(page);
+            }
+            else
+                application.MainPage = new RootView(new MaterialNavigationPage(page));
+
+            var viewModel = page.BindingContext as IViewModel;
+            viewModel?.InitializeAsync(parameter);
         }
 
         private Page CreatePage(Type viewModel)
