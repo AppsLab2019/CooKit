@@ -17,7 +17,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditorMainViewModel : BaseViewModel
+    public sealed class EditorMainViewModel : ViewModel
     {
         private readonly IAlertService _alertService;
         private readonly IEditorService _editorService;

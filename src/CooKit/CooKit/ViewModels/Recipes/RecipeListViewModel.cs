@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
 {
-    public sealed class RecipeListViewModel : BaseViewModel
+    public sealed class RecipeListViewModel : ViewModel
     {
         public IEnumerable<IRecipe> Recipes { get; private set; }
         public ICommand RefreshCommand { get; }

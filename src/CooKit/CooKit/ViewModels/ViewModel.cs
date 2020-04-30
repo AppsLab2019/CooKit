@@ -1,10 +1,18 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace CooKit.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public class ViewModel : IViewModel, INotifyPropertyChanged
     {
+        public virtual Task InitializeAsync(object parameter)
+        {
+            return Task.CompletedTask;
+        }
+
+        #region IsBusy
+
         public bool IsBusy
         {
             get => _isBusy;
@@ -12,6 +20,8 @@ namespace CooKit.ViewModels
         }
 
         private bool _isBusy;
+
+        #endregion
 
         #region INotifyPropertyChanged
 

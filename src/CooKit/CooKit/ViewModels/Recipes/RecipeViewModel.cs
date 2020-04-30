@@ -12,7 +12,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
 {
-    public sealed class RecipeViewModel : BaseViewModel
+    public sealed class RecipeViewModel : ViewModel
     {
         #region Properties
         

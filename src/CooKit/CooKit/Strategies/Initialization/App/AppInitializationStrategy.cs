@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
 using CooKit.Extensions;
+using CooKit.Services.Navigation;
 using CooKit.ViewModels;
 using SQLite;
 
@@ -19,6 +20,9 @@ namespace CooKit.Strategies.Initialization.App
             var types = assembly.GetTypes();
 
             await InitializeDatabase(container, types);
+
+            var navigationService = container.Resolve<INavigationService>();
+            await navigationService.InitializeAsync(container);
         }
 
         private static async Task InitializeDatabase(IContainer container, IEnumerable<Type> types)

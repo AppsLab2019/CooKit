@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditorStartViewModel : BaseViewModel
+    public sealed class EditorStartViewModel : ViewModel
     {
         public ICommand AddCommand { get; }
         public ICommand EditCommand { get; }
