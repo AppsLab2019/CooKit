@@ -86,14 +86,6 @@ namespace CooKit.Services.Navigation
 
         #endregion
 
-        public Task BackAsync()
-        {
-            if (Application.Current.MainPage is MasterDetailPage root)
-                return root.Detail.Navigation.PopAsync();
-
-            return Task.CompletedTask;
-        }
-
         private async Task InternalNavigateToAsync(Type viewModelType, object parameter)
         {
             var page = CreatePage(viewModelType);
@@ -109,6 +101,32 @@ namespace CooKit.Services.Navigation
 
             var viewModel = page.BindingContext as IViewModel;
             viewModel?.InitializeAsync(parameter);
+        }
+
+        public Task PopAsync()
+        {
+            if (Application.Current.MainPage is MasterDetailPage root)
+                return root.Detail.Navigation.PopAsync();
+
+            return Task.CompletedTask;
+        }
+
+        public Task PopToRootAsync()
+        {
+            if (Application.Current.MainPage is MasterDetailPage root)
+                return root.Detail.Navigation.PopToRootAsync();
+
+            return Task.CompletedTask;
+        }
+
+        public Task SetRootAsync(Type viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SetRootAsync<T>() where T : IViewModel
+        {
+            return SetRootAsync(typeof(T));
         }
 
         private Page CreatePage(Type viewModel)

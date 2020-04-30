@@ -14,6 +14,10 @@ namespace CooKit.Services.Navigation
         Task PushAsync<T>() where T : IViewModel;
         Task PushAsync<T>(object parameter) where T : IViewModel;
 
-        Task BackAsync();
+        Task PopAsync();
+        Task PopToRootAsync();
+
+        Task SetRootAsync(Type viewModel);
+        Task SetRootAsync<T>() where T : IViewModel;
     }
 }

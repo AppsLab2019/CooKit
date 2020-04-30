@@ -7,8 +7,6 @@ using CooKit.Models;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
-using CooKit.Services.Alerts;
-using CooKit.Services.Editor;
 using CooKit.Services.Stores;
 using CooKit.Services.Stores.Ingredients;
 using CooKit.Services.Stores.Pictograms;
@@ -19,25 +17,14 @@ namespace CooKit.ViewModels.Editor
 {
     public sealed class EditorMainViewModel : ViewModel
     {
-        private readonly IAlertService _alertService;
-        private readonly IEditorService _editorService;
-
-        // TODO: inject these dependencies
         private readonly IIngredientStore _ingredientStore;
         private readonly IPictogramStore _pictogramStore;
         private readonly IRecipeStore _recipeStore;
 
         private IRecipe _recipe;
 
-        public EditorMainViewModel(IAlertService alertService, IEditorService editorService,
-            IIngredientStore ingredientStore, IPictogramStore pictogramStore, IRecipeStore recipeStore)
+        public EditorMainViewModel(IIngredientStore ingredientStore, IPictogramStore pictogramStore, IRecipeStore recipeStore)
         {
-            if (alertService is null)
-                throw new ArgumentNullException(nameof(alertService));
-
-            if (editorService is null)
-                throw new ArgumentNullException(nameof(editorService));
-
             if (ingredientStore is null)
                 throw new ArgumentNullException(nameof(ingredientStore));
 
@@ -47,14 +34,10 @@ namespace CooKit.ViewModels.Editor
             if (recipeStore is null)
                 throw new ArgumentNullException(nameof(recipeStore));
 
-            _alertService = alertService;
-            _editorService = editorService;
-
             _ingredientStore = ingredientStore;
             _pictogramStore = pictogramStore;
             _recipeStore = recipeStore;
 
-            InitCommand = new Command(HandleInit);
             SaveCommand = new Command(HandleSave);
             DiscardCommand = new Command(HandleDiscard);
 
@@ -72,12 +55,14 @@ namespace CooKit.ViewModels.Editor
             DeleteIngredientCommand = new Command<IIngredient>(HandleDeleteIngredient);
         }
 
-        private async void HandleInit()
+        public override async Task InitializeAsync(object parameter)
         {
-            _recipe = _editorService.GetWorkingRecipe();
+            _recipe = parameter as IRecipe;
 
             if (_recipe is null)
                 throw new Exception();
+
+            IsBusy = true;
 
             _name = _recipe.Name;
             _description = _recipe.Description;
@@ -92,6 +77,7 @@ namespace CooKit.ViewModels.Editor
             Pictograms = pictogramTask.Result;
             Ingredients = ingredientTask.Result;
 
+            IsBusy = false;
             RaiseAllPropertiesChanged();
         }
 
@@ -103,34 +89,28 @@ namespace CooKit.ViewModels.Editor
 
         private async void HandleSave()
         {
-            using var loadingDisposable = await _alertService.DisplayLoading("Saving...");
+            using var loadingDisposable = await AlertService.DisplayLoading("Saving...");
 
             await _recipeStore.Update(_recipe);
-            await CleanUpAndExit();
+            await NavigationService.PopAsync();
         }
 
         private async void HandleDiscard()
         {
-            var response = await _alertService.DisplayAlert("Confirmation",
+            var response = await AlertService.DisplayAlert("Confirmation",
                 "Are you sure you want to discard these changes?", "Yes", "No");
 
             if (!response)
                 return;
 
-            await CleanUpAndExit();
-        }
-
-        private Task CleanUpAndExit()
-        {
-            _editorService.ClearWorkingRecipe();
-            return Shell.Current.Navigation.PopAsync();
+            await NavigationService.PopAsync();
         }
 
         #region General
 
         private async void HandleChangeName()
         {
-            var name = await _alertService.DisplayInput("Name", "Change name to:", 
+            var name = await AlertService.DisplayInput("Name", "Change name to:", 
                 Name, null, "Ok", "Cancel");
 
             if (string.IsNullOrEmpty(name))
@@ -141,7 +121,7 @@ namespace CooKit.ViewModels.Editor
 
         private async void HandleChangeDescription()
         {
-            var description = await _alertService.DisplayInput("Description", "Change description to:",
+            var description = await AlertService.DisplayInput("Description", "Change description to:",
                 Description, null, "Ok", "Cancel");
 
             if (string.IsNullOrEmpty(description))
@@ -152,7 +132,7 @@ namespace CooKit.ViewModels.Editor
 
         private async void HandleChangeEstimatedTime()
         {
-            var time = await _alertService.DisplayInput("Estimated Time", "Change the time to:",
+            var time = await AlertService.DisplayInput("Estimated Time", "Change the time to:",
                 EstimatedTime.ToString(), null, "Ok", "Cancel");
 
             if (string.IsNullOrEmpty(time))
@@ -161,7 +141,7 @@ namespace CooKit.ViewModels.Editor
             if (int.TryParse(time, out var parsedTime))
                 EstimatedTime = parsedTime;
             else
-                await _alertService.DisplayAlert("Error", $"Invalid input: {time}", "Ok");
+                await AlertService.DisplayAlert("Error", $"Invalid input: {time}", "Ok");
         }
 
         #endregion
@@ -170,7 +150,7 @@ namespace CooKit.ViewModels.Editor
 
         private async void HandleAddImage()
         {
-            var source = await _alertService.DisplayInput("Add Image", "Enter the source:",
+            var source = await AlertService.DisplayInput("Add Image", "Enter the source:",
                 null, null, "Ok", "Cancel");
 
             if (string.IsNullOrEmpty(source))
@@ -186,7 +166,7 @@ namespace CooKit.ViewModels.Editor
 
             System.Diagnostics.Debug.WriteLine(source);
 
-            var confirm = await _alertService.DisplayAlert("Confirmation", 
+            var confirm = await AlertService.DisplayAlert("Confirmation", 
                 "Are you sure you want to delete this image?", "Yes", "No");
 
             if (!confirm)
@@ -201,7 +181,7 @@ namespace CooKit.ViewModels.Editor
 
         public async void HandleAddPictogram()
         {
-            await _alertService.DisplayAlert("Error", "Not implemented!", "Ok");
+            await AlertService.DisplayAlert("Error", "Not implemented!", "Ok");
         }
 
         public async void HandleSelectPictogram(IPictogram pictogram)
@@ -209,7 +189,7 @@ namespace CooKit.ViewModels.Editor
             if (pictogram is null)
                 return;
 
-            var response = await _alertService.DisplayAlert(
+            var response = await AlertService.DisplayAlert(
                 pictogram.Name, pictogram.Description, "Delete", "Close");
 
             if (!response)
@@ -224,7 +204,7 @@ namespace CooKit.ViewModels.Editor
 
         private async void HandleAddIngredient()
         {
-            await _alertService.DisplayAlert("Error", "Not implemented!", "Ok");
+            await AlertService.DisplayAlert("Error", "Not implemented!", "Ok");
         }
 
         private async void HandleDeleteIngredient(IIngredient ingredient)
@@ -232,7 +212,7 @@ namespace CooKit.ViewModels.Editor
             if (ingredient is null)
                 return;
 
-            var response = await _alertService.DisplayAlert("Confirmation",
+            var response = await AlertService.DisplayAlert("Confirmation",
                 "Are you sure you want to delete this ingredient?", "Yes", "No");
 
             if (!response)
@@ -245,7 +225,6 @@ namespace CooKit.ViewModels.Editor
 
         #region Commands
 
-        public ICommand InitCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand DiscardCommand { get; }
 

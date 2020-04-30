@@ -75,7 +75,7 @@ namespace CooKit.ViewModels.Recipes
 
         private async void HandleBack()
         {
-            await NavigationService.BackAsync();
+            await NavigationService.PopAsync();
         }
 
         private async void HandleToggleFavorite()

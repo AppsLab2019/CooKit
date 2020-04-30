@@ -3,15 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:root="clr-namespace:CooKit.ViewModels.Root;assembly=CooKit"
+             xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Root.RootMasterView"
+             x:DataType="root:RootMasterViewModel"
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             BackgroundColor="{StaticResource Color.Surface}"
              Title="Master">
 
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ListView ItemsSource="{Binding Entries}"
+                  SelectedItem="{Binding SelectedEntry}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="root:IRootDetailEntry">
+                    <ViewCell>
+                        <StackLayout Spacing="15"
+                                     Padding="30,8,8,8"
+                                     Orientation="Horizontal">
+                            <ui:MaterialIcon Source="{Binding Icon}" 
+                                             Style="{StaticResource Style.IconSize}"
+                                             TintColor="{StaticResource Color.OnSurface}"/>
+
+                            <ui:MaterialLabel Text="{Binding Text}"
+                                              VerticalOptions="Center"
+                                              Style="{StaticResource FontStyle.Body}"
+                                              TextColor="{StaticResource Color.OnSurface}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </ContentPage.Content>
 </ContentPage>
