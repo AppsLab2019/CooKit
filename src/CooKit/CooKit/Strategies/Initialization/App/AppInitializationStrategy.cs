@@ -15,6 +15,7 @@ namespace CooKit.Strategies.Initialization.App
         public async Task InitializeApp(IContainer container)
         {
             ViewModelLocator.Initialize(container);
+            ViewModel.Initialize(container);
 
             var assembly = Assembly.GetExecutingAssembly();
             var types = assembly.GetTypes();
@@ -22,7 +23,7 @@ namespace CooKit.Strategies.Initialization.App
             await InitializeDatabase(container, types);
 
             var navigationService = container.Resolve<INavigationService>();
-            await navigationService.InitializeAsync(container);
+            await navigationService.InitializeAsync();
         }
 
         private static async Task InitializeDatabase(IContainer container, IEnumerable<Type> types)

@@ -3,29 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Autofac;
 using CooKit.ViewModels;
+using CooKit.ViewModels.Recipes;
+using CooKit.Views.Root;
+using Xamarin.Forms;
+using XF.Material.Forms.UI;
 
 namespace CooKit.Services.Navigation
 {
     public sealed class NavigationService : INavigationService
     {
-        private IContainer _container;
         private IDictionary<Type, Type> _viewModelToViewDictionary;
 
-        public Task InitializeAsync(IContainer container)
+        #region Initialization
+
+        public Task InitializeAsync()
         {
-            if (container is null)
-                throw new ArgumentNullException(nameof(container));
-
-            _container = container;
-
             var thisAssembly = Assembly.GetExecutingAssembly();
             var viewModels = ScanViewModelTypes(thisAssembly);
             var viewModelViewPairs = AssignViewModelTypeToViewType(viewModels);
 
             _viewModelToViewDictionary = new Dictionary<Type, Type>(viewModelViewPairs);
-            return Task.CompletedTask;
+            return InternalNavigateToAsync(typeof(RecipeListViewModel), null);
         }
 
         private static IEnumerable<Type> ScanViewModelTypes(Assembly assembly)
@@ -33,14 +32,7 @@ namespace CooKit.Services.Navigation
             var types = assembly?.GetTypes();
             return types?
                 .Where(type => type.Name.Contains("ViewModel"))
-                .Where(IsValidViewModelType);
-        }
-
-        private static bool IsValidViewModelType(Type type)
-        {
-            return !type.IsInterface
-                   && type.IsSealed
-                   && typeof(IViewModel).IsAssignableFrom(type);
+                .Where(IViewModel.IsValidImplementation);
         }
 
         private static IEnumerable<KeyValuePair<Type, Type>> AssignViewModelTypeToViewType(IEnumerable<Type> viewModels)
@@ -66,21 +58,69 @@ namespace CooKit.Services.Navigation
 
                 yield return new KeyValuePair<Type, Type>(viewModel, view);
             }
-        } 
+        }
+
+        #endregion
+
+        #region PushAsync Overloads
+
+        public Task PushAsync(Type viewModel)
+        {
+            return PushAsync(viewModel, null);
+        }
+
+        public Task PushAsync(Type viewModel, object parameter)
+        {
+            return InternalNavigateToAsync(viewModel, parameter);
+        }
 
         public Task PushAsync<T>() where T : IViewModel
         {
-            throw new NotImplementedException();
+            return PushAsync(typeof(T));
         }
 
         public Task PushAsync<T>(object parameter) where T : IViewModel
         {
-            throw new NotImplementedException();
+            return PushAsync(typeof(T), parameter);
         }
 
-        public Task PopAsync()
+        #endregion
+
+        public Task BackAsync()
         {
-            throw new NotImplementedException();
+            if (Application.Current.MainPage is MasterDetailPage root)
+                return root.Detail.Navigation.PopAsync();
+
+            return Task.CompletedTask;
+        }
+
+        private async Task InternalNavigateToAsync(Type viewModelType, object parameter)
+        {
+            var page = CreatePage(viewModelType);
+            var application = Application.Current;
+
+            if (application.MainPage is MasterDetailPage root)
+            {
+                var navigation = root.Detail.Navigation;
+                await navigation.PushAsync(page);
+            }
+            else
+                application.MainPage = new RootView(new MaterialNavigationPage(page));
+
+            var viewModel = page.BindingContext as IViewModel;
+            viewModel?.InitializeAsync(parameter);
+        }
+
+        private Page CreatePage(Type viewModel)
+        {
+            if (viewModel is null)
+                throw new ArgumentNullException(nameof(viewModel));
+
+            if (!_viewModelToViewDictionary.ContainsKey(viewModel))
+                throw new KeyNotFoundException();
+
+            var viewType = _viewModelToViewDictionary[viewModel];
+            return (Page) Activator.CreateInstance(viewType);
         }
     }
 }

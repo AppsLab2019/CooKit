@@ -35,7 +35,7 @@ namespace CooKit.Mappers
         private static IEnumerable<Type> GetProfileTypesFromAssembly(Assembly assembly)
         {
             var types = assembly.GetTypes();
-            return types.Where(type => type.IsAssignableFrom(typeof(Profile)));
+            return types.Where(type => typeof(Profile).IsAssignableFrom(type));
         }
         
         [Conditional("DEBUG")]

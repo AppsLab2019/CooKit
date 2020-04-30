@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Autofac;
 using CooKit.Strategies.Initialization.App;
+using CooKit.Views.Root;
 using Xamarin.Forms;
 
 namespace CooKit
@@ -23,9 +24,15 @@ namespace CooKit
             var container = BuildIoC();
 
             var initStrategy = container.Resolve<IAppInitializationStrategy>();
-            await initStrategy.InitializeApp(container);
-
-            MainPage = new AppShell();
+            try
+            {
+                await initStrategy.InitializeApp(container);
+            }
+            catch (System.Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.Message);
+                throw;
+            }
         }
 
         private static IContainer BuildIoC()

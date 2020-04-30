@@ -7,7 +7,7 @@ namespace CooKit.ViewModels
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(type => type.Name.EndsWith("ViewModel"))
+                .Where(type => type.Name.EndsWith("ViewModel") && IViewModel.IsValidImplementation(type))
                 .AsSelf();
         }
     }
