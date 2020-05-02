@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace CooKit.Services.Navigation
             var viewModelViewPairs = AssignViewModelTypeToViewType(viewModels);
 
             _viewModelToViewDictionary = new Dictionary<Type, Type>(viewModelViewPairs);
-            return InternalNavigateToAsync(typeof(RecipeListViewModel), null);
+            return InitializeRoot(typeof(RecipeListViewModel));
         }
 
         private static IEnumerable<Type> ScanViewModelTypes(Assembly assembly)
@@ -60,16 +61,28 @@ namespace CooKit.Services.Navigation
             }
         }
 
-        #endregion
-
-        public Task PushAsync(Type viewModel, object parameter, bool animated)
+        private async Task InitializeRoot(Type defaultViewModel)
         {
-            return InternalNavigateToAsync(viewModel, parameter);
+            var page = CreatePage(defaultViewModel);
+            var root = new RootView(new MaterialNavigationPage(page));
+
+            var rootMaster = root.Master;
+            await InitializeViewModel(rootMaster, null);
+            await InitializeViewModel(page, null);
+
+            Application.Current.MainPage = root;
         }
+
+        #endregion
 
         public Task PushAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
         {
             return PushAsync(typeof(T), parameter, animated);
+        }
+
+        public Task PushAsync(Type viewModel, object parameter = null, bool animated = true)
+        {
+            return InternalNavigateToAsync(viewModel, parameter, animated);
         }
 
         public Task PopAsync()
@@ -90,7 +103,7 @@ namespace CooKit.Services.Navigation
 
         public Task SetRootAsync(Type viewModel, object parameter = null, bool animated = true)
         {
-            throw new NotImplementedException();
+            return InternalSetRootAsync(viewModel, parameter);
         }
 
         public Task SetRootAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
@@ -98,23 +111,42 @@ namespace CooKit.Services.Navigation
             return SetRootAsync(typeof(T), parameter, animated);
         }
 
-        private async Task InternalNavigateToAsync(Type viewModelType, object parameter)
+        private async Task InternalNavigateToAsync(Type viewModelType, object parameter, bool animated)
         {
+            AssertApplicationMainPageIsRoot();
+
             var page = CreatePage(viewModelType);
-            var application = Application.Current;
+            var navigation = GetDetailNavigation();
 
-            if (application.MainPage is MasterDetailPage root)
-            {
-                var navigation = root.Detail.Navigation;
-                await navigation.PushAsync(page);
-            }
-            else
-                application.MainPage = new RootView(new MaterialNavigationPage(page));
+            await navigation.PushAsync(page, animated);
+            await InitializeViewModel(page, parameter);
+        }
 
-            if (!(page.BindingContext is IViewModel viewModel))
-                return;
+        private  Task InternalSetRootAsync(Type viewModelType, object parameter)
+        {
+            AssertApplicationMainPageIsRoot();
 
-            await viewModel.InitializeAsync(parameter);
+            var page = CreatePage(viewModelType);
+            var wrappedPage = new MaterialNavigationPage(page);
+
+            var rootView = GetRootView();
+            rootView.Detail = wrappedPage;
+
+            // TODO: move this somewhere else?
+            rootView.IsPresented = false;
+
+            return InitializeViewModel(page, parameter);
+        }
+
+        private static Task InitializeViewModel(Element element, object parameter)
+        {
+            if (element is null)
+                throw new ArgumentNullException(nameof(element));
+
+            if (element.BindingContext is IViewModel viewModel)
+                return viewModel.InitializeAsync(parameter);
+
+            return Task.CompletedTask;
         }
 
         private Page CreatePage(Type viewModel)
@@ -128,5 +160,33 @@ namespace CooKit.Services.Navigation
             var viewType = _viewModelToViewDictionary[viewModel];
             return (Page) Activator.CreateInstance(viewType);
         }
+
+        private static Application GetApplication()
+        {
+            return Application.Current;
+        }
+
+        private static RootView GetRootView()
+        {
+            return (RootView) GetApplication().MainPage;
+        }
+
+        private static INavigation GetDetailNavigation()
+        {
+            return GetRootView().Detail.Navigation;
+        }
+
+        #region Assertions
+
+        [Conditional("DEBUG")]
+        private static void AssertApplicationMainPageIsRoot()
+        {
+            if (Application.Current.MainPage is RootView)
+                return;
+
+            throw new Exception("Application MainPage is not RootView!");
+        }
+
+        #endregion
     }
 }

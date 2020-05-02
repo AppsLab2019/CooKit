@@ -21,7 +21,7 @@ namespace CooKit.ViewModels.Recipes
                 throw new ArgumentNullException(nameof(store));
 
             _store = store;
-            SelectCommand = new Command<Recipe>(SelectRecipe);
+            SelectCommand = new Command<IRecipe>(async recipe => await SelectRecipe(recipe));
         }
 
         public override async Task InitializeAsync(object parameter)
@@ -33,9 +33,9 @@ namespace CooKit.ViewModels.Recipes
             RaisePropertyChanged(nameof(Recipes));
         }
 
-        private async void SelectRecipe(Recipe recipe)
+        private Task SelectRecipe(IRecipe recipe)
         {
-            await NavigationService.PushAsync<RecipeViewModel>(recipe);
+            return NavigationService.PushAsync<RecipeViewModel>(recipe);
         }
     }
 }

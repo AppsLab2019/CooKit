@@ -6,6 +6,8 @@
              xmlns:root="clr-namespace:CooKit.ViewModels.Root;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
+             xmlns:behaviors="clr-namespace:CooKit.Behaviors;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Root.RootMasterView"
              x:DataType="root:RootMasterViewModel"
@@ -13,9 +15,20 @@
              BackgroundColor="{StaticResource Color.Surface}"
              Title="Master">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ItemTappedArgsConverter x:Key="Converter.ItemTappedArgs"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding Entries}"
-                  SelectedItem="{Binding SelectedEntry}">
+        <ListView ItemsSource="{Binding Entries}">
+            <ListView.Behaviors>
+                <behaviors:EventToCommandBehavior EventName="ItemTapped"
+                                                  Command="{Binding SelectCommand}"
+                                                  Converter="{StaticResource Converter.ItemTappedArgs}"/>
+            </ListView.Behaviors>
+
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="root:IRootDetailEntry">
                     <ViewCell>

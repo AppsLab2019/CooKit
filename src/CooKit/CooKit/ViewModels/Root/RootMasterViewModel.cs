@@ -1,17 +1,25 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using CooKit.ViewModels.Editor;
 using CooKit.ViewModels.Recipes;
+using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Root
 {
     public sealed class RootMasterViewModel : ViewModel
     {
-        public IEnumerable<IRootDetailEntry> Entries { get; }
-        public IRootDetailEntry SelectedEntry { get; set; }
+        public IEnumerable<IRootDetailEntry> Entries { get; private set; }
+        public ICommand SelectCommand { get; }
 
         public RootMasterViewModel()
         {
+            SelectCommand = new Command<IRootDetailEntry>(async e => await SelectDetail(e));
+        }
+
+        public override Task InitializeAsync(object parameter)
+        {
+            IsBusy = true;
             Entries = new[]
             {
                 new RootDetailEntry
@@ -20,7 +28,6 @@ namespace CooKit.ViewModels.Root
                     Text = "Recipes",
                     ViewModelType = typeof(RecipeListViewModel)
                 },
-
                 new RootDetailEntry
                 {
                     Icon = null,
@@ -29,7 +36,18 @@ namespace CooKit.ViewModels.Root
                 }
             };
 
-            SelectedEntry = Entries.First();
+            RaisePropertyChanged(nameof(Entries));
+            IsBusy = false;
+
+            return Task.CompletedTask;
+        }
+
+        public async Task SelectDetail(IRootDetailEntry entry)
+        {
+            if (entry is null)
+                return;
+
+            await NavigationService.SetRootAsync(entry.ViewModelType);
         }
     }
 }
