@@ -2,7 +2,7 @@
 using System.IO;
 using SQLite;
 
-namespace CooKit.Services.Factories
+namespace CooKit.Services.Database
 {
     public sealed class SQLiteConnectionFactory : ISQLiteConnectionFactory
     {

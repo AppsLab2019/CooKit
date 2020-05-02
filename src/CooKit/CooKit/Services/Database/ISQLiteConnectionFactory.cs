@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace CooKit.Services.Factories
+namespace CooKit.Services.Database
 {
     public interface ISQLiteConnectionFactory
     {

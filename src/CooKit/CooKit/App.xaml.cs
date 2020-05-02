@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
-using CooKit.Strategies.Initialization.App;
+using CooKit.Services.Database;
+using CooKit.Services.Navigation;
+using CooKit.ViewModels;
 using Xamarin.Forms;
 
 namespace CooKit
@@ -22,8 +25,11 @@ namespace CooKit
             base.OnStart();
             var container = BuildIoC();
 
-            var initStrategy = container.Resolve<IAppInitializationStrategy>();
-            await initStrategy.InitializeApp(container);
+            ViewModelLocator.Initialize(container);
+            ViewModel.Initialize(container);
+
+            await InitializeDatabase(container);
+            await InitializeNavigation(container);
         }
 
         private static IContainer BuildIoC()
@@ -34,6 +40,18 @@ namespace CooKit
             builder.RegisterAssemblyModules(assembly);
 
             return builder.Build();
+        }
+
+        private static Task InitializeDatabase(IComponentContext ctx)
+        {
+            var initialization = ctx.Resolve<ISQLiteInitialization>();
+            return initialization.InitializeAsync();
+        }
+
+        private static Task InitializeNavigation(IComponentContext ctx)
+        {
+            var navigation = ctx.Resolve<INavigationService>();
+            return navigation.InitializeAsync();
         }
     }
 }

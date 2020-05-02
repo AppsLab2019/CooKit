@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using CooKit.Services.Factories;
+using CooKit.Services.Database;
 
 namespace CooKit.Services
 {
@@ -7,7 +7,8 @@ namespace CooKit.Services
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<SQLiteConnectionFactory>().As<ISQLiteConnectionFactory>().SingleInstance();
+            builder.RegisterType<SQLiteConnectionFactory>().As<ISQLiteConnectionFactory>();
+            builder.RegisterType<SQLiteInitialization>().As<ISQLiteInitialization>();
             builder.Register(ctx => ctx.Resolve<ISQLiteConnectionFactory>().CreateConnection()).SingleInstance();
         }
     }
