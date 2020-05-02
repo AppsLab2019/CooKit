@@ -1,5 +1,5 @@
 ﻿using CooKit.Models.Pictograms;
-using CooKit.Services.Repositories.Pictograms;
+using CooKit.Repositories.Pictograms;
 
 namespace CooKit.Services.Stores.Pictograms
 {

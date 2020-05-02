@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CooKit.Models;
 
-namespace CooKit.Services.Repositories
+namespace CooKit.Repositories
 {
     public class MappingRepository<T, TDto> : IRepository<T> 
         where T : IEntity 

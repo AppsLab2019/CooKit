@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using CooKit.Models;
 using CooKit.Services.Queries;
 
-namespace CooKit.Services.Repositories
+namespace CooKit.Repositories
 {
     public interface IRepository<T> : IQueryEntityById<T> where T : IEntity
     {

@@ -1,9 +1,9 @@
 ﻿using Autofac;
-using CooKit.Services.Repositories.Ingredients;
-using CooKit.Services.Repositories.Pictograms;
-using CooKit.Services.Repositories.Recipes;
+using CooKit.Repositories.Ingredients;
+using CooKit.Repositories.Pictograms;
+using CooKit.Repositories.Recipes;
 
-namespace CooKit.Services
+namespace CooKit.Repositories
 {
     public sealed class RepositoryModule : Module
     {

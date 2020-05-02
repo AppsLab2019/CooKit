@@ -1,5 +1,5 @@
 ﻿using CooKit.Models.Ingredients;
-using CooKit.Services.Repositories.Ingredients;
+using CooKit.Repositories.Ingredients;
 
 namespace CooKit.Services.Stores.Ingredients
 {

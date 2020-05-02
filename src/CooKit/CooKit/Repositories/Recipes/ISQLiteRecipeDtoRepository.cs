@@ -1,6 +1,6 @@
 ﻿using CooKit.Models.Recipes;
 
-namespace CooKit.Services.Repositories.Recipes
+namespace CooKit.Repositories.Recipes
 {
     public interface ISQLiteRecipeDtoRepository : IRepository<SQLiteRecipeDto>
     {

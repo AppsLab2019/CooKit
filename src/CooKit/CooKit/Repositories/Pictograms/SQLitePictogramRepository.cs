@@ -1,7 +1,7 @@
 ﻿using CooKit.Models.Pictograms;
 using SQLite;
 
-namespace CooKit.Services.Repositories.Pictograms
+namespace CooKit.Repositories.Pictograms
 {
     public sealed class SQLitePictogramRepository : SQLiteRepository<IPictogram, Pictogram>, IPictogramRepository
     {

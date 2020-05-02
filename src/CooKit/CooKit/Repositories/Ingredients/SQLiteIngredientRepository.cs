@@ -3,7 +3,7 @@ using AutoMapper;
 using CooKit.Models.Ingredients;
 using CooKit.Services.Queries;
 
-namespace CooKit.Services.Repositories.Ingredients
+namespace CooKit.Repositories.Ingredients
 {
     public sealed class SQLiteIngredientRepository : MappingRepository<IIngredient, SQLiteIngredientDto>, IIngredientRepository
     {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CooKit.Models.Recipes;
 
-namespace CooKit.Services.Repositories.Recipes
+namespace CooKit.Repositories.Recipes
 {
     public sealed class SQLiteRecipeRepository : MappingRepository<IRecipe, SQLiteRecipeDto>, IRecipeRepository
     {

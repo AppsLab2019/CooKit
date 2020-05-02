@@ -1,7 +1,7 @@
 ﻿using CooKit.Models.Ingredients;
 using SQLite;
 
-namespace CooKit.Services.Repositories.Ingredients
+namespace CooKit.Repositories.Ingredients
 {
     public sealed class SQLiteIngredientDtoRepository : SQLiteConcreteRepository<SQLiteIngredientDto>, ISQLiteIngredientDtoRepository
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CooKit.Models;
 using SQLite;
 
-namespace CooKit.Services.Repositories
+namespace CooKit.Repositories
 {
     public class SQLiteRepository<T, TImpl> : IRepository<T> where T : IEntity where TImpl : T, new()
     {

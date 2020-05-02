@@ -1,5 +1,5 @@
 ﻿using CooKit.Models.Recipes;
-using CooKit.Services.Repositories.Recipes;
+using CooKit.Repositories.Recipes;
 
 namespace CooKit.Services.Stores.Recipes
 {
