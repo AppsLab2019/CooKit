@@ -11,8 +11,12 @@ namespace CooKit.Services.Navigation
         Task PushAsync(Type viewModel, object parameter = null, bool animated = true);
         Task PushAsync<T>(object parameter = null, bool animated = true) where T : IViewModel;
 
-        Task PopAsync();
-        Task PopToRootAsync();
+        Task PushModalAsync(Type viewModel, object parameter = null, bool animated = true);
+        Task PushModalAsync<T>(object parameter = null, bool animated = true) where T : IViewModel;
+
+        Task PopAsync(bool animated = true);
+        Task PopModalAsync(bool animated = true);
+        Task PopToRootAsync(bool animated = true);
 
         Task SetRootAsync(Type viewModel, object parameter = null, bool animated = true);
         Task SetRootAsync<T>(object parameter = null, bool animated = true) where T : IViewModel;

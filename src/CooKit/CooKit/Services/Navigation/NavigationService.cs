@@ -12,6 +12,7 @@ using XF.Material.Forms.UI;
 
 namespace CooKit.Services.Navigation
 {
+    // TODO: remove Application.Current usage
     public sealed class NavigationService : INavigationService
     {
         private IDictionary<Type, Type> _viewModelToViewDictionary;
@@ -75,6 +76,8 @@ namespace CooKit.Services.Navigation
 
         #endregion
 
+        #region Push Methods
+
         public Task PushAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
         {
             return PushAsync(typeof(T), parameter, animated);
@@ -82,23 +85,43 @@ namespace CooKit.Services.Navigation
 
         public Task PushAsync(Type viewModel, object parameter = null, bool animated = true)
         {
-            return InternalNavigateToAsync(viewModel, parameter, animated);
+            return InternalPushAsync(viewModel, parameter, animated);
         }
 
-        public Task PopAsync()
+        public Task PushModalAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
         {
-            if (Application.Current.MainPage is MasterDetailPage root)
-                return root.Detail.Navigation.PopAsync();
-
-            return Task.CompletedTask;
+            return PushModalAsync(typeof(T), parameter, animated);
         }
 
-        public Task PopToRootAsync()
+        public Task PushModalAsync(Type viewModel, object parameter = null, bool animated = true)
         {
-            if (Application.Current.MainPage is MasterDetailPage root)
-                return root.Detail.Navigation.PopToRootAsync();
+            return InternalPushModalAsync(viewModel, parameter, animated);
+        }
 
-            return Task.CompletedTask;
+        #endregion
+
+        #region Pop Methods
+
+        public Task PopAsync(bool animated = true)
+        {
+            return GetDetailNavigation().PopAsync(animated);
+        }
+
+        public Task PopModalAsync(bool animated = true)
+        {
+            return GetDetailNavigation().PopModalAsync(animated);
+        }
+
+        public Task PopToRootAsync(bool animated = true)
+        {
+            return GetDetailNavigation().PopToRootAsync(animated);
+        }
+
+        #endregion
+
+        public Task SetRootAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
+        {
+            return SetRootAsync(typeof(T), parameter, animated);
         }
 
         public Task SetRootAsync(Type viewModel, object parameter = null, bool animated = true)
@@ -106,12 +129,9 @@ namespace CooKit.Services.Navigation
             return InternalSetRootAsync(viewModel, parameter);
         }
 
-        public Task SetRootAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
-        {
-            return SetRootAsync(typeof(T), parameter, animated);
-        }
+        // TODO: merge InternalPushAsync and InternalPushModalAsync logic into a single helper function through delegates
 
-        private async Task InternalNavigateToAsync(Type viewModelType, object parameter, bool animated)
+        private async Task InternalPushAsync(Type viewModelType, object parameter, bool animated)
         {
             AssertApplicationMainPageIsRoot();
 
@@ -119,6 +139,17 @@ namespace CooKit.Services.Navigation
             var navigation = GetDetailNavigation();
 
             await navigation.PushAsync(page, animated);
+            await InitializeViewModel(page, parameter);
+        }        
+        
+        private async Task InternalPushModalAsync(Type viewModelType, object parameter, bool animated)
+        {
+            AssertApplicationMainPageIsRoot();
+
+            var page = CreatePage(viewModelType);
+            var navigation = GetDetailNavigation();
+
+            await navigation.PushModalAsync(page, animated);
             await InitializeViewModel(page, parameter);
         }
 
@@ -161,6 +192,8 @@ namespace CooKit.Services.Navigation
             return (Page) Activator.CreateInstance(viewType);
         }
 
+        #region Simple Getters
+
         private static Application GetApplication()
         {
             return Application.Current;
@@ -175,6 +208,8 @@ namespace CooKit.Services.Navigation
         {
             return GetRootView().Detail.Navigation;
         }
+
+        #endregion
 
         #region Assertions
 
