@@ -22,7 +22,8 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding Entries}">
+        <ListView SelectionMode="Single"
+                  ItemsSource="{Binding Entries}">
             <ListView.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="ItemTapped"
                                                   Command="{Binding SelectCommand}"

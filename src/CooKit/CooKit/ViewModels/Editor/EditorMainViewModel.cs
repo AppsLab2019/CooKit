@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.Models;
+using CooKit.Extensions;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
-using CooKit.Services.Stores;
-using CooKit.Services.Stores.Ingredients;
-using CooKit.Services.Stores.Pictograms;
 using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
 
@@ -17,25 +13,15 @@ namespace CooKit.ViewModels.Editor
 {
     public sealed class EditorMainViewModel : ViewModel
     {
-        private readonly IIngredientStore _ingredientStore;
-        private readonly IPictogramStore _pictogramStore;
         private readonly IRecipeStore _recipeStore;
 
         private IRecipe _recipe;
 
-        public EditorMainViewModel(IIngredientStore ingredientStore, IPictogramStore pictogramStore, IRecipeStore recipeStore)
+        public EditorMainViewModel(IRecipeStore recipeStore)
         {
-            if (ingredientStore is null)
-                throw new ArgumentNullException(nameof(ingredientStore));
-
-            if (pictogramStore is null)
-                throw new ArgumentNullException(nameof(pictogramStore));
-
             if (recipeStore is null)
                 throw new ArgumentNullException(nameof(recipeStore));
 
-            _ingredientStore = ingredientStore;
-            _pictogramStore = pictogramStore;
             _recipeStore = recipeStore;
 
             SaveCommand = new Command(HandleSave);
@@ -55,7 +41,7 @@ namespace CooKit.ViewModels.Editor
             DeleteIngredientCommand = new Command<IIngredient>(HandleDeleteIngredient);
         }
 
-        public override async Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(object parameter)
         {
             _recipe = parameter as IRecipe;
 
@@ -64,27 +50,19 @@ namespace CooKit.ViewModels.Editor
 
             IsBusy = true;
 
+            // TODO: move mapping to a separate function
             _name = _recipe.Name;
             _description = _recipe.Description;
             _estimatedTime = _recipe.EstimatedTime;
 
             //Images = new ObservableCollection<string>(_recipe.Images);
-            var pictogramTask = IdsToCollection(_pictogramStore, _recipe.PictogramIds);
-            var ingredientTask = IdsToCollection(_ingredientStore, _recipe.IngredientIds);
 
-            await Task.WhenAll(pictogramTask, ingredientTask);
-
-            Pictograms = pictogramTask.Result;
-            Ingredients = ingredientTask.Result;
+            Pictograms = _recipe.Pictograms.ToObservableCollection();
+            Ingredients = _recipe.Ingredients.ToObservableCollection();
 
             IsBusy = false;
             RaiseAllPropertiesChanged();
-        }
-
-        private static async Task<ObservableCollection<T>> IdsToCollection<T>(
-            IEntityStore<T> store, IEnumerable<Guid> ids) where T : IEntity
-        {
-            return new ObservableCollection<T>(await store.GetByIds(ids));
+            return Task.CompletedTask;
         }
 
         private async void HandleSave()

@@ -1,35 +1,45 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using System;
+using System.Threading.Tasks;
 using CooKit.Models.Ingredients;
 using CooKit.Services.Queries;
 
 namespace CooKit.Repositories.Ingredients
 {
-    public sealed class SQLiteIngredientRepository : MappingRepository<IIngredient, SQLiteIngredientDto>, IIngredientRepository
+    public sealed class SQLiteIngredientRepository : MappingRepository<IIngredient, IIngredientDto>, IIngredientRepository
     {
         private readonly IQueryEntityById<IIngredientTemplate> _ingredientTemplateQuery;
 
-        public SQLiteIngredientRepository(IMapper mapper, ISQLiteIngredientDtoRepository repository,
-            IQueryEntityById<IIngredientTemplate> ingredientTemplateQuery) : base(mapper, repository)
+        public SQLiteIngredientRepository(IIngredientDtoRepository repository, 
+            IQueryEntityById<IIngredientTemplate> ingredientTemplateQuery) : base(repository)
         {
             if (ingredientTemplateQuery is null)
-                throw new System.ArgumentNullException(nameof(ingredientTemplateQuery));
+                throw new ArgumentNullException(nameof(ingredientTemplateQuery));
 
             _ingredientTemplateQuery = ingredientTemplateQuery;
         }
 
-        protected override async Task<IIngredient> MapDtoToEntity(SQLiteIngredientDto dto)
+        protected override async Task<IIngredient> MapDtoToEntity(IIngredientDto dto)
         {
-            var entity = await base.MapDtoToEntity(dto);
-            entity.Template = await _ingredientTemplateQuery.GetById(dto.TemplateId);
-            return entity;
+            return new Ingredient
+            {
+                Id = dto.Id,
+                Note = dto.Note,
+                Quantity = dto.Quantity,
+                Template = await _ingredientTemplateQuery.GetById(dto.TemplateId)
+            };
         }
 
-        protected override async Task<SQLiteIngredientDto> MapEntityToDto(IIngredient entity)
+        protected override Task<IIngredientDto> MapEntityToDto(IIngredient entity)
         {
-            var dto = await base.MapEntityToDto(entity);
-            dto.TemplateId = entity.Template.Id;
-            return dto;
+            IIngredientDto dto = new IngredientDto
+            {
+                Id = entity.Id,
+                Note = entity.Note,
+                Quantity = entity.Quantity,
+                TemplateId = entity.Template.Id
+            };
+
+            return Task.FromResult(dto);
         }
     }
 }

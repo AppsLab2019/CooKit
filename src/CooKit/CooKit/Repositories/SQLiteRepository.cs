@@ -65,7 +65,7 @@ namespace CooKit.Repositories
             return dict.ContainsKey(id) ? dict[id] : default;
         }
 
-        private TImpl CastToConcreteOrThrow(T entity)
+        private static TImpl CastToConcreteOrThrow(T entity)
         {
             if (entity is TImpl concrete)
                 return concrete;

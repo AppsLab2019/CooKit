@@ -4,7 +4,7 @@ using SQLite;
 namespace CooKit.Models.Recipes
 {
     [Table("recipes")]
-    public sealed class SQLiteRecipeDto : IEntity
+    public sealed class SQLiteRawRecipeDto : IEntity
     {
         [Column("id")]
         [PrimaryKey, NotNull, Unique]
@@ -23,15 +23,18 @@ namespace CooKit.Models.Recipes
         public bool IsFavorite { get; set; }
 
         [Column("preview_image")]
-        public Uri PreviewImage { get; set; }
+        public string PreviewImage { get; set; }
 
         //[Column("images")]
         //public string Images { get; set; }
 
-        [Column("pictograms")]
-        public string Pictograms { get; set; }
+        [Column("pictogram_ids")]
+        public string PictogramIds { get; set; }
 
-        [Column("ingredients")]
-        public string Ingredients { get; set; }
+        [Column("ingredient_ids")]
+        public string IngredientIds { get; set; }
+
+        //[Column("step_ids")]
+        //public string StepIds { get; set; }
     }
 }

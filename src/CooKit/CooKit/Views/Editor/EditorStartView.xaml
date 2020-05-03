@@ -39,7 +39,7 @@
                             SelectedItem="{Binding SelectedRecipe}"
                             ItemsSource="{Binding Recipes}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="recipes:Recipe">
+                    <DataTemplate x:DataType="recipes:IRecipe">
                         <StackLayout Spacing="5"
                                      Padding="5"
                                      BackgroundColor="{StaticResource Color.Surface}">

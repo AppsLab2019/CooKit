@@ -5,8 +5,6 @@ using System.Windows.Input;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
-using CooKit.Services.Stores.Ingredients;
-using CooKit.Services.Stores.Pictograms;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
@@ -29,48 +27,33 @@ namespace CooKit.ViewModels.Recipes
         public ICommand ToggleFavoriteCommand { get; }
         public ICommand SelectPictogramCommand { get; }
 
-        private readonly IIngredientStore _ingredientStore;
-        private readonly IPictogramStore _pictogramStore;
-
-        public RecipeViewModel(IIngredientStore ingredientStore, IPictogramStore pictogramStore)
+        public RecipeViewModel()
         {
-            if (ingredientStore is null)
-                throw new ArgumentNullException(nameof(ingredientStore));
-
-            if (pictogramStore is null)
-                throw new ArgumentNullException(nameof(pictogramStore));
-
-            _ingredientStore = ingredientStore;
-            _pictogramStore = pictogramStore;
-
             BackCommand = new Command(HandleBack);
             ToggleFavoriteCommand = new Command(HandleToggleFavorite);
             SelectPictogramCommand = new Command<IPictogram>(HandlePictogramSelect);
         }
 
-        public override async Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(object parameter)
         {
             if (!(parameter is IRecipe recipe))
                 throw new ArgumentException(nameof(parameter));
 
             IsBusy = true;
 
-            var pictogramTask = _pictogramStore.GetByIds(recipe.PictogramIds);
-            var ingredientTask = _ingredientStore.GetByIds(recipe.IngredientIds);
-
+            // TODO: move mapping to a separate function
             Name = recipe.Name;
             Description = recipe.Description;
             EstimatedTime = recipe.EstimatedTime;
             IsFavorite = recipe.IsFavorite;
             //Images = recipe.Images;
 
-            await Task.WhenAll(pictogramTask, ingredientTask);
-
-            Pictograms = pictogramTask.Result;
-            Ingredients = ingredientTask.Result;
+            Ingredients = recipe.Ingredients;
+            Pictograms = recipe.Pictograms;
 
             IsBusy = false;
             RaiseAllPropertiesChanged();
+            return Task.CompletedTask;
         }
 
         private async void HandleBack()

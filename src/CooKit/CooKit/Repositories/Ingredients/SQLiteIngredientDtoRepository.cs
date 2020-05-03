@@ -3,7 +3,7 @@ using SQLite;
 
 namespace CooKit.Repositories.Ingredients
 {
-    public sealed class SQLiteIngredientDtoRepository : SQLiteConcreteRepository<SQLiteIngredientDto>, ISQLiteIngredientDtoRepository
+    public sealed class SQLiteIngredientDtoRepository : SQLiteRepository<IIngredientDto, IngredientDto>, IIngredientDtoRepository
     {
         public SQLiteIngredientDtoRepository(SQLiteAsyncConnection connection) : base(connection)
         {

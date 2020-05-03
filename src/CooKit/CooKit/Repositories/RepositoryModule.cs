@@ -11,12 +11,12 @@ namespace CooKit.Repositories
         {
             builder.RegisterType<SQLiteIngredientTemplateRepository>().As<IIngredientTemplateRepository>().SingleInstance();
 
-            builder.RegisterType<SQLiteIngredientDtoRepository>().As<ISQLiteIngredientDtoRepository>().SingleInstance();
+            builder.RegisterType<SQLiteIngredientDtoRepository>().As<IIngredientDtoRepository>().SingleInstance();
             builder.RegisterType<SQLiteIngredientRepository>().As<IIngredientRepository>().SingleInstance();
 
             builder.RegisterType<SQLitePictogramRepository>().As<IPictogramRepository>().SingleInstance();
 
-            builder.RegisterType<SQLiteRecipeDtoRepository>().As<ISQLiteRecipeDtoRepository>().SingleInstance();
+            builder.RegisterType<SQLiteRawRecipeDtoRepository>().As<ISQLiteRawRecipeDtoRepository>().SingleInstance();
             builder.RegisterType<SQLiteRecipeRepository>().As<IRecipeRepository>().SingleInstance();
         }
     }

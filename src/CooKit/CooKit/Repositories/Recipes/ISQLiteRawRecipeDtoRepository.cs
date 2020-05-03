@@ -2,7 +2,7 @@
 
 namespace CooKit.Repositories.Recipes
 {
-    public interface ISQLiteRecipeDtoRepository : IRepository<SQLiteRecipeDto>
+    public interface ISQLiteRawRecipeDtoRepository : IRepository<SQLiteRawRecipeDto>
     {
     }
 }

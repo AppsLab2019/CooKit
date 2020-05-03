@@ -4,7 +4,7 @@ using SQLite;
 namespace CooKit.Models.Ingredients
 {
     [Table("ingredients")]
-    public sealed class SQLiteIngredientDto : IEntity
+    public sealed class IngredientDto : IIngredientDto
     {
         [Column("id")]
         [PrimaryKey, NotNull, Unique]

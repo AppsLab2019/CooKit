@@ -1,5 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CooKit.Models.Ingredients;
+using CooKit.Models.Pictograms;
 
 namespace CooKit.Models.Recipes
 {
@@ -14,7 +15,8 @@ namespace CooKit.Models.Recipes
         string PreviewImage { get; set; }
         //IList<string> Images { get; set; }
 
-        IList<Guid> IngredientIds { get; set; }
-        IList<Guid> PictogramIds { get; set; }
+        IList<IIngredient> Ingredients { get; set; }
+        IList<IPictogram> Pictograms { get; set; }
+        //IList<IStep> Steps { get; set; }
     }
 }
