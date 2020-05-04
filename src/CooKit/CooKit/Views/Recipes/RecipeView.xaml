@@ -15,14 +15,9 @@
              x:DataType="recipes:RecipeViewModel"
              x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}"
-             d:Shell.TabBarIsVisible="False">
+             Style="{StaticResource Style.Page}">
 
-    <Shell.BackButtonBehavior>
-        <BackButtonBehavior Command="{Binding BackCommand}"/>
-    </Shell.BackButtonBehavior>
-
-    <Shell.TitleView>
+    <NavigationPage.TitleView>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -51,7 +46,7 @@
                 </ui:MaterialIconButton.Triggers>
             </ui:MaterialIconButton>
         </Grid>
-    </Shell.TitleView>
+    </NavigationPage.TitleView>
 
     <ContentPage.Resources>
         <ResourceDictionary>

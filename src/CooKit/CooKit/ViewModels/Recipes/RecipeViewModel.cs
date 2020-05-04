@@ -23,13 +23,11 @@ namespace CooKit.ViewModels.Recipes
 
         #endregion
 
-        public ICommand BackCommand { get; }
         public ICommand ToggleFavoriteCommand { get; }
         public ICommand SelectPictogramCommand { get; }
 
         public RecipeViewModel()
         {
-            BackCommand = new Command(HandleBack);
             ToggleFavoriteCommand = new Command(HandleToggleFavorite);
             SelectPictogramCommand = new Command<IPictogram>(HandlePictogramSelect);
         }
@@ -54,11 +52,6 @@ namespace CooKit.ViewModels.Recipes
             IsBusy = false;
             RaiseAllPropertiesChanged();
             return Task.CompletedTask;
-        }
-
-        private async void HandleBack()
-        {
-            await NavigationService.PopAsync();
         }
 
         private async void HandleToggleFavorite()
