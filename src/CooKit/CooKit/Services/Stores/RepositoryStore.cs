@@ -25,6 +25,7 @@ namespace CooKit.Services.Stores
             var entries = await _repository.GetAllEntries();
             _entries = entries.ToDictionary(entry => entry.Id);
         }
+
         public async Task<IList<T>> GetAll()
         {
             await RefreshIfNeeded();

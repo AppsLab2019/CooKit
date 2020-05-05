@@ -25,8 +25,8 @@ namespace CooKit.Models.Recipes
         [Column("preview_image")]
         public string PreviewImage { get; set; }
 
-        //[Column("images")]
-        //public string Images { get; set; }
+        [Column("images")]
+        public string Images { get; set; }
 
         [Column("pictogram_ids")]
         public string PictogramIds { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CooKit.Extensions;
 using CooKit.Models;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
@@ -40,6 +41,7 @@ namespace CooKit.Repositories.Recipes
                 IsFavorite = dto.IsFavorite,
 
                 PreviewImage = dto.PreviewImage,
+                Images = StringToImageList(dto.Images),
 
                 Ingredients = await QueryEntitiesAndHandleNull(_ingredientsQuery, dto.IngredientIds),
                 Pictograms = await QueryEntitiesAndHandleNull(_pictogramsQuery, dto.PictogramIds)
@@ -57,18 +59,20 @@ namespace CooKit.Repositories.Recipes
                 IsFavorite = entity.IsFavorite,
 
                 PreviewImage = entity.PreviewImage,
+                Images = entity.Images?.ToString(Separator, Escape),
 
-                IngredientIds = ConvertEntityCollectionToString(entity.Ingredients),
-                PictogramIds = ConvertEntityCollectionToString(entity.Pictograms)
+                IngredientIds = entity.Ingredients?.ToString(Separator, ingredient => ingredient.Id.ToString()),
+                PictogramIds = entity.Pictograms?.ToString(Separator, pictogram => pictogram.Id.ToString())
             };
 
             return Task.FromResult(dto);
         }
 
+        private const char Separator = '|';
+        private const char Escape = '^';
+
         // TODO: move this to some converter
         // TODO: rename these methods
-
-        private const char Separator = ';';
 
         private static async Task<IList<T>> QueryEntitiesAndHandleNull<T>(IQueryEntitiesByIds<T> query, string rawIds)
             where T : IEntity
@@ -84,20 +88,14 @@ namespace CooKit.Repositories.Recipes
             return entities ?? new List<T>();
         }
 
-        private static string ConvertEntityCollectionToString<T>(ICollection<T> entities) where T : IEntity
+        private static IList<string> StringToImageList(string imageString)
         {
-            if (entities is null)
-                return null;
+            if (imageString is null)
+                return new List<string>();
 
-            if (!entities.Any())
-                return string.Empty;
-
-            if (entities.Count == 1)
-                return entities.First().Id.ToString();
-
-            return entities
-                .Select(entity => entity.Id.ToString())
-                .Aggregate((id1, id2) => $"{id1}{Separator}{id2}");
+            return imageString
+                .SplitWithEscape(Separator, Escape, StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
         }
     }
 }

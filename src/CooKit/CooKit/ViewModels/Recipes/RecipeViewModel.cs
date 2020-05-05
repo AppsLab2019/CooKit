@@ -44,7 +44,8 @@ namespace CooKit.ViewModels.Recipes
             Description = recipe.Description;
             EstimatedTime = recipe.EstimatedTime;
             IsFavorite = recipe.IsFavorite;
-            //Images = recipe.Images;
+
+            Images = recipe.Images;
 
             Ingredients = recipe.Ingredients;
             Pictograms = recipe.Pictograms;

@@ -15,7 +15,7 @@ namespace CooKit.Models.Recipes
         public bool IsFavorite { get; set; }
 
         public string PreviewImage { get; set; }
-        //public IList<string> Images { get; set; }
+        public IList<string> Images { get; set; }
 
         public IList<IIngredient> Ingredients { get; set; }
         public IList<IPictogram> Pictograms { get; set; }
