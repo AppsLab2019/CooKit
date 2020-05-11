@@ -42,6 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes\" />
+    <Folder Include="Views\Steps\" />
   </ItemGroup>
 </Project>

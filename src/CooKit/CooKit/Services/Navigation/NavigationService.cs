@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using CooKit.Factories;
 using CooKit.ViewModels;
 using CooKit.ViewModels.Recipes;
 using CooKit.Views.Root;
 using Xamarin.Forms;
-using XF.Material.Forms.UI;
 
 namespace CooKit.Services.Navigation
 {
@@ -16,16 +16,25 @@ namespace CooKit.Services.Navigation
     public sealed class NavigationService : INavigationService
     {
         private IDictionary<Type, Type> _viewModelToViewDictionary;
+        private readonly IPageFactory _pageFactory;
+
+        public NavigationService(IPageFactory factory)
+        {
+            if (factory is null)
+                throw new ArgumentNullException(nameof(factory));
+
+            _pageFactory = factory;
+        }
 
         #region Initialization
 
         public Task InitializeAsync()
         {
             var thisAssembly = Assembly.GetExecutingAssembly();
-            var viewModels = ScanViewModelTypes(thisAssembly);
-            var viewModelViewPairs = AssignViewModelTypeToViewType(viewModels);
+            var viewModels = ScanViewModelTypes(thisAssembly).ToList();
 
-            _viewModelToViewDictionary = new Dictionary<Type, Type>(viewModelViewPairs);
+            _viewModelToViewDictionary = AssignViewModelTypeToViewType(viewModels);
+
             return InitializeRoot(typeof(RecipeListViewModel));
         }
 
@@ -37,10 +46,12 @@ namespace CooKit.Services.Navigation
                 .Where(IViewModel.IsValidImplementation);
         }
 
-        private static IEnumerable<KeyValuePair<Type, Type>> AssignViewModelTypeToViewType(IEnumerable<Type> viewModels)
+        private static IDictionary<Type, Type> AssignViewModelTypeToViewType(IEnumerable<Type> viewModels)
         {
             if (viewModels is null)
-                yield break;
+                throw new ArgumentNullException(nameof(viewModels));
+
+            var dictionary = new Dictionary<Type, Type>();
 
             foreach (var viewModel in viewModels)
             {
@@ -58,20 +69,22 @@ namespace CooKit.Services.Navigation
                 if (view is null)
                     throw new Exception();
 
-                yield return new KeyValuePair<Type, Type>(viewModel, view);
+                dictionary.Add(viewModel, view);
             }
+
+            return dictionary;
         }
 
         private async Task InitializeRoot(Type defaultViewModel)
         {
-            var page = CreatePage(defaultViewModel);
-            var root = new RootView(new MaterialNavigationPage(page));
+            var root = CreateRootPage(defaultViewModel);
+            var concreteRoot = new RootView(root);
 
-            var rootMaster = root.Master;
+            var rootMaster = concreteRoot.Master;
             await InitializeViewModel(rootMaster, null);
-            await InitializeViewModel(page, null);
+            await InitializeRootViewModel(root, null);
 
-            Application.Current.MainPage = root;
+            Application.Current.MainPage = concreteRoot;
         }
 
         #endregion
@@ -157,39 +170,54 @@ namespace CooKit.Services.Navigation
         {
             AssertApplicationMainPageIsRoot();
 
-            var page = CreatePage(viewModelType);
-            var wrappedPage = new MaterialNavigationPage(page);
+            var page = CreateRootPage(viewModelType);
 
             var rootView = GetRootView();
-            rootView.Detail = wrappedPage;
+            rootView.Detail = page;
 
             // TODO: move this somewhere else?
             rootView.IsPresented = false;
 
-            return InitializeViewModel(page, parameter);
+            return InitializeRootViewModel(page, parameter);
         }
 
-        private static Task InitializeViewModel(Element element, object parameter)
+        private static Task InitializeViewModel(BindableObject bindable, object parameter)
         {
-            if (element is null)
-                throw new ArgumentNullException(nameof(element));
-
-            if (element.BindingContext is IViewModel viewModel)
+            if (bindable.BindingContext is IViewModel viewModel)
                 return viewModel.InitializeAsync(parameter);
 
             return Task.CompletedTask;
         }
 
+        private static Task InitializeRootViewModel(BindableObject bindable, object parameter)
+        {
+            if (!(bindable is NavigationPage root))
+                throw new ArgumentException($"{bindable.GetType().Name} is not a valid root page!");
+
+            return InitializeViewModel(root.RootPage, parameter);
+        }
+
         private Page CreatePage(Type viewModel)
+        {
+            var view = GetViewType(viewModel);
+            return _pageFactory.CreatePage(view);
+        }
+
+        private Page CreateRootPage(Type viewModel)
+        {
+            var view = GetViewType(viewModel);
+            return _pageFactory.CreateRootPage(view);
+        }
+
+        private Type GetViewType(Type viewModel)
         {
             if (viewModel is null)
                 throw new ArgumentNullException(nameof(viewModel));
 
-            if (!_viewModelToViewDictionary.ContainsKey(viewModel))
-                throw new KeyNotFoundException();
+            if (_viewModelToViewDictionary.TryGetValue(viewModel, out var viewType))
+                return viewType;
 
-            var viewType = _viewModelToViewDictionary[viewModel];
-            return (Page) Activator.CreateInstance(viewType);
+            throw new KeyNotFoundException();
         }
 
         #region Simple Getters
