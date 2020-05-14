@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
+using CooKit.Models.Steps;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
@@ -20,6 +21,7 @@ namespace CooKit.ViewModels.Recipes
         public IEnumerable<string> Images { get; private set; }
         public IEnumerable<IPictogram> Pictograms { get; private set; }
         public IEnumerable<IIngredient> Ingredients { get; private set; }
+        public IEnumerable<IStep> Steps { get; set; }
 
         #endregion
 
@@ -37,9 +39,6 @@ namespace CooKit.ViewModels.Recipes
             if (!(parameter is IRecipe recipe))
                 throw new ArgumentException(nameof(parameter));
 
-            IsBusy = true;
-
-            // TODO: move mapping to a separate function
             Name = recipe.Name;
             Description = recipe.Description;
             EstimatedTime = recipe.EstimatedTime;
@@ -49,8 +48,8 @@ namespace CooKit.ViewModels.Recipes
 
             Ingredients = recipe.Ingredients;
             Pictograms = recipe.Pictograms;
+            Steps = recipe.Steps;
 
-            IsBusy = false;
             RaiseAllPropertiesChanged();
             return Task.CompletedTask;
         }

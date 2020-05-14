@@ -10,6 +10,8 @@
              xmlns:pictograms="clr-namespace:CooKit.Models.Pictograms;assembly=CooKit"
              xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
              xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
+             xmlns:selectors="clr-namespace:CooKit.Selectors;assembly=CooKit"
+             xmlns:steps="clr-namespace:CooKit.Views.Steps;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.RecipeView"
              x:DataType="recipes:RecipeViewModel"
@@ -54,6 +56,14 @@
                    BasedOn="{StaticResource Style.SurfaceCard}">
                 <Setter Property="CornerRadius" Value="5"/>
             </Style>
+
+            <DataTemplate x:Key="Template.TextStep">
+                <steps:TextStepView/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="Template.ImageStep">
+                <steps:ImageStepView/>
+            </DataTemplate>
 
             <converters:IngredientToFormattedStringConverter x:Key="Converter.IngredientToFormattedStringConverter"/>
         </ResourceDictionary>
@@ -195,10 +205,20 @@
 
                 <ui:MaterialCard Margin="20,0,20,10"
                                  Style="{StaticResource Style.FloatingCard}">
-                    <ui:MaterialCard Elevation="2" 
-                                     WidthRequest="200" 
-                                     HeightRequest="200"
-                                     BackgroundColor="{StaticResource Color.Surface}"/>
+                    <StackLayout>
+                        <CarouselView HeightRequest="250"
+                                      ItemsSource="{Binding Steps}"
+                                      IndicatorView="StepIndicator">
+                            <CarouselView.ItemTemplate>
+                                <selectors:StepTemplateSelector TextTemplate="{StaticResource Template.TextStep}"
+                                                                ImageTemplate="{StaticResource Template.ImageStep}"/>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+                        
+                        <IndicatorView x:Name="StepIndicator"
+                                       IndicatorColor="LightGray"
+                                       SelectedIndicatorColor="Gray"/>
+                    </StackLayout>
                 </ui:MaterialCard>
             </StackLayout>
         </ScrollView>

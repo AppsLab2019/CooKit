@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
+using CooKit.Models.Steps;
 
 namespace CooKit.Models.Recipes
 {
@@ -19,6 +20,6 @@ namespace CooKit.Models.Recipes
 
         public IList<IIngredient> Ingredients { get; set; }
         public IList<IPictogram> Pictograms { get; set; }
-        //public IList<IStep> Steps { get; set; }
+        public IList<IStep> Steps { get; set; }
     }
 }

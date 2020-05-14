@@ -7,6 +7,7 @@ using CooKit.Models;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
+using CooKit.Models.Steps;
 using CooKit.Services.Queries;
 
 namespace CooKit.Repositories.Recipes
@@ -15,10 +16,12 @@ namespace CooKit.Repositories.Recipes
     {
         private readonly IQueryEntitiesByIds<IIngredient> _ingredientsQuery;
         private readonly IQueryEntitiesByIds<IPictogram> _pictogramsQuery;
+        private readonly IQueryEntitiesByIds<IStep> _stepsQuery;
 
         public SQLiteRecipeRepository(ISQLiteRawRecipeDtoRepository repository,
             IQueryEntitiesByIds<IIngredient> ingredientsQuery, 
-            IQueryEntitiesByIds<IPictogram> pictogramsQuery) : base(repository)
+            IQueryEntitiesByIds<IPictogram> pictogramsQuery,
+            IQueryEntitiesByIds<IStep> stepsQuery) : base(repository)
         {
             if (ingredientsQuery is null)
                 throw new ArgumentNullException(nameof(ingredientsQuery));
@@ -26,8 +29,12 @@ namespace CooKit.Repositories.Recipes
             if (pictogramsQuery is null)
                 throw new ArgumentNullException(nameof(pictogramsQuery));
 
+            if (stepsQuery is null)
+                throw new ArgumentNullException(nameof(stepsQuery));
+
             _ingredientsQuery = ingredientsQuery;
             _pictogramsQuery = pictogramsQuery;
+            _stepsQuery = stepsQuery;
         }
 
         protected override async Task<IRecipe> MapDtoToEntity(SQLiteRawRecipeDto dto)
@@ -44,7 +51,8 @@ namespace CooKit.Repositories.Recipes
                 Images = StringToImageList(dto.Images),
 
                 Ingredients = await QueryEntitiesAndHandleNull(_ingredientsQuery, dto.IngredientIds),
-                Pictograms = await QueryEntitiesAndHandleNull(_pictogramsQuery, dto.PictogramIds)
+                Pictograms = await QueryEntitiesAndHandleNull(_pictogramsQuery, dto.PictogramIds),
+                Steps = await QueryEntitiesAndHandleNull(_stepsQuery, dto.StepIds)
             };
         }
 
@@ -62,7 +70,8 @@ namespace CooKit.Repositories.Recipes
                 Images = entity.Images?.ToString(Separator, Escape),
 
                 IngredientIds = entity.Ingredients?.ToString(Separator, ingredient => ingredient.Id.ToString()),
-                PictogramIds = entity.Pictograms?.ToString(Separator, pictogram => pictogram.Id.ToString())
+                PictogramIds = entity.Pictograms?.ToString(Separator, pictogram => pictogram.Id.ToString()),
+                StepIds = entity.Steps?.ToString(Separator, step => step.Id.ToString())
             };
 
             return Task.FromResult(dto);

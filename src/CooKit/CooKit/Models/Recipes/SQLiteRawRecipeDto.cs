@@ -34,7 +34,7 @@ namespace CooKit.Models.Recipes
         [Column("ingredient_ids")]
         public string IngredientIds { get; set; }
 
-        //[Column("step_ids")]
-        //public string StepIds { get; set; }
+        [Column("step_ids")]
+        public string StepIds { get; set; }
     }
 }

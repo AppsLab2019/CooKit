@@ -141,6 +141,11 @@
                 <Setter Property="BackgroundColor" Value="{StaticResource Color.Background}"/>
             </Style>
 
+            <Style x:Key="Style.IconSize" TargetType="ContentView">
+                <Setter Property="WidthRequest" Value="32"/>
+                <Setter Property="HeightRequest" Value="32"/>
+            </Style>
+
             <!--#endregion-->
 
             <!--#region Cards-->
@@ -155,9 +160,11 @@
                 <Setter Property="IsClickable" Value="True"/>
             </Style>
 
-            <Style x:Key="Style.IconSize" TargetType="ContentView">
-                <Setter Property="WidthRequest" Value="32"/>
-                <Setter Property="HeightRequest" Value="32"/>
+            <Style x:Key="Style.StepCard" TargetType="ui:MaterialCard">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="Elevation" Value="2"/>
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.Surface}"/>
             </Style>
 
             <!--#endregion-->

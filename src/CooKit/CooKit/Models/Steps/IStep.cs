@@ -2,6 +2,5 @@
 {
     public interface IStep : IEntity
     {
-        StepType Type { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace CooKit.Models.Steps
 {
-    public interface IImageStep
+    public interface IImageStep : IStep
     {
         string Image { get; set; }
     }
