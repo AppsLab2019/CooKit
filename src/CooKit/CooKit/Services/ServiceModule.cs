@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using CooKit.Services.Extractors;
 
 namespace CooKit.Services
 {
@@ -15,6 +16,8 @@ namespace CooKit.Services
                 .Where(type => type.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
                 .SingleInstance();
+
+            builder.RegisterType<ResourceExtractor>().As<IResourceExtractor>().SingleInstance();
         }
     }
 }
