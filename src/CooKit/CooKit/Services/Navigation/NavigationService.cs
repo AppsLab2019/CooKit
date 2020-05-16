@@ -95,11 +95,20 @@ namespace CooKit.Services.Navigation
         {
             return PushAsync(typeof(T), parameter, animated);
         }
-
+        
         public Task PushAsync(Type viewModel, object parameter = null, bool animated = true)
         {
-            return InternalPushAsync(viewModel, parameter, animated);
+            return InternalPushAsync(viewModel, parameter, animated, PushAction);
         }
+
+        private static Task PushAction(INavigation nav, Page page, bool anim)
+        {
+            return nav.PushAsync(page, anim);
+        }
+
+        #endregion
+
+        #region Push Modal Methods
 
         public Task PushModalAsync<T>(object parameter = null, bool animated = true) where T : IViewModel
         {
@@ -108,7 +117,12 @@ namespace CooKit.Services.Navigation
 
         public Task PushModalAsync(Type viewModel, object parameter = null, bool animated = true)
         {
-            return InternalPushModalAsync(viewModel, parameter, animated);
+            return InternalPushAsync(viewModel, parameter, animated, PushModalAction);
+        }
+
+        private static Task PushModalAction(INavigation nav, Page page, bool anim)
+        {
+            return nav.PushModalAsync(page, anim);
         }
 
         #endregion
@@ -142,35 +156,25 @@ namespace CooKit.Services.Navigation
             return InternalSetRootAsync(viewModel, parameter);
         }
 
-        // TODO: merge InternalPushAsync and InternalPushModalAsync logic into a single helper function through delegates
-
-        private async Task InternalPushAsync(Type viewModelType, object parameter, bool animated)
+        private Task InternalPushAsync(Type viewModelType, object parameter, bool animated, NavAction navAction)
         {
             AssertApplicationMainPageIsRoot();
 
             var page = CreatePage(viewModelType);
             var navigation = GetDetailNavigation();
 
-            await navigation.PushAsync(page, animated);
-            await InitializeViewModel(page, parameter);
-        }        
-        
-        private async Task InternalPushModalAsync(Type viewModelType, object parameter, bool animated)
-        {
-            AssertApplicationMainPageIsRoot();
+            var initializationTask = InitializeViewModel(page, parameter);
+            var pushTask = navAction(navigation, page, animated);
 
-            var page = CreatePage(viewModelType);
-            var navigation = GetDetailNavigation();
-
-            await navigation.PushModalAsync(page, animated);
-            await InitializeViewModel(page, parameter);
+            return Task.WhenAll(initializationTask, pushTask);
         }
 
-        private  Task InternalSetRootAsync(Type viewModelType, object parameter)
+        private Task InternalSetRootAsync(Type viewModelType, object parameter)
         {
             AssertApplicationMainPageIsRoot();
 
             var page = CreateRootPage(viewModelType);
+            var initializationTask = InitializeRootViewModel(page, parameter);
 
             var rootView = GetRootView();
             rootView.Detail = page;
@@ -178,7 +182,7 @@ namespace CooKit.Services.Navigation
             // TODO: move this somewhere else?
             rootView.IsPresented = false;
 
-            return InitializeRootViewModel(page, parameter);
+            return initializationTask;
         }
 
         private static Task InitializeViewModel(BindableObject bindable, object parameter)
@@ -219,6 +223,8 @@ namespace CooKit.Services.Navigation
 
             throw new KeyNotFoundException();
         }
+
+        private delegate Task NavAction(INavigation navigation, Page page, bool animated);
 
         #region Simple Getters
 
