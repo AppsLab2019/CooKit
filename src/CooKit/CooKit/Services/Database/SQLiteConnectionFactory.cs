@@ -33,6 +33,9 @@ namespace CooKit.Services.Database
 
         private void ExtractDb(string path)
         {
+            if (File.Exists(path))
+                return;
+
             var assembly = Assembly.GetExecutingAssembly();
             _extractor.UnsafeExtract(assembly, "CooKit.CooKit.db3", path);
         }

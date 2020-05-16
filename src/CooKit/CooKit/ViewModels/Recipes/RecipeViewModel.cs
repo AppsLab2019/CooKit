@@ -73,6 +73,7 @@ namespace CooKit.ViewModels.Recipes
             RaisePropertyChanged(nameof(IsFavorite));
 
             await _store.Update(_recipe);
+            await SnackbarService.SnackbarAsync("Toggled favorite status!", 2750);
         }
 
         private async void HandlePictogramSelect(IPictogram pictogram)
