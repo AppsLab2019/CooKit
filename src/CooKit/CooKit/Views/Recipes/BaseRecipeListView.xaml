@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:recipes="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
+             xmlns:recipesvm="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Recipes.BaseRecipeListView"
+             x:DataType="recipesvm:BaseRecipeListViewModel"
+             x:Name="Root"
+             Style="{StaticResource Style.Page}">
+
+    <ContentView.Content>
+        <CollectionView Margin="10"
+                        ItemsSource="{Binding Recipes}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="2"
+                                 Orientation="Vertical"
+                                 HorizontalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="recipes:IRecipe">
+                    <ContentView Padding="6"
+                                 HeightRequest="150">
+                        <ui:MaterialCard Padding="0"
+                                         CornerRadius="10"
+                                         Style="{StaticResource Style.ClickableSurfaceCard}"
+                                         ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"
+                                         ClickCommandParameter="{Binding}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <forms:CachedImage Grid.RowSpan="2"
+                                                   Aspect="AspectFill"
+                                                   DownsampleToViewSize="True"
+                                                   Source="{Binding PreviewImage}"/>
+
+                                <AbsoluteLayout Grid.Row="1"
+                                                Padding="6"
+                                                BackgroundColor="#B0000000">
+                                    <ui:MaterialLabel Text="{Binding Name}"
+                                                      TextColor="{StaticResource Color.OnPrimary}"
+                                                      Style="{StaticResource FontStyle.Subtitle}"/>
+                                </AbsoluteLayout>
+                            </Grid>
+                        </ui:MaterialCard>
+                    </ContentView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentView.Content>
+</ContentView>

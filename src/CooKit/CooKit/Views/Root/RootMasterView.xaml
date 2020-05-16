@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:root="clr-namespace:CooKit.ViewModels.Root;assembly=CooKit"
+             xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
+             xmlns:behaviors="clr-namespace:CooKit.Behaviors;assembly=CooKit"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Root.RootMasterView"
+             x:DataType="root:RootMasterViewModel"
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             BackgroundColor="{StaticResource Color.Surface}"
+             Title="Master">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ItemTappedArgsConverter x:Key="Converter.ItemTappedArgs"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ListView SelectionMode="None"
+                  ItemsSource="{Binding Entries}">
+            <ListView.Behaviors>
+                <behaviors:EventToCommandBehavior EventName="ItemTapped"
+                                                  Command="{Binding SelectCommand}"
+                                                  Converter="{StaticResource Converter.ItemTappedArgs}"/>
+            </ListView.Behaviors>
+
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="root:IRootDetailEntry">
+                    <ViewCell>
+                        <StackLayout Spacing="15"
+                                     Padding="30,8,8,8"
+                                     Orientation="Horizontal">
+                            <ui:MaterialIcon Source="{Binding Icon}" 
+                                             Style="{StaticResource Style.IconSize}"
+                                             TintColor="{StaticResource Color.OnSurface}"/>
+
+                            <ui:MaterialLabel Text="{Binding Text}"
+                                              VerticalOptions="Center"
+                                              Style="{StaticResource FontStyle.Body}"
+                                              TextColor="{StaticResource Color.OnSurface}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>
