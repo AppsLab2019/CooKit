@@ -27,6 +27,14 @@
                 <On Platform="Android" Value="ic_action_delete.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="IconPath.Favorite" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_favorite.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="IconPath.FavoriteBorder" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_favorite_border.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="IconPath.Save" x:TypeArguments="x:String">
                 <On Platform="Android" Value="ic_action_save.png"/>
             </OnPlatform>
@@ -48,6 +56,14 @@
             
             <OnPlatform x:Key="Icon.Delete" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_delete.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.Favorite" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_favorite.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.FavoriteBorder" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_favorite_border.png"/>
             </OnPlatform>
 
             <OnPlatform x:Key="Icon.Save" x:TypeArguments="ImageSource">

@@ -7,6 +7,7 @@
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:recipes="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
              xmlns:recipesvm="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.RecipeListView"
              x:DataType="recipesvm:RecipeListViewModel"
@@ -25,12 +26,11 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="recipes:IRecipe">
-                    <StackLayout Padding="6"
+                    <ContentView Padding="6"
                                  HeightRequest="150">
                         <ui:MaterialCard Padding="0"
-                                         Elevation="2"
                                          CornerRadius="10"
-                                         IsClickable="True"
+                                         Style="{StaticResource Style.ClickableSurfaceCard}"
                                          ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"
                                          ClickCommandParameter="{Binding}">
                             <Grid>
@@ -39,18 +39,21 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <Image Aspect="AspectFill"
-                                       Source="{Binding PreviewImage}"/>
+                                <forms:CachedImage Grid.RowSpan="2"
+                                                   Aspect="AspectFill"
+                                                   DownsampleToViewSize="True"
+                                                   Source="{Binding PreviewImage}"/>
 
                                 <AbsoluteLayout Grid.Row="1"
                                                 Padding="6"
                                                 BackgroundColor="#B0000000">
-                                    <Label Text="{Binding Name}"
-                                           TextColor="#F0F0F0F0"/>
+                                    <ui:MaterialLabel Text="{Binding Name}"
+                                                      TextColor="{StaticResource Color.OnPrimary}"
+                                                      Style="{StaticResource FontStyle.Subtitle}"/>
                                 </AbsoluteLayout>
                             </Grid>
                         </ui:MaterialCard>
-                    </StackLayout>
+                    </ContentView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

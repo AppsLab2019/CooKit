@@ -37,13 +37,13 @@
                     <DataTrigger TargetType="ui:MaterialIconButton"
                                  Binding="{Binding IsFavorite}"
                                  Value="True">
-                        <Setter Property="Image" Value="{StaticResource IconPath.Delete}"/>
+                        <Setter Property="Image" Value="{StaticResource IconPath.Favorite}"/>
                     </DataTrigger>
 
                     <DataTrigger TargetType="ui:MaterialIconButton"
                                  Binding="{Binding IsFavorite}"
                                  Value="False">
-                        <Setter Property="Image" Value="{StaticResource IconPath.Add}"/>
+                        <Setter Property="Image" Value="{StaticResource IconPath.FavoriteBorder}"/>
                     </DataTrigger>
                 </ui:MaterialIconButton.Triggers>
             </ui:MaterialIconButton>

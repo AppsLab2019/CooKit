@@ -56,156 +56,167 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Spacing="10">
-                <ui:MaterialCard Padding="0"
-                                 Elevation="2"
-                                 BackgroundColor="{StaticResource Color.Background}">
-                    <Grid HeightRequest="250">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="0.01*"/>
-                        </Grid.RowDefinitions>
+        <AbsoluteLayout>
+            <ScrollView AbsoluteLayout.LayoutBounds="0,0,1,1"
+                        AbsoluteLayout.LayoutFlags="SizeProportional">
+                <StackLayout Spacing="10">
+                    <ui:MaterialCard Padding="0"
+                                     Elevation="2"
+                                     BackgroundColor="{StaticResource Color.Background}">
+                        <Grid HeightRequest="250">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="0.01*"/>
+                            </Grid.RowDefinitions>
 
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <CarouselView Grid.RowSpan="3"
+                                          Grid.ColumnSpan="3"
+                                          IndicatorView="ImageIndicator"
+                                          ItemsSource="{Binding Images}">
+                                <CarouselView.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <forms:CachedImage Source="{Binding}"
+                                                           Aspect="AspectFill"
+                                                           DownsampleToViewSize="True"/>
+                                    </DataTemplate>
+                                </CarouselView.ItemTemplate>
+                            </CarouselView>
+
+                            <IndicatorView Grid.Row="1"
+                                           Grid.Column="1"
+                                           x:Name="ImageIndicator"
+                                           SelectedIndicatorColor="White"
+                                           IndicatorColor="LightGray"/>
+                        </Grid>
+                    </ui:MaterialCard>
+
+                    <Grid Margin="20,0,20,0"
+                          HeightRequest="40">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <CarouselView Grid.RowSpan="3"
-                                      Grid.ColumnSpan="3"
-                                      IndicatorView="ImageIndicator"
-                                      ItemsSource="{Binding Images}">
-                            <CarouselView.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <forms:CachedImage Source="{Binding}"
-                                                       Aspect="AspectFill"
-                                                       DownsampleToViewSize="True"/>
-                                </DataTemplate>
-                            </CarouselView.ItemTemplate>
-                        </CarouselView>
+                        <ui:MaterialCard Padding="4"
+                                         Style="{StaticResource Style.ClickableSurfaceCard}">
+                            <StackLayout Orientation="Horizontal">
+                                <ui:MaterialIcon Source="{StaticResource Icon.Timer}"
+                                                 TintColor="{StaticResource Color.OnSurface}"/>
 
-                        <IndicatorView Grid.Row="1"
-                                       Grid.Column="1"
-                                       x:Name="ImageIndicator"
-                                       SelectedIndicatorColor="White"
-                                       IndicatorColor="LightGray"/>
+                                <ui:MaterialLabel Margin="0,0,5,0"
+                                                  VerticalOptions="Center"
+                                                  Style="{StaticResource FontStyle.Body}"
+                                                  TextColor="{StaticResource Color.OnSurface}">
+                                    <ui:MaterialLabel.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding EstimatedTime}"/>
+                                            <Span Text=" min."/>
+                                        </FormattedString>
+                                    </ui:MaterialLabel.FormattedText>
+                                </ui:MaterialLabel>
+                            </StackLayout>
+                        </ui:MaterialCard>
+
+                        <ui:MaterialCard Grid.Column="1"
+                                         Padding="4"
+                                         Style="{StaticResource Style.FloatingCard}">
+                            <CollectionView ItemsSource="{Binding Pictograms}">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Horizontal"
+                                                       ItemSpacing="5"/>
+                                </CollectionView.ItemsLayout>
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="pictograms:IPictogram">
+                                        <ui:MaterialIconButton ButtonType="Text"
+                                                               Image="{Binding Icon}"
+                                                               CommandParameter="{Binding}"
+                                                               Style="{StaticResource Style.IconSize}"/>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </ui:MaterialCard>
                     </Grid>
-                </ui:MaterialCard>
 
-                <Grid Margin="20,0,20,0"
-                      HeightRequest="40">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <ui:MaterialCard Padding="4"
-                                     Style="{StaticResource Style.ClickableSurfaceCard}">
-                        <StackLayout Orientation="Horizontal">
-                            <ui:MaterialIcon Source="{StaticResource Icon.Timer}"
-                                             TintColor="{StaticResource Color.OnSurface}"/>
-
-                            <ui:MaterialLabel Margin="0,0,5,0"
-                                              VerticalOptions="Center"
-                                              Style="{StaticResource FontStyle.Body}"
-                                              TextColor="{StaticResource Color.OnSurface}">
-                                <ui:MaterialLabel.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding EstimatedTime}"/>
-                                        <Span Text=" min."/>
-                                    </FormattedString>
-                                </ui:MaterialLabel.FormattedText>
-                            </ui:MaterialLabel>
-                        </StackLayout>
-                    </ui:MaterialCard>
-
-                    <ui:MaterialCard Grid.Column="1"
-                                     Padding="4"
+                    <ui:MaterialCard Margin="20,0,20,0"
                                      Style="{StaticResource Style.FloatingCard}">
-                        <CollectionView ItemsSource="{Binding Pictograms}">
-                            <CollectionView.ItemsLayout>
-                                <LinearItemsLayout Orientation="Horizontal"
-                                                   ItemSpacing="5"/>
-                            </CollectionView.ItemsLayout>
+                        <StackLayout>
+                            <ui:MaterialLabel Text="{Binding Name}"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Style="{StaticResource FontStyle.SmallHeadline}"/>
 
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="pictograms:IPictogram">
-                                    <ui:MaterialIconButton ButtonType="Text"
-                                                           Image="{Binding Icon}"
-                                                           CommandParameter="{Binding}"
-                                                           Style="{StaticResource Style.IconSize}"/>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </ui:MaterialCard>
-                </Grid>
+                            <BoxView HeightRequest="2"
+                                     BackgroundColor="#F0F0F0F0"/>
 
-                <ui:MaterialCard Margin="20,0,20,0"
-                                 Style="{StaticResource Style.FloatingCard}">
-                    <StackLayout>
-                        <ui:MaterialLabel Text="{Binding Name}"
-                                          TextColor="{StaticResource Color.OnSurface}"
-                                          Style="{StaticResource FontStyle.SmallHeadline}"/>
-
-                        <BoxView HeightRequest="2"
-                                 BackgroundColor="#F0F0F0F0"/>
-
-                        <ui:MaterialLabel Text="{Binding Description}"
-                                          TextColor="{StaticResource Color.OnSurface}"
-                                          Style="{StaticResource FontStyle.SecondBody}"/>
-                    </StackLayout>
-                </ui:MaterialCard>
-
-                <ui:MaterialCard Margin="20,0,20,0"
-                                 Style="{StaticResource Style.FloatingCard}">
-                    <StackLayout>
-                        <ui:MaterialLabel Text="You'll need:"
-                                          Style="{StaticResource FontStyle.SecondSubtitle}"
-                                          TextColor="{StaticResource Color.OnSurface}"/>
-
-                        <StackLayout BindableLayout.ItemsSource="{Binding Ingredients}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="ingredients:IIngredient">
-                                    <StackLayout Padding="4"
-                                                 Spacing="10"
-                                                 HeightRequest="40"
-                                                 Orientation="Horizontal">
-                                        <forms:CachedImage DownsampleToViewSize="True"
-                                                           Source="{Binding Template.Icon}"
-                                                           Style="{StaticResource Style.IconSize}"/>
-
-                                        <ui:MaterialLabel VerticalOptions="Center"
-                                                          Style="{StaticResource FontStyle.Body}"
-                                                          TextColor="{StaticResource Color.OnSurface}"
-                                                          Text="{Binding Converter={StaticResource Converter.IngredientToFormattedStringConverter}}"/>
-                                    </StackLayout>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
+                            <ui:MaterialLabel Text="{Binding Description}"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Style="{StaticResource FontStyle.SecondBody}"/>
                         </StackLayout>
-                    </StackLayout>
-                </ui:MaterialCard>
+                    </ui:MaterialCard>
 
-                <ui:MaterialCard Margin="20,0,20,10"
-                                 Style="{StaticResource Style.FloatingCard}">
-                    <StackLayout>
-                        <CarouselView HeightRequest="250"
-                                      ItemsSource="{Binding Steps}"
-                                      IndicatorView="StepIndicator">
-                            <CarouselView.ItemTemplate>
-                                <selectors:StepTemplateSelector TextTemplate="{StaticResource Template.TextStep}"
-                                                                ImageTemplate="{StaticResource Template.ImageStep}"/>
-                            </CarouselView.ItemTemplate>
-                        </CarouselView>
+                    <ui:MaterialCard Margin="20,0,20,0"
+                                     Style="{StaticResource Style.FloatingCard}">
+                        <StackLayout>
+                            <ui:MaterialLabel Text="You'll need:"
+                                              Style="{StaticResource FontStyle.SecondSubtitle}"
+                                              TextColor="{StaticResource Color.OnSurface}"/>
 
-                        <IndicatorView x:Name="StepIndicator"
-                                       IndicatorColor="LightGray"
-                                       SelectedIndicatorColor="Gray"/>
-                    </StackLayout>
-                </ui:MaterialCard>
-            </StackLayout>
-        </ScrollView>
+                            <StackLayout BindableLayout.ItemsSource="{Binding Ingredients}">
+                                <BindableLayout.ItemTemplate>
+                                    <DataTemplate x:DataType="ingredients:IIngredient">
+                                        <StackLayout Padding="4"
+                                                     Spacing="10"
+                                                     HeightRequest="40"
+                                                     Orientation="Horizontal">
+                                            <forms:CachedImage DownsampleToViewSize="True"
+                                                               Source="{Binding Template.Icon}"
+                                                               Style="{StaticResource Style.IconSize}"/>
+
+                                            <ui:MaterialLabel VerticalOptions="Center"
+                                                              Style="{StaticResource FontStyle.Body}"
+                                                              TextColor="{StaticResource Color.OnSurface}"
+                                                              Text="{Binding Converter={StaticResource Converter.IngredientToFormattedStringConverter}}"/>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </BindableLayout.ItemTemplate>
+                            </StackLayout>
+                        </StackLayout>
+                    </ui:MaterialCard>
+
+                    <ui:MaterialCard Margin="20,0,20,10"
+                                     Style="{StaticResource Style.FloatingCard}">
+                        <StackLayout>
+                            <CarouselView HeightRequest="250"
+                                          ItemsSource="{Binding Steps}"
+                                          IndicatorView="StepIndicator">
+                                <CarouselView.ItemTemplate>
+                                    <selectors:StepTemplateSelector TextTemplate="{StaticResource Template.TextStep}"
+                                                                    ImageTemplate="{StaticResource Template.ImageStep}"/>
+                                </CarouselView.ItemTemplate>
+                            </CarouselView>
+
+                            <IndicatorView x:Name="StepIndicator"
+                                           IndicatorColor="LightGray"
+                                           SelectedIndicatorColor="Gray"/>
+                        </StackLayout>
+                    </ui:MaterialCard>
+                </StackLayout>
+            </ScrollView>
+
+            <ui:MaterialIconButton AbsoluteLayout.LayoutBounds="0.95,0.95,80,80"
+                                   AbsoluteLayout.LayoutFlags="PositionProportional"
+                                   CornerRadius="40"
+                                   Command="{Binding SaveCommand}"
+                                   Image="{StaticResource IconPath.Save}"
+                                   TintColor="{StaticResource Color.OnSecondary}"
+                                   BackgroundColor="{StaticResource Color.Secondary}"/>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
