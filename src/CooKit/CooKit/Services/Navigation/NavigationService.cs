@@ -35,7 +35,7 @@ namespace CooKit.Services.Navigation
 
             _viewModelToViewDictionary = AssignViewModelTypeToViewType(viewModels);
 
-            return InitializeRoot(typeof(RecipeListViewModel));
+            return InitializeRoot(typeof(MainRecipeViewModel));
         }
 
         private static IEnumerable<Type> ScanViewModelTypes(Assembly assembly)

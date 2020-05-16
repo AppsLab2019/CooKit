@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
+             xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:recipes1="clr-namespace:CooKit.Views.Recipes;assembly=CooKit"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Recipes.AllRecipesView"
+             x:DataType="recipes:AllRecipesViewModel"
+             viewModels:ViewModelLocator.AutoWireVM="True">
+
+    <ContentPage.Content>
+        <recipes1:BaseRecipeListView/>
+    </ContentPage.Content>
+</ContentPage>

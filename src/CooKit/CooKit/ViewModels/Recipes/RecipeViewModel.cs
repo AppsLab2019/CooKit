@@ -6,6 +6,7 @@ using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
 using CooKit.Models.Steps;
+using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
@@ -28,27 +29,37 @@ namespace CooKit.ViewModels.Recipes
         public ICommand ToggleFavoriteCommand { get; }
         public ICommand SelectPictogramCommand { get; }
 
-        public RecipeViewModel()
+        private readonly IRecipeStore _store;
+        private IRecipe _recipe;
+
+        public RecipeViewModel(IRecipeStore store)
         {
+            if (store is null)
+                throw new ArgumentNullException(nameof(store));
+
+            _store = store;
+
             ToggleFavoriteCommand = new Command(HandleToggleFavorite);
             SelectPictogramCommand = new Command<IPictogram>(HandlePictogramSelect);
         }
 
         public override Task InitializeAsync(object parameter)
         {
-            if (!(parameter is IRecipe recipe))
+            _recipe = parameter as IRecipe;
+
+            if (_recipe is null)
                 throw new ArgumentException(nameof(parameter));
 
-            Name = recipe.Name;
-            Description = recipe.Description;
-            EstimatedTime = recipe.EstimatedTime;
-            IsFavorite = recipe.IsFavorite;
+            Name = _recipe.Name;
+            Description = _recipe.Description;
+            EstimatedTime = _recipe.EstimatedTime;
+            IsFavorite = _recipe.IsFavorite;
 
-            Images = recipe.Images;
+            Images = _recipe.Images;
 
-            Ingredients = recipe.Ingredients;
-            Pictograms = recipe.Pictograms;
-            Steps = recipe.Steps;
+            Ingredients = _recipe.Ingredients;
+            Pictograms = _recipe.Pictograms;
+            Steps = _recipe.Steps;
 
             RaiseAllPropertiesChanged();
             return Task.CompletedTask;
@@ -57,8 +68,11 @@ namespace CooKit.ViewModels.Recipes
         private async void HandleToggleFavorite()
         {
             IsFavorite = !IsFavorite;
+            _recipe.IsFavorite = IsFavorite;
+
             RaisePropertyChanged(nameof(IsFavorite));
-            await AlertService.DisplayAlert("Not Finished!", "Title", "lmao");
+
+            await _store.Update(_recipe);
         }
 
         private async void HandlePictogramSelect(IPictogram pictogram)

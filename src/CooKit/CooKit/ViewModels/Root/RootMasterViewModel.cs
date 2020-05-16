@@ -24,9 +24,9 @@ namespace CooKit.ViewModels.Root
             {
                 new RootDetailEntry
                 {
-                    Icon = null,
+                    Icon = "ic_action_menu.png",
                     Text = "Recipes",
-                    ViewModelType = typeof(RecipeListViewModel)
+                    ViewModelType = typeof(MainRecipeViewModel)
                 },
                 new RootDetailEntry
                 {

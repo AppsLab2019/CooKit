@@ -35,6 +35,14 @@
                 <On Platform="Android" Value="ic_action_favorite_border.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="IconPath.History" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_history.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="IconPath.Menu" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_menu.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="IconPath.Save" x:TypeArguments="x:String">
                 <On Platform="Android" Value="ic_action_save.png"/>
             </OnPlatform>
@@ -64,6 +72,14 @@
 
             <OnPlatform x:Key="Icon.FavoriteBorder" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_favorite_border.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.History" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_history.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.Menu" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_menu.png"/>
             </OnPlatform>
 
             <OnPlatform x:Key="Icon.Save" x:TypeArguments="ImageSource">

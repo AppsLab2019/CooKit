@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
+             xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Recipes.MainRecipeView"
+             x:DataType="recipes:MainRecipeViewModel"
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             Style="{StaticResource Style.Page}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="Style.OptionCard" TargetType="ui:MaterialCard"
+                   BasedOn="{StaticResource Style.ClickableSurfaceCard}">
+                <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="Padding" Value="15,15,15,10"/>
+            </Style>
+
+            <Style x:Key="Style.BackgroundFrame" TargetType="Frame">
+                <Setter Property="CornerRadius" Value="40"/>
+                <Setter Property="WidthRequest" Value="24"/>
+                <Setter Property="HeightRequest" Value="24"/>
+            </Style>
+
+            <Style x:Key="Style.OptionDescription" TargetType="ui:MaterialLabel"
+                   BasedOn="{StaticResource FontStyle.SecondSubtitle}">
+                <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="1"
+                  ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:MaterialCard Grid.Column="1"
+                                 ClickCommand="{Binding AllCommand}"
+                                 Style="{StaticResource Style.OptionCard}">
+                    <StackLayout Spacing="10">
+                        <Frame BackgroundColor="Orange"
+                               Style="{StaticResource Style.BackgroundFrame}">
+                            <ui:MaterialIcon Source="{StaticResource Icon.Menu}"
+                                             TintColor="{StaticResource Color.OnSecondary}"/>
+                        </Frame>
+
+                        <ui:MaterialLabel Text="All"
+                                          Style="{StaticResource Style.OptionDescription}"/>
+                    </StackLayout>
+                </ui:MaterialCard>
+
+                <ui:MaterialCard Grid.Column="2"
+                                 ClickCommand="{Binding FavoriteCommand}"
+                                 Style="{StaticResource Style.OptionCard}">
+                    <StackLayout Spacing="10">
+                        <Frame BackgroundColor="MediumVioletRed"
+                               Style="{StaticResource Style.BackgroundFrame}">
+                            <ui:MaterialIcon Source="{StaticResource Icon.Favorite}"
+                                             TintColor="{StaticResource Color.OnPrimary}"/>
+                        </Frame>
+
+                        <ui:MaterialLabel Text="Favorite"
+                                          Style="{StaticResource Style.OptionDescription}"/>
+                    </StackLayout>
+                </ui:MaterialCard>
+
+                <ui:MaterialCard Grid.Column="3"
+                                 Style="{StaticResource Style.OptionCard}">
+                    <StackLayout Spacing="10">
+                        <Frame BackgroundColor="DarkCyan"
+                               Style="{StaticResource Style.BackgroundFrame}">
+                            <ui:MaterialIcon Source="{StaticResource Icon.History}"
+                                             TintColor="{StaticResource Color.OnPrimary}"/>
+                        </Frame>
+
+                        <ui:MaterialLabel Text="History"
+                                          Style="{StaticResource Style.OptionDescription}"/>
+                    </StackLayout>
+                </ui:MaterialCard>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
