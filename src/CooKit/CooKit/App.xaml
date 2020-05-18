@@ -39,6 +39,10 @@
                 <On Platform="Android" Value="ic_action_history.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="IconPath.List" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_list.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="IconPath.Menu" x:TypeArguments="x:String">
                 <On Platform="Android" Value="ic_action_menu.png"/>
             </OnPlatform>
@@ -78,6 +82,10 @@
                 <On Platform="Android" Value="ic_action_history.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="Icon.List" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_list.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="Icon.Menu" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_menu.png"/>
             </OnPlatform>
@@ -91,6 +99,10 @@
             </OnPlatform>
 
             <!--#endregion-->
+
+            <OnPlatform x:Key="Animation.UnderConstruction" x:TypeArguments="x:String">
+                <On Platform="Android" Value="Animations/UnderConstruction.json"/>
+            </OnPlatform>
 
             <!--#region Colors-->
 
@@ -181,7 +193,7 @@
                 <Setter Property="BackgroundColor" Value="{StaticResource Color.Background}"/>
             </Style>
 
-            <Style x:Key="Style.IconSize" TargetType="ContentView">
+            <Style x:Key="Style.IconSize" TargetType="View">
                 <Setter Property="WidthRequest" Value="32"/>
                 <Setter Property="HeightRequest" Value="32"/>
             </Style>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:generic="clr-namespace:CooKit.ViewModels.Generic;assembly=CooKit"
+             xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Generic.UnfinishedView"
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             x:DataType="generic:UnfinishedViewModel"
+             Style="{StaticResource Style.Page}">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <forms:AnimationView IsPlaying="True" 
+                                 Loop="True"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center"
+                                 Animation="{StaticResource Animation.UnderConstruction}"/>
+
+            <ui:MaterialLabel VerticalOptions="Center"
+                              HorizontalOptions="Center"
+                              HorizontalTextAlignment="Center"
+                              Text="This feature is currently being cooked!"
+                              TextColor="{StaticResource Color.OnSurface}"
+                              Style="{StaticResource FontStyle.SmallHeadline}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

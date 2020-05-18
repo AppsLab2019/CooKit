@@ -142,16 +142,19 @@
                         <CollectionView ItemsSource="{Binding Pictograms}">
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Horizontal"
-                                                   ItemSpacing="5"/>
+                                                   ItemSpacing="10"/>
                             </CollectionView.ItemsLayout>
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="pictograms:IPictogram">
-                                    <ui:MaterialIconButton ButtonType="Text"
-                                                           Image="{Binding Icon}"
-                                                           CommandParameter="{Binding}"
-                                                           Style="{StaticResource Style.IconSize}"
-                                                           Command="{Binding BindingContext.SelectPictogramCommand, Source={x:Reference Root}}"/>
+                                    <ui:MaterialCard Padding="0"
+                                                     IsClickable="True"
+                                                     ClickCommandParameter="{Binding}"
+                                                     Style="{StaticResource Style.IconSize}"
+                                                     ClickCommand="{Binding BindingContext.SelectPictogramCommand, Source={x:Reference Root}}">
+                                        <forms:CachedImage Source="{Binding Icon}"
+                                                           DownsampleToViewSize="True"/>
+                                    </ui:MaterialCard>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>

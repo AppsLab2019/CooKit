@@ -6,12 +6,29 @@
              xmlns:recipes="clr-namespace:CooKit.Views.Recipes;assembly=CooKit"
              xmlns:recipes1="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:recipes2="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.FavoriteRecipesView"
              x:DataType="recipes1:FavoriteRecipesViewModel"
-             viewModels:ViewModelLocator.AutoWireVM="True">
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             Title="Favorite Recipes"
+             x:Name="Root"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.Content>
-        <recipes:BaseRecipeListView/>
+        <CollectionView Margin="10"
+                        ItemsSource="{Binding Recipes}">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Span="2"
+                                 Orientation="Vertical"
+                                 HorizontalItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="recipes2:IRecipe">
+                    <recipes:RecipePreview Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </ContentPage.Content>
 </ContentPage>

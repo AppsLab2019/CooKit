@@ -17,6 +17,7 @@
             <Style x:Key="Style.OptionCard" TargetType="ui:MaterialCard"
                    BasedOn="{StaticResource Style.ClickableSurfaceCard}">
                 <Setter Property="CornerRadius" Value="10"/>
+                <Setter Property="WidthRequest" Value="64"/>
                 <Setter Property="Padding" Value="15,15,15,10"/>
             </Style>
 
@@ -29,21 +30,66 @@
             <Style x:Key="Style.OptionDescription" TargetType="ui:MaterialLabel"
                    BasedOn="{StaticResource FontStyle.SecondSubtitle}">
                 <Setter Property="HorizontalOptions" Value="Center"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
                 <Setter Property="TextColor" Value="{StaticResource Color.OnSurface}"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <StackLayout>
+            <ui:MaterialCard Padding="0"
+                             Margin="0,0,0,10"
+                             HeightRequest="160"
+                             Style="{StaticResource Style.SurfaceCard}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1"
-                  ColumnSpacing="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:MaterialLabel Grid.Row="1"
+                                      Grid.Column="1"
+                                      Text="Welcome to CooKit!"
+                                      HorizontalOptions="Center"
+                                      Style="{StaticResource FontStyle.SmallHeadline}"/>
+
+                    <ui:MaterialLabel Grid.Row="2"
+                                      Grid.Column="1"
+                                      Text="Replace me with logo :)"
+                                      HorizontalOptions="Center"
+                                      Style="{StaticResource FontStyle.Body}"/>
+                </Grid>
+            </ui:MaterialCard>
+
+            <ui:MaterialCard Margin="10,0"
+                             CornerRadius="5"
+                             Style="{StaticResource Style.ClickableSurfaceCard}">
+                <StackLayout>
+                    <ui:MaterialLabel Text="Featured recipe:"
+                                      TextColor="{StaticResource Color.OnSurface}"
+                                      Style="{StaticResource FontStyle.SmallHeadline}"/>
+
+                    <StackLayout Margin="10,0"
+                                 HeightRequest="200">
+                        <ui:MaterialLabel VerticalOptions="CenterAndExpand"
+                                          HorizontalOptions="CenterAndExpand"
+                                          Text="This feature is still being cooked!"
+                                          TextColor="{StaticResource Color.OnSurface}"
+                                          Style="{StaticResource FontStyle.Body}"/>
+                    </StackLayout>
+                </StackLayout>
+            </ui:MaterialCard>
+
+            <Grid ColumnSpacing="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -56,13 +102,13 @@
                                  ClickCommand="{Binding AllCommand}"
                                  Style="{StaticResource Style.OptionCard}">
                     <StackLayout Spacing="10">
-                        <Frame BackgroundColor="Orange"
+                        <Frame BackgroundColor="DarkViolet"
                                Style="{StaticResource Style.BackgroundFrame}">
-                            <ui:MaterialIcon Source="{StaticResource Icon.Menu}"
-                                             TintColor="{StaticResource Color.OnSecondary}"/>
+                            <ui:MaterialIcon Source="{StaticResource Icon.List}"
+                                             TintColor="{StaticResource Color.OnPrimary}"/>
                         </Frame>
 
-                        <ui:MaterialLabel Text="All"
+                        <ui:MaterialLabel Text="All Recipes"
                                           Style="{StaticResource Style.OptionDescription}"/>
                     </StackLayout>
                 </ui:MaterialCard>
@@ -77,12 +123,13 @@
                                              TintColor="{StaticResource Color.OnPrimary}"/>
                         </Frame>
 
-                        <ui:MaterialLabel Text="Favorite"
+                        <ui:MaterialLabel Text="Favorite Recipes"
                                           Style="{StaticResource Style.OptionDescription}"/>
                     </StackLayout>
                 </ui:MaterialCard>
 
                 <ui:MaterialCard Grid.Column="3"
+                                 ClickCommand="{Binding HistoryCommand}"
                                  Style="{StaticResource Style.OptionCard}">
                     <StackLayout Spacing="10">
                         <Frame BackgroundColor="DarkCyan"
@@ -96,6 +143,6 @@
                     </StackLayout>
                 </ui:MaterialCard>
             </Grid>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

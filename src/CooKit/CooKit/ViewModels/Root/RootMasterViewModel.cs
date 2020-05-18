@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.ViewModels.About;
 using CooKit.ViewModels.Editor;
+using CooKit.ViewModels.Generic;
 using CooKit.ViewModels.Recipes;
 using Xamarin.Forms;
 
@@ -26,7 +26,7 @@ namespace CooKit.ViewModels.Root
                 },
                 new RootDetailEntry
                 {
-                    Icon = null,
+                    Icon = "ic_action_edit.png",
                     Text = "Editor",
                     ViewModelType = typeof(EditorStartViewModel)
                 },
@@ -34,7 +34,7 @@ namespace CooKit.ViewModels.Root
                 {
                     Icon = null,
                     Text = "About",
-                    ViewModelType = typeof(AboutViewModel)
+                    ViewModelType = typeof(UnfinishedViewModel)
                 }
             };
 
