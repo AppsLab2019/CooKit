@@ -6,6 +6,7 @@
              xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.MainRecipeView"
              x:DataType="recipes:MainRecipeViewModel"
@@ -70,24 +71,9 @@
                 </Grid>
             </ui:MaterialCard>
 
-            <ui:MaterialCard Margin="10,0"
-                             CornerRadius="5"
-                             Style="{StaticResource Style.ClickableSurfaceCard}">
-                <StackLayout>
-                    <ui:MaterialLabel Text="Featured recipe:"
-                                      TextColor="{StaticResource Color.OnSurface}"
-                                      Style="{StaticResource FontStyle.SmallHeadline}"/>
-
-                    <StackLayout Margin="10,0"
-                                 HeightRequest="200">
-                        <ui:MaterialLabel VerticalOptions="CenterAndExpand"
-                                          HorizontalOptions="CenterAndExpand"
-                                          Text="This feature is still being cooked!"
-                                          TextColor="{StaticResource Color.OnSurface}"
-                                          Style="{StaticResource FontStyle.Body}"/>
-                    </StackLayout>
-                </StackLayout>
-            </ui:MaterialCard>
+            <controls:RecipeFeature Margin="10,0"
+                                    Recipe="{Binding FeaturedRecipe}"
+                                    Command="{Binding OpenFeaturedRecipeCommand}"/>
 
             <Grid ColumnSpacing="10">
                 <Grid.ColumnDefinitions>

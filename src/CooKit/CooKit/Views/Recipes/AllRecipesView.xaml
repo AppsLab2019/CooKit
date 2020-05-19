@@ -5,9 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
-             xmlns:recipes1="clr-namespace:CooKit.Views.Recipes;assembly=CooKit"
              xmlns:recipes2="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.AllRecipesView"
              x:DataType="recipes:AllRecipesViewModel"
@@ -48,7 +48,8 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="recipes2:IRecipe">
-                    <recipes1:RecipePreview Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"/>
+                    <controls:RecipePreview Recipe="{Binding}"
+                                            Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

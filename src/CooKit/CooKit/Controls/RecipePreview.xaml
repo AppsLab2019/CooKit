@@ -5,18 +5,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:recipes="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
              mc:Ignorable="d"
-             x:Class="CooKit.Views.Recipes.RecipePreview"
-             x:DataType="recipes:IRecipe"
+             x:Class="CooKit.Controls.RecipePreview"
              Padding="6"
              HeightRequest="150">
 
     <ui:MaterialCard Padding="0"
-                     CornerRadius="10"
                      x:Name="WrappingCard"
-                     Style="{StaticResource Style.ClickableSurfaceCard}"
-                     ClickCommandParameter="{Binding}">
+                     CornerRadius="10"
+                     Style="{StaticResource Style.ClickableSurfaceCard}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -24,14 +21,14 @@
             </Grid.RowDefinitions>
 
             <forms:CachedImage Grid.RowSpan="2"
+                               x:Name="PreviewImage"
                                Aspect="AspectFill"
-                               DownsampleToViewSize="True"
-                               Source="{Binding PreviewImage}"/>
+                               DownsampleToViewSize="True"/>
 
             <AbsoluteLayout Grid.Row="1"
                             Padding="6"
                             BackgroundColor="#B0000000">
-                <ui:MaterialLabel Text="{Binding Name}"
+                <ui:MaterialLabel x:Name="NameLabel"
                                   TextColor="{StaticResource Color.OnPrimary}"
                                   Style="{StaticResource FontStyle.Subtitle}"/>
             </AbsoluteLayout>
