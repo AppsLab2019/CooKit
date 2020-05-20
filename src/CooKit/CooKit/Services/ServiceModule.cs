@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using CooKit.Services.Extractors;
+using CooKit.Services.Messages;
 
 namespace CooKit.Services
 {
@@ -17,6 +18,7 @@ namespace CooKit.Services
                 .AsImplementedInterfaces()
                 .SingleInstance();
 
+            builder.RegisterType<MessageBroker>().As<IMessageBroker>().SingleInstance();
             builder.RegisterType<ResourceExtractor>().As<IResourceExtractor>().SingleInstance();
         }
     }

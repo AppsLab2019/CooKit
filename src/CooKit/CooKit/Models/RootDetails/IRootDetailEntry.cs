@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CooKit.ViewModels.Root
+namespace CooKit.Models.RootDetails
 {
     // TODO: move me
     public interface IRootDetailEntry

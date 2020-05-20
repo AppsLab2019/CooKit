@@ -8,6 +8,7 @@
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
              xmlns:behaviors="clr-namespace:CooKit.Behaviors;assembly=CooKit"
+             xmlns:rootDetails="clr-namespace:CooKit.Models.RootDetails;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Root.RootMasterView"
              x:DataType="root:RootMasterViewModel"
@@ -31,7 +32,7 @@
             </ListView.Behaviors>
 
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="root:IRootDetailEntry">
+                <DataTemplate x:DataType="rootDetails:IRootDetailEntry">
                     <ViewCell>
                         <StackLayout Spacing="15"
                                      Padding="30,8,8,8"

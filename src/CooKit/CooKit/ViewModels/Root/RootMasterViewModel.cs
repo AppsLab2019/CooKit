@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CooKit.Models.RootDetails;
 using CooKit.ViewModels.Editor;
 using CooKit.ViewModels.Generic;
 using CooKit.ViewModels.Recipes;

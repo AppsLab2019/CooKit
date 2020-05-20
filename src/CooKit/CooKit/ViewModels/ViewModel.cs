@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CooKit.Extensions;
 using CooKit.Services.Alerts;
+using CooKit.Services.Messages;
 using CooKit.Services.Navigation;
 using CooKit.Services.Snackbar;
 using IContainer = Autofac.IContainer;
@@ -15,16 +16,19 @@ namespace CooKit.ViewModels
         private readonly Lazy<IAlertService> _lazyAlertService;
         private readonly Lazy<ISnackbarService> _lazySnackbarService;
         private readonly Lazy<INavigationService> _lazyNavigationService;
+        private readonly Lazy<IMessageBroker> _lazyMessageBroker;
 
         protected IAlertService AlertService => _lazyAlertService.Value;
         protected ISnackbarService SnackbarService => _lazySnackbarService.Value;
         protected INavigationService NavigationService => _lazyNavigationService.Value;
+        protected IMessageBroker MessageBroker => _lazyMessageBroker.Value;
 
         protected ViewModel()
         {
             _lazyAlertService = _container.LazyResolve<IAlertService>();
             _lazySnackbarService = _container.LazyResolve<ISnackbarService>();
             _lazyNavigationService = _container.LazyResolve<INavigationService>();
+            _lazyMessageBroker = _container.LazyResolve<IMessageBroker>();
         }
 
         public virtual Task InitializeAsync(object parameter)
