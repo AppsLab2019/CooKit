@@ -6,6 +6,9 @@ namespace CooKit.Services.History
 {
     public interface IHistoryService
     {
+        Task Add(IRecipe recipe);
+        Task Remove(IRecipe recipe);
+
         Task<IList<IRecipe>> GetLastVisitedRecipes();
     }
 }

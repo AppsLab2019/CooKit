@@ -7,6 +7,14 @@ namespace CooKit.Extensions
 {
     public static class EnumerableExtensions
     {
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        {
+            if (dictionary is null)
+                throw new ArgumentNullException(nameof(dictionary));
+
+            return dictionary.TryGetValue(key, out var value) ? value : default;
+        }
+
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable is null)

@@ -1,134 +1,155 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using CooKit.Delegates;
-using CooKit.Extensions;
-using CooKit.Models.Messages;
 
 namespace CooKit.Services.Messages
 {
+    // TODO: unsubscribing, auto-removing old entries
     public sealed class MessageBroker : IMessageBroker
     {
-        private readonly List<HandlerEntry> _handlerEntries;
+        private readonly IList<Subscription> _subscriptions;
 
         public MessageBroker()
         {
-            _handlerEntries = new List<HandlerEntry>();
+            _subscriptions = new List<Subscription>();
         }
 
-        #region Send Methods
+        #region Subscribe Method Overloads
 
-        public Task Send(IMessage message)
+        public void Subscribe(object receiver, MessageHandler handler)
         {
-            if (message is null)
-                throw new ArgumentNullException(nameof(message));
+            InternalSubscribe(receiver, handler, (_, __, ___) => true);
+        }
 
-            // pre-enumeration using ToArray() was used to avoid deleting entries
-            // while iterating over the list (caused by deferred execution of Select())
-            var validEntries = _handlerEntries
-                .Where(entry => entry.Checker(message))
-                .ToArray();
+        public void Subscribe(object receiver, MessageHandler handler, string title)
+        {
+            InternalSubscribe(receiver, handler, (_, messageTitle, __) => title == messageTitle);
+        }
 
-            var tasks = new List<Task>(validEntries.Length);
+        public void Subscribe<TSender>(object receiver, MessageHandlerSend<TSender> handler)
+        {
+            var senderType = typeof(TSender);
+            InternalSubscribe(receiver, handler, (sender, _, __) => senderType.IsInstanceOfType(sender));
+        }
 
-            foreach (var entry in validEntries)
-            {
-                var handler = entry.Handler;
+        public void Subscribe<TSender>(object receiver, MessageHandlerSend<TSender> handler, string title)
+        {
+            var senderType = typeof(TSender);
 
-                if (handler is null)
-                {
-                    _handlerEntries.Remove(entry);
-                    continue;
-                }
+            InternalSubscribe(receiver, handler, (sender, messageTitle, _) => 
+                messageTitle == title && senderType.IsInstanceOfType(sender));
+        }
 
-                var task = handler(message);
-                tasks.Add(task);
-            }
+        public void Subscribe<TParam>(object receiver, MessageHandlerParam<TParam> handler)
+        {
+            var paramType = typeof(TParam);
+            InternalSubscribe(receiver, handler, (_, __, param) => paramType.IsInstanceOfType(param));
+        }
+
+        public void Subscribe<TParam>(object receiver, MessageHandlerParam<TParam> handler, string title)
+        {
+            var paramType = typeof(TParam);
+
+            InternalSubscribe(receiver, handler, (_, messageTitle, param) =>
+                messageTitle == title && paramType.IsInstanceOfType(param));
+        }
+
+        public void Subscribe<TSender, TParam>(object receiver, MessageHandlerSendParam<TSender, TParam> handler)
+        {
+            var senderType = typeof(TSender);
+            var paramType = typeof(TParam);
+
+            InternalSubscribe(receiver, handler, (sender, _, param) =>
+                senderType.IsInstanceOfType(sender) && paramType.IsInstanceOfType(param));
+        }
+
+        public void Subscribe<TSender, TParam>(object receiver, MessageHandlerSendParam<TSender, TParam> handler, string title)
+        {
+            var senderType = typeof(TSender);
+            var paramType = typeof(TParam);
+
+            InternalSubscribe(receiver, handler, (sender, messageTitle, param) =>
+                messageTitle == title && senderType.IsInstanceOfType(sender) && paramType.IsInstanceOfType(param));
+        }
+
+        #endregion
+
+        private void InternalSubscribe(object receiver, Delegate handler, MessageFilter filter)
+        {
+            if (receiver is null)
+                throw new ArgumentNullException(nameof(receiver));
+
+            if (handler is null)
+                throw new ArgumentNullException(nameof(handler));
+
+            var subscription = new Subscription(receiver, handler, filter);
+            _subscriptions.Add(subscription);
+        }
+
+        // TODO: remove unnecessary copying of the list (use concurrent collection) 
+        public Task Send(object sender, string title, object param = null)
+        {
+            if (sender is null)
+                throw new ArgumentNullException(nameof(sender));
+
+            var tasks = _subscriptions
+                .ToArray()
+                .Where(subscription => subscription.Filter(sender, title, param))
+                .Select(subscription => subscription.Invoke(sender, title, param));
 
             return Task.WhenAll(tasks);
         }
 
-        public Task Send(object sender, string title, object argument = null)
+        internal sealed class Subscription
         {
-            return Send(new Message(sender, title, argument));
-        }
+            internal WeakReference Subscriber { get; }
+            internal MethodInfo Info { get; }
+            internal MessageFilter Filter { get; }
 
-        #endregion
+            private readonly object _source;
+            private readonly bool _isSourceSubscriber;
 
-        #region Attach Methods
-
-        public void Attach(MessageHandler handler)
-        {
-            InternalAttach(handler, _ => true);
-        }
-
-        public void Attach(MessageHandler handler, string title)
-        {
-            InternalAttach(handler, message => message.Title == title);
-        }
-
-        public void Attach<TSender>(MessageHandler handler)
-        {
-            Attach(handler, typeof(TSender));
-        }
-
-        public void Attach(MessageHandler handler, Type senderType)
-        {
-            bool Checker(IMessage message)
+            internal Subscription(object subscriber, Delegate handler, MessageFilter filter)
             {
-                var type = message.Sender.GetType();
-                return type.IsAssignableFrom(senderType);
+                Subscriber = new WeakReference(subscriber, false);
+                Info = handler.Method;
+                Filter = filter;
+
+                var source = handler.Target;
+
+                if (source != subscriber)
+                {
+                    _source = source;
+                    _isSourceSubscriber = false;
+                }
+                else _isSourceSubscriber = true;
             }
 
-            InternalAttach(handler, Checker);
-        }
-
-        private void InternalAttach(MessageHandler handler, ShouldSendChecker checker)
-        {
-            if (handler is null)
-                throw new ArgumentNullException(nameof(handler));
-
-            var entry = new HandlerEntry(handler, checker);
-            _handlerEntries.Add(entry);
-        }
-
-        #endregion
-
-        public void Detach(MessageHandler handler)
-        {
-            if (handler is null)
-                throw new ArgumentNullException(nameof(handler));
-
-            _handlerEntries.RemoveAll(entry =>
+            internal Task Invoke(object sender, string title, object param)
             {
-                var checkingHandler = entry.Handler;
+                if (Info.IsStatic)
+                    return InternalInvoke(null, sender, title, param);
 
-                if (checkingHandler is null)
-                    return true;
+                var source = GetSource();
 
-                return checkingHandler == handler;
-            });
-        }
+                if (source is null)
+                    return Task.CompletedTask;
 
-        #region Helper Class / Delegate
+                return InternalInvoke(source, sender, title, param);
+            }
 
-        internal delegate bool ShouldSendChecker(IMessage message);
-
-        internal sealed class HandlerEntry
-        {
-            internal MessageHandler Handler => _weakHandler.GetValueOrNull();
-            internal ShouldSendChecker Checker { get; }
-
-            private readonly WeakReference<MessageHandler> _weakHandler;
-
-            public HandlerEntry(MessageHandler handler, ShouldSendChecker checker)
+            private object GetSource()
             {
-                _weakHandler = new WeakReference<MessageHandler>(handler);
-                Checker = checker;
+                return _isSourceSubscriber ? Subscriber.Target : _source;
+            }
+
+            private Task InternalInvoke(object source, object sender, string title, object param)
+            {
+                return (Task) Info.Invoke(source, new[] {sender, title, param});
             }
         }
-
-        #endregion
     }
 }

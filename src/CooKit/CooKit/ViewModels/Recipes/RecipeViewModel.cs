@@ -62,7 +62,9 @@ namespace CooKit.ViewModels.Recipes
             Steps = _recipe.Steps;
 
             RaiseAllPropertiesChanged();
-            return Task.CompletedTask;
+
+            // TODO: replace me
+            return MessageBroker.Send(this, "View", _recipe);
         }
 
         private async void HandleToggleFavorite()

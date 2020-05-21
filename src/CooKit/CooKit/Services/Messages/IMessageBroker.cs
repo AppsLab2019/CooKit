@@ -1,21 +1,22 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CooKit.Delegates;
-using CooKit.Models.Messages;
 
 namespace CooKit.Services.Messages
 {
     public interface IMessageBroker
     {
-        Task Send(IMessage message);
-        Task Send(object sender, string title, object argument = null);
+        void Subscribe(object receiver, MessageHandler handler);
+        void Subscribe(object receiver, MessageHandler handler, string title);
 
-        void Attach(MessageHandler handler);
-        void Attach(MessageHandler handler, string title);
+        void Subscribe<TSender>(object receiver, MessageHandlerSend<TSender> handler);
+        void Subscribe<TSender>(object receiver, MessageHandlerSend<TSender> handler, string title);
 
-        void Attach<TSender>(MessageHandler handler);
-        void Attach(MessageHandler handler, Type senderType);
+        void Subscribe<TParam>(object receiver, MessageHandlerParam<TParam> handler);
+        void Subscribe<TParam>(object receiver, MessageHandlerParam<TParam> handler, string title);
 
-        void Detach(MessageHandler handler);
+        void Subscribe<TSender, TParam>(object receiver, MessageHandlerSendParam<TSender, TParam> handler);
+        void Subscribe<TSender, TParam>(object receiver, MessageHandlerSendParam<TSender, TParam> handler, string title);
+
+        Task Send(object sender, string title, object param = null);
     }
 }

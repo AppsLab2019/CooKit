@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
+             xmlns:recipes1="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
              xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.MainRecipeView"
              x:DataType="recipes:MainRecipeViewModel"
+             x:Name="Root"
              viewModels:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
 
@@ -38,97 +40,109 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout>
-            <ui:MaterialCard Padding="0"
-                             Margin="0,0,0,10"
-                             HeightRequest="160"
-                             Style="{StaticResource Style.SurfaceCard}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
+        <ScrollView>
+            <StackLayout>
+                <ui:MaterialCard Padding="0"
+                                 Margin="0,0,0,10"
+                                 HeightRequest="160"
+                                 Style="{StaticResource Style.SurfaceCard}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
 
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <ui:MaterialLabel Grid.Row="1"
+                                          Grid.Column="1"
+                                          Text="Welcome to CooKit!"
+                                          HorizontalOptions="Center"
+                                          Style="{StaticResource FontStyle.SmallHeadline}"/>
+
+                        <ui:MaterialLabel Grid.Row="2"
+                                          Grid.Column="1"
+                                          Text="Replace me with logo :)"
+                                          HorizontalOptions="Center"
+                                          Style="{StaticResource FontStyle.Body}"/>
+                    </Grid>
+                </ui:MaterialCard>
+
+                <controls:RecipeFeature Margin="10,0"
+                                        Recipe="{Binding FeaturedRecipe}"
+                                        Command="{Binding OpenRecipeCommand}"/>
+
+                <Grid ColumnSpacing="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <ui:MaterialLabel Grid.Row="1"
-                                      Grid.Column="1"
-                                      Text="Welcome to CooKit!"
-                                      HorizontalOptions="Center"
-                                      Style="{StaticResource FontStyle.SmallHeadline}"/>
-
-                    <ui:MaterialLabel Grid.Row="2"
-                                      Grid.Column="1"
-                                      Text="Replace me with logo :)"
-                                      HorizontalOptions="Center"
-                                      Style="{StaticResource FontStyle.Body}"/>
-                </Grid>
-            </ui:MaterialCard>
-
-            <controls:RecipeFeature Margin="10,0"
-                                    Recipe="{Binding FeaturedRecipe}"
-                                    Command="{Binding OpenFeaturedRecipeCommand}"/>
-
-            <Grid ColumnSpacing="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <ui:MaterialCard Grid.Column="1"
-                                 ClickCommand="{Binding AllCommand}"
-                                 Style="{StaticResource Style.OptionCard}">
-                    <StackLayout Spacing="10">
-                        <Frame BackgroundColor="DarkViolet"
+                    <ui:MaterialCard Grid.Column="1"
+                                     ClickCommand="{Binding AllCommand}"
+                                     Style="{StaticResource Style.OptionCard}">
+                        <StackLayout Spacing="10">
+                            <Frame BackgroundColor="DarkViolet"
                                Style="{StaticResource Style.BackgroundFrame}">
-                            <ui:MaterialIcon Source="{StaticResource Icon.List}"
-                                             TintColor="{StaticResource Color.OnPrimary}"/>
-                        </Frame>
+                                <ui:MaterialIcon Source="{StaticResource Icon.List}"
+                                                 TintColor="{StaticResource Color.OnPrimary}"/>
+                            </Frame>
 
-                        <ui:MaterialLabel Text="All Recipes"
-                                          Style="{StaticResource Style.OptionDescription}"/>
-                    </StackLayout>
-                </ui:MaterialCard>
+                            <ui:MaterialLabel Text="All Recipes"
+                                              Style="{StaticResource Style.OptionDescription}"/>
+                        </StackLayout>
+                    </ui:MaterialCard>
 
-                <ui:MaterialCard Grid.Column="2"
+                    <ui:MaterialCard Grid.Column="2"
                                  ClickCommand="{Binding FavoriteCommand}"
                                  Style="{StaticResource Style.OptionCard}">
-                    <StackLayout Spacing="10">
-                        <Frame BackgroundColor="MediumVioletRed"
+                        <StackLayout Spacing="10">
+                            <Frame BackgroundColor="MediumVioletRed"
                                Style="{StaticResource Style.BackgroundFrame}">
-                            <ui:MaterialIcon Source="{StaticResource Icon.Favorite}"
-                                             TintColor="{StaticResource Color.OnPrimary}"/>
-                        </Frame>
+                                <ui:MaterialIcon Source="{StaticResource Icon.Favorite}"
+                                                 TintColor="{StaticResource Color.OnPrimary}"/>
+                            </Frame>
 
-                        <ui:MaterialLabel Text="Favorite Recipes"
-                                          Style="{StaticResource Style.OptionDescription}"/>
-                    </StackLayout>
-                </ui:MaterialCard>
+                            <ui:MaterialLabel Text="Favorite Recipes"
+                                              Style="{StaticResource Style.OptionDescription}"/>
+                        </StackLayout>
+                    </ui:MaterialCard>
 
-                <ui:MaterialCard Grid.Column="3"
-                                 ClickCommand="{Binding HistoryCommand}"
-                                 Style="{StaticResource Style.OptionCard}">
-                    <StackLayout Spacing="10">
-                        <Frame BackgroundColor="DarkCyan"
-                               Style="{StaticResource Style.BackgroundFrame}">
-                            <ui:MaterialIcon Source="{StaticResource Icon.History}"
-                                             TintColor="{StaticResource Color.OnPrimary}"/>
-                        </Frame>
+                    <ui:MaterialCard Grid.Column="3"
+                                     ClickCommand="{Binding HistoryCommand}"
+                                     Style="{StaticResource Style.OptionCard}">
+                        <StackLayout Spacing="10">
+                            <Frame BackgroundColor="DarkCyan"
+                                   Style="{StaticResource Style.BackgroundFrame}">
+                                <ui:MaterialIcon Source="{StaticResource Icon.History}"
+                                                 TintColor="{StaticResource Color.OnPrimary}"/>
+                            </Frame>
 
-                        <ui:MaterialLabel Text="History"
-                                          Style="{StaticResource Style.OptionDescription}"/>
-                    </StackLayout>
-                </ui:MaterialCard>
-            </Grid>
-        </StackLayout>
+                            <ui:MaterialLabel Text="History"
+                                              Style="{StaticResource Style.OptionDescription}"/>
+                        </StackLayout>
+                    </ui:MaterialCard>
+                </Grid>
+
+                <CollectionView ItemsLayout="HorizontalList"
+                                ItemsSource="{Binding LastVisitedRecipes}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="recipes1:IRecipe">
+                            <controls:RecipePreview Recipe="{Binding}"
+                                                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.OpenRecipe}"/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>
