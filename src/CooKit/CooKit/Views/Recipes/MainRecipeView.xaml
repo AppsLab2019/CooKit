@@ -123,22 +123,23 @@
                         <StackLayout Spacing="10">
                             <Frame BackgroundColor="DarkCyan"
                                    Style="{StaticResource Style.BackgroundFrame}">
-                                <ui:MaterialIcon Source="{StaticResource Icon.History}"
+                                <ui:MaterialIcon Source="{StaticResource Icon.Search}"
                                                  TintColor="{StaticResource Color.OnPrimary}"/>
                             </Frame>
 
-                            <ui:MaterialLabel Text="History"
+                            <ui:MaterialLabel Text="Search"
                                               Style="{StaticResource Style.OptionDescription}"/>
                         </StackLayout>
                     </ui:MaterialCard>
                 </Grid>
 
-                <CollectionView ItemsLayout="HorizontalList"
+                <CollectionView HeightRequest="150"
+                                ItemsLayout="HorizontalList"
                                 ItemsSource="{Binding LastVisitedRecipes}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="recipes1:IRecipe">
                             <controls:RecipePreview Recipe="{Binding}"
-                                                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.OpenRecipe}"/>
+                                                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.OpenRecipeCommand}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

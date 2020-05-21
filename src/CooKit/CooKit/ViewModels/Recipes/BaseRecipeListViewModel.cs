@@ -8,7 +8,7 @@ namespace CooKit.ViewModels.Recipes
 {
     public abstract class BaseRecipeListViewModel : ViewModel
     {
-        public IEnumerable<IRecipe> Recipes { get; private set; }
+        public IEnumerable<IRecipe> Recipes { get; protected set; }
         public ICommand SelectCommand => new Command<IRecipe>(async recipe => await Select(recipe));
 
         protected abstract Task<IEnumerable<IRecipe>> GetRecipes();

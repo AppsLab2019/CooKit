@@ -6,6 +6,7 @@ using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
 using CooKit.Models.Steps;
+using CooKit.Services.Favorites;
 using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
 
@@ -29,15 +30,15 @@ namespace CooKit.ViewModels.Recipes
         public ICommand ToggleFavoriteCommand { get; }
         public ICommand SelectPictogramCommand { get; }
 
-        private readonly IRecipeStore _store;
+        private readonly IFavoriteService _favoriteService;
         private IRecipe _recipe;
 
-        public RecipeViewModel(IRecipeStore store)
+        public RecipeViewModel(IFavoriteService favoriteService)
         {
-            if (store is null)
-                throw new ArgumentNullException(nameof(store));
+            if (favoriteService is null)
+                throw new ArgumentNullException(nameof(favoriteService));
 
-            _store = store;
+            _favoriteService = favoriteService;
 
             ToggleFavoriteCommand = new Command(HandleToggleFavorite);
             SelectPictogramCommand = new Command<IPictogram>(HandlePictogramSelect);
@@ -49,6 +50,8 @@ namespace CooKit.ViewModels.Recipes
 
             if (_recipe is null)
                 throw new ArgumentException(nameof(parameter));
+
+            var messageTask = MessageBroker.Send(this, "View", _recipe);
 
             Name = _recipe.Name;
             Description = _recipe.Description;
@@ -62,20 +65,21 @@ namespace CooKit.ViewModels.Recipes
             Steps = _recipe.Steps;
 
             RaiseAllPropertiesChanged();
-
-            // TODO: replace me
-            return MessageBroker.Send(this, "View", _recipe);
+            return messageTask;
         }
 
         private async void HandleToggleFavorite()
         {
-            IsFavorite = !IsFavorite;
-            _recipe.IsFavorite = IsFavorite;
+            if (IsBusy)
+                return;
 
+            IsBusy = true;
+
+            IsFavorite = await _favoriteService.ToggleFavorite(_recipe);
             RaisePropertyChanged(nameof(IsFavorite));
-
-            await _store.Update(_recipe);
             await SnackbarService.SnackbarAsync("Toggled favorite status!", 2750);
+
+            IsBusy = false;
         }
 
         private async void HandlePictogramSelect(IPictogram pictogram)

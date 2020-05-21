@@ -5,7 +5,7 @@ using CooKit.Attributes;
 using Xamarin.Forms;
 using XF.Material.Forms.UI;
 
-namespace CooKit.Factories
+namespace CooKit.Factories.Pages
 {
     public sealed class PageFactory : IPageFactory
     {

@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using CooKit.Factories;
+using CooKit.Factories.Pages;
 using CooKit.ViewModels;
 using CooKit.ViewModels.Recipes;
 using CooKit.Views.Root;

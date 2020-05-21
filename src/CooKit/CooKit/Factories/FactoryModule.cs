@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using CooKit.Factories.Pages;
 
 namespace CooKit.Factories
 {

@@ -51,6 +51,10 @@
                 <On Platform="Android" Value="ic_action_save.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="IconPath.Search" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_search.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="IconPath.Timer" x:TypeArguments="x:String">
                 <On Platform="Android" Value="ic_action_timer.png"/>
             </OnPlatform>
@@ -92,6 +96,10 @@
 
             <OnPlatform x:Key="Icon.Save" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_save.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.Search" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_search.png"/>
             </OnPlatform>
 
             <OnPlatform x:Key="Icon.Timer" x:TypeArguments="ImageSource">

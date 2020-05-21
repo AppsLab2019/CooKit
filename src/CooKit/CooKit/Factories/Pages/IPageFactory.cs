@@ -1,7 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace CooKit.Factories
+namespace CooKit.Factories.Pages
 {
     public interface IPageFactory
     {

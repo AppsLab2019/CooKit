@@ -1,31 +1,65 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using CooKit.Delegates;
+using CooKit.Extensions;
 using CooKit.Models.Recipes;
-using CooKit.Services.Stores.Recipes;
+using CooKit.Services.Favorites;
+using CooKit.Services.Messages;
+using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
 {
-    public sealed class FavoriteRecipesViewModel : BaseRecipeListViewModel
+    public sealed class FavoriteRecipesViewModel : ViewModel
     {
-        private readonly IRecipeStore _store;
+        private readonly IFavoriteService _service;
+        private readonly IMessageBroker _broker;
 
-        public FavoriteRecipesViewModel(IRecipeStore store)
+        public ObservableCollection<IRecipe> Recipes { get; private set; }
+
+        public ICommand SelectCommand => new Command<IRecipe>(
+            async recipe => await NavigationService.PushAsync<RecipeViewModel>(recipe));
+
+        public FavoriteRecipesViewModel(IFavoriteService service, IMessageBroker broker)
         {
-            if (store is null)
-                throw new ArgumentNullException(nameof(store));
+            if (service is null)
+                throw new ArgumentNullException(nameof(service));
 
-            _store = store;
+            if (broker is null)
+                throw new ArgumentNullException(nameof(broker));
+
+            _service = service;
+            _broker = broker;
+
+            SubscribeToFavoriteUpdates();
         }
 
-        protected override async Task<IEnumerable<IRecipe>> GetRecipes()
+        private void SubscribeToFavoriteUpdates()
         {
-            var recipes = await _store.GetAll();
+            MessageHandlerSendParam<IFavoriteService, IRecipe> handler = OnRecipeFavoriteStatusChanged;
+            _broker.Subscribe(this, handler, "Toggled Favorite");
+        }
 
-            return recipes
-                .Where(recipe => recipe.IsFavorite)
-                .ToList();
+        private Task OnRecipeFavoriteStatusChanged(IFavoriteService _, string __, IRecipe recipe)
+        {
+            if (recipe.IsFavorite)
+                Recipes.Add(recipe);
+            else
+                Recipes.Remove(recipe);
+
+            return Task.CompletedTask;
+        }
+
+        public override async Task InitializeAsync(object parameter)
+        {
+            IsBusy = true;
+
+            var recipes = await _service.GetFavoriteRecipes();
+            Recipes = recipes.ToObservableCollection();
+            RaisePropertyChanged(nameof(Recipes));
+
+            IsBusy = false;
         }
     }
 }
