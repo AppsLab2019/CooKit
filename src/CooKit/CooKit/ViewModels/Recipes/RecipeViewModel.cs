@@ -7,28 +7,14 @@ using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
 using CooKit.Models.Steps;
 using CooKit.Services.Favorites;
-using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
 {
     public sealed class RecipeViewModel : ViewModel
     {
-        #region Properties
-        
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public int EstimatedTime { get; private set; }
-        public bool IsFavorite { get; private set; }
-        public IEnumerable<string> Images { get; private set; }
-        public IEnumerable<IPictogram> Pictograms { get; private set; }
-        public IEnumerable<IIngredient> Ingredients { get; private set; }
-        public IEnumerable<IStep> Steps { get; set; }
-
-        #endregion
-
-        public ICommand ToggleFavoriteCommand { get; }
-        public ICommand SelectPictogramCommand { get; }
+        public ICommand ToggleFavoriteCommand => new Command(async () => await ToggleFavorite());
+        public ICommand SelectPictogramCommand => new Command<IPictogram>(async p => await SelectPictogram(p));
 
         private readonly IFavoriteService _favoriteService;
         private IRecipe _recipe;
@@ -39,9 +25,6 @@ namespace CooKit.ViewModels.Recipes
                 throw new ArgumentNullException(nameof(favoriteService));
 
             _favoriteService = favoriteService;
-
-            ToggleFavoriteCommand = new Command(HandleToggleFavorite);
-            SelectPictogramCommand = new Command<IPictogram>(HandlePictogramSelect);
         }
 
         public override Task InitializeAsync(object parameter)
@@ -64,11 +47,10 @@ namespace CooKit.ViewModels.Recipes
             Pictograms = _recipe.Pictograms;
             Steps = _recipe.Steps;
 
-            RaiseAllPropertiesChanged();
             return messageTask;
         }
 
-        private async void HandleToggleFavorite()
+        private async Task ToggleFavorite()
         {
             if (IsBusy)
                 return;
@@ -76,18 +58,77 @@ namespace CooKit.ViewModels.Recipes
             IsBusy = true;
 
             IsFavorite = await _favoriteService.ToggleFavorite(_recipe);
-            RaisePropertyChanged(nameof(IsFavorite));
             await SnackbarService.SnackbarAsync("Toggled favorite status!", 2750);
 
             IsBusy = false;
         }
 
-        private async void HandlePictogramSelect(IPictogram pictogram)
+        private Task SelectPictogram(IPictogram pictogram)
         {
             if (pictogram is null)
-                return;
+                return Task.CompletedTask;
 
-            await AlertService.DisplayAlert(pictogram.Name, pictogram.Description, "Close");
+            return AlertService.DisplayAlert(pictogram.Name, pictogram.Description, "Close");
         }
+
+        #region Recipe Properties
+
+        public string Name
+        {
+            get => _name;
+            private set => OnPropertyChange(ref _name, value);
+        }
+        public string Description
+        {
+            get => _description;
+            private set => OnPropertyChange(ref _description, value);
+        }
+        public int EstimatedTime
+        {
+            get => _estimatedTime;
+            set => OnPropertyChange(ref _estimatedTime, value);
+        }
+        public bool IsFavorite
+        {
+            get => _isFavorite;
+            set => OnPropertyChange(ref _isFavorite, value);
+        }
+
+        public IEnumerable<string> Images
+        {
+            get => _images;
+            set => OnPropertyChange(ref _images, value);
+        }
+        public IEnumerable<IPictogram> Pictograms
+        {
+            get => _pictograms;
+            set => OnPropertyChange(ref _pictograms, value);
+        }
+        public IEnumerable<IIngredient> Ingredients
+        {
+            get => _ingredients;
+            set => OnPropertyChange(ref _ingredients, value);
+        }
+        public IEnumerable<IStep> Steps
+        {
+            get => _steps;
+            set => OnPropertyChange(ref _steps, value);
+        }
+
+        #endregion
+
+        #region Backing Fields
+
+        private string _name;
+        private string _description;
+        private int _estimatedTime;
+        private bool _isFavorite;
+
+        private IEnumerable<string> _images;
+        private IEnumerable<IPictogram> _pictograms;
+        private IEnumerable<IIngredient> _ingredients;
+        private IEnumerable<IStep> _steps;
+
+        #endregion
     }
 }
