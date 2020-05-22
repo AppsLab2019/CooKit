@@ -16,7 +16,6 @@ namespace CooKit
             XF.Material.Forms.Material.Init(this, "Material.Configuration");
 
             // this is needed if the OnStart method is async
-            // TODO: investigate this behavior
             MainPage = new ContentPage();
         }
 
@@ -28,6 +27,7 @@ namespace CooKit
             ViewModelLocator.Initialize(container);
             ViewModel.Initialize(container);
 
+            InitializeResources(container);
             await InitializeDatabase(container);
             await InitializeNavigation(container);
         }
@@ -40,6 +40,17 @@ namespace CooKit
             builder.RegisterAssemblyModules(assembly);
 
             return builder.Build();
+        }
+
+        // TODO: move this
+        // TODO: dynamic registration through reflection and attributes
+        private void InitializeResources(IComponentContext ctx)
+        {
+            var converter = (Converters.IngredientToFormattedStringConverter) 
+                Resources["Converter.IngredientToFormattedStringConverter"];
+
+            var unitService = ctx.Resolve<Services.Units.IUnitService>();
+            converter.UnitService = unitService;
         }
 
         private static Task InitializeDatabase(IComponentContext ctx)

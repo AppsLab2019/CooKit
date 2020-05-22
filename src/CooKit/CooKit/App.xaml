@@ -6,6 +6,7 @@
              xmlns:mtrl="clr-namespace:XF.Material.Forms.Resources;assembly=XF.Material"
              xmlns:mtrltypo="clr-namespace:XF.Material.Forms.Resources.Typography;assembly=XF.Material"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.App">
 
@@ -260,6 +261,12 @@
                 <Setter Property="LetterSpacing" Value="0.25"/>
                 <Setter Property="FontFamily" Value="{StaticResource FontFamily.OxygenRegular}"/>
             </Style>
+
+            <!--#endregion-->
+
+            <!--#region Converters-->
+
+            <converters:IngredientToFormattedStringConverter x:Key="Converter.IngredientToFormattedStringConverter"/>
 
             <!--#endregion-->
         </ResourceDictionary>

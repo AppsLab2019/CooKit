@@ -9,7 +9,6 @@
              xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:pictograms="clr-namespace:CooKit.Models.Pictograms;assembly=CooKit"
              xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
-             xmlns:converters="clr-namespace:CooKit.Converters;assembly=CooKit"
              xmlns:selectors="clr-namespace:CooKit.Selectors;assembly=CooKit"
              xmlns:steps="clr-namespace:CooKit.Views.Steps;assembly=CooKit"
              mc:Ignorable="d"
@@ -64,8 +63,6 @@
             <DataTemplate x:Key="Template.ImageStep">
                 <steps:ImageStepView/>
             </DataTemplate>
-
-            <converters:IngredientToFormattedStringConverter x:Key="Converter.IngredientToFormattedStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 

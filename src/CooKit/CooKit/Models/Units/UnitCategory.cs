@@ -2,6 +2,7 @@
 {
     public enum UnitCategory
     {
+        None,
         Weight,
         Volume
     }
