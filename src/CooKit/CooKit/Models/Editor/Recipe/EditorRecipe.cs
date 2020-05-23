@@ -14,11 +14,16 @@ namespace CooKit.Models.Editor.Recipe
 {
     public sealed class EditorRecipe : IEditorRecipe
     {
+        public EditorRecipe()
+        {
+        }
+
         public EditorRecipe(IRecipe recipe)
         {
             if (recipe is null)
                 throw new ArgumentNullException(nameof(recipe));
 
+            _id = recipe.Id;
             _name = recipe.Name;
             _description = recipe.Description;
             _estimatedTime = recipe.EstimatedTime;
