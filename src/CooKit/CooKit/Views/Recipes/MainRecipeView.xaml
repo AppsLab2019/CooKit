@@ -138,8 +138,10 @@
                                 ItemsSource="{Binding LastVisitedRecipes}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="recipes1:IRecipe">
-                            <controls:RecipePreview Recipe="{Binding}"
-                                                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.OpenRecipeCommand}"/>
+                            <controls:RecipePreview Name="{Binding Name}"
+                                                    Image="{Binding PreviewImage}"
+                                                    Command="{Binding Source={x:Reference Root}, Path=BindingContext.OpenRecipeCommand}"
+                                                    CommandParameter="{Binding}"/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>

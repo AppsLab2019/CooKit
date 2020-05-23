@@ -5,7 +5,9 @@ using CooKit.Services.Database;
 using CooKit.Services.Navigation;
 using CooKit.ViewModels;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace CooKit
 {
     public partial class App
@@ -16,7 +18,7 @@ namespace CooKit
             XF.Material.Forms.Material.Init(this, "Material.Configuration");
 
             // this is needed if the OnStart method is async
-            MainPage = new ContentPage();
+            MainPage = new Page();
         }
 
         protected override async void OnStart()

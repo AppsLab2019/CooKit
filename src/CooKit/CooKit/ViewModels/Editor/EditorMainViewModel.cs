@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.Extensions;
-using CooKit.Models.Ingredients;
-using CooKit.Models.Pictograms;
+using CooKit.Models.Editor.Recipe;
 using CooKit.Models.Recipes;
-using CooKit.Models.Steps;
 using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
 
@@ -35,17 +30,8 @@ namespace CooKit.ViewModels.Editor
             if (_recipe is null)
                 throw new ArgumentNullException(nameof(parameter));
 
-            _name = _recipe.Name;
-            _description = _recipe.Description;
-            _estimatedTime = _recipe.EstimatedTime;
+            EditorRecipe = new EditorRecipe(_recipe);
 
-            Images = _recipe.Images.ToObservableCollection();
-
-            Pictograms = _recipe.Pictograms.ToObservableCollection();
-            Ingredients = _recipe.Ingredients.ToObservableCollection();
-            Steps = _recipe.Steps.ToObservableCollection();
-
-            RaiseAllPropertiesChanged();
             return Task.CompletedTask;
         }
 
@@ -55,15 +41,16 @@ namespace CooKit.ViewModels.Editor
         {
             using var loading = await AlertService.DisplayLoading("Saving...");
 
-            _recipe.Name = Name;
-            _recipe.Description = Description;
-            _recipe.EstimatedTime = EstimatedTime;
+            //_recipe.Name = Name;
+            //_recipe.Description = Description;
+            //_recipe.EstimatedTime = EstimatedTime;
 
-            _recipe.Images = Images.ToList();
+            //_recipe.PreviewImage = PreviewImage;
+            //_recipe.Images = Images.ToList();
 
-            _recipe.Ingredients = Ingredients.ToList();
-            _recipe.Pictograms = Pictograms.ToList();
-            _recipe.Steps = Steps.ToList();
+            //_recipe.Ingredients = Ingredients.ToList();
+            //_recipe.Pictograms = Pictograms.ToList();
+            //_recipe.Steps = Steps.ToList();
 
             await _store.Update(_recipe);
         }
@@ -79,9 +66,38 @@ namespace CooKit.ViewModels.Editor
             await NavigationService.PopAsync();
         }
 
+        private Task ChangeMainInfo()
+        {
+            return NavigationService.PushAsync<EditMainInfoViewModel>(EditorRecipe);
+        }
+
         private async Task ChangeEstimatedTime()
         {
-            
+            var rawTime = await AlertService.DisplayInput("Estimated Time",
+                "Change estimated time to (min):", EditorRecipe.EstimatedTime.ToString(),
+                "e.g.: 30", "Confirm", "Cancel");
+
+            if (string.IsNullOrEmpty(rawTime))
+                return;
+
+            var isValid = int.TryParse(rawTime, out var time);
+
+            if (!isValid)
+                await ErrorMessage($"\"{rawTime}\" is not a valid time!");
+            else if (time < 0)
+                await ErrorMessage("Time cannot be negative!");
+            else
+                EditorRecipe.EstimatedTime = time;
+        }
+
+        private Task ChangePreviewImage()
+        {
+            return NavigationService.PushAsync<EditPreviewImageViewModel>(EditorRecipe);
+        }
+
+        private Task ErrorMessage(string message)
+        {
+            return AlertService.DisplayAlert("Error", message, "Ok");
         }
 
         #region Commands
@@ -89,67 +105,18 @@ namespace CooKit.ViewModels.Editor
         public ICommand SaveCommand => new Command(async () => await Save());
         public ICommand ExitCommand => new Command(async () => await Exit());
 
+        public ICommand ChangeMainInfoCommand => new Command(async () => await ChangeMainInfo());
         public ICommand ChangeEstimatedTimeCommand => new Command(async () => await ChangeEstimatedTime());
+        public ICommand ChangePreviewImageCommand => new Command(async () => await ChangePreviewImage());
 
         #endregion
 
-        #region Recipe Properties
-
-        public string Name
+        public IEditorRecipe EditorRecipe
         {
-            get => _name;
-            set => OnPropertyChange(ref _name, value);
+            get => _editorRecipe;
+            set => OnPropertyChange(ref _editorRecipe, value);
         }
 
-        public string Description
-        {
-            get => _description;
-            set => OnPropertyChange(ref _description, value);
-        }
-
-        public int EstimatedTime
-        {
-            get => _estimatedTime;
-            set => OnPropertyChange(ref _estimatedTime, value);
-        }
-
-        public ObservableCollection<string> Images
-        {
-            get => _images;
-            private set => OnPropertyChange(ref _images, value);
-        }
-
-        public ObservableCollection<IPictogram> Pictograms
-        {
-            get => _pictograms;
-            private set => OnPropertyChange(ref _pictograms, value);
-        }
-
-        public ObservableCollection<IIngredient> Ingredients
-        {
-            get => _ingredients;
-            private set => OnPropertyChange(ref _ingredients, value);
-        }
-
-        public ObservableCollection<IStep> Steps
-        {
-            get => _steps;
-            private set => OnPropertyChange(ref _steps, value);
-        }
-
-        #endregion
-
-        #region Backing Fields
-
-        private string _name;
-        private string _description;
-        private int _estimatedTime;
-
-        private ObservableCollection<string> _images;
-        private ObservableCollection<IPictogram> _pictograms;
-        private ObservableCollection<IIngredient> _ingredients;
-        private ObservableCollection<IStep> _steps;
-
-        #endregion
+        private IEditorRecipe _editorRecipe;
     }
 }

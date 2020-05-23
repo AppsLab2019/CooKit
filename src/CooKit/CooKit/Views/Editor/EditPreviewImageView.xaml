@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
+             xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             mc:Ignorable="d"
+             x:Class="CooKit.Views.Editor.EditPreviewImageView"
+             x:DataType="editor:EditPreviewImageViewModel"
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             Style="{StaticResource Style.Page}">
+
+    <ContentPage.Content>
+        <Grid Padding="6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <controls:RecipePreview Grid.Row="1"
+                                    HorizontalOptions="Center"
+                                    Name="{Binding Recipe.Name}"
+                                    Image="{Binding Image}"/>
+
+            <Grid Grid.Row="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ui:MaterialTextField Text="{Binding EditableImage}"
+                                      HorizontalOptions="StartAndExpand"/>
+
+                <ui:MaterialButton Grid.Column="1"
+                                   Text="Apply"
+                                   Command="{Binding SetCommand}"/>
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -26,8 +26,10 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="recipes2:IRecipe">
-                    <controls:RecipePreview Recipe="{Binding}"
-                                            Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"/>
+                    <controls:RecipePreview Name="{Binding Name}"
+                                            Image="{Binding PreviewImage}"
+                                            Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"
+                                            CommandParameter="{Binding}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

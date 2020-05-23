@@ -40,6 +40,10 @@
                 <On Platform="Android" Value="ic_action_history.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="IconPath.Image" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_image.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="IconPath.List" x:TypeArguments="x:String">
                 <On Platform="Android" Value="ic_action_list.png"/>
             </OnPlatform>
@@ -85,6 +89,10 @@
 
             <OnPlatform x:Key="Icon.History" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_history.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.Image" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_image.png"/>
             </OnPlatform>
 
             <OnPlatform x:Key="Icon.List" x:TypeArguments="ImageSource">

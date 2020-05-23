@@ -11,6 +11,7 @@
              xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
              xmlns:selectors="clr-namespace:CooKit.Selectors;assembly=CooKit"
              xmlns:steps="clr-namespace:CooKit.Views.Steps;assembly=CooKit"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.RecipeView"
              x:DataType="recipes:RecipeViewModel"
@@ -158,21 +159,10 @@
                     </ui:MaterialCard>
                 </Grid>
 
-                <ui:MaterialCard Margin="20,0,20,0"
-                                 Style="{StaticResource Style.FloatingCard}">
-                    <StackLayout>
-                        <ui:MaterialLabel Text="{Binding Name}"
-                                          TextColor="{StaticResource Color.OnSurface}"
-                                          Style="{StaticResource FontStyle.SmallHeadline}"/>
-
-                        <BoxView HeightRequest="2"
-                                 BackgroundColor="#F0F0F0F0"/>
-
-                        <ui:MaterialLabel Text="{Binding Description}"
-                                          TextColor="{StaticResource Color.OnSurface}"
-                                          Style="{StaticResource FontStyle.SecondBody}"/>
-                    </StackLayout>
-                </ui:MaterialCard>
+                <controls:RecipeMainInfoCard Margin="20,0,20,0"
+                                             Name="{Binding Name}"
+                                             Description="{Binding Description}"
+                                             Style="{StaticResource Style.FloatingCard}"/>
 
                 <ui:MaterialCard Margin="20,0,20,0"
                                  Style="{StaticResource Style.FloatingCard}">

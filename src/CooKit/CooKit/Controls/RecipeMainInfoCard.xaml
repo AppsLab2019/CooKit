@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui:MaterialCard xmlns="http://xamarin.com/schemas/2014/forms" 
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+                 mc:Ignorable="d"
+                 x:Class="CooKit.Controls.RecipeMainInfoCard">
+
+    <ui:MaterialCard.Content>
+        <StackLayout>
+            <ui:MaterialLabel x:Name="NameLabel"
+                              TextColor="{StaticResource Color.OnSurface}"
+                              Style="{StaticResource FontStyle.SmallHeadline}"/>
+
+            <BoxView HeightRequest="2"
+                     BackgroundColor="#F0F0F0F0"/>
+
+            <ui:MaterialLabel x:Name="DescriptionLabel"
+                              TextColor="{StaticResource Color.OnSurface}"
+                              Style="{StaticResource FontStyle.SecondBody}"/>
+        </StackLayout>
+    </ui:MaterialCard.Content>
+</ui:MaterialCard>
