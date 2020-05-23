@@ -40,6 +40,10 @@
                 <On Platform="Android" Value="ic_action_history.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="IconPath.Home" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_home.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="IconPath.Image" x:TypeArguments="x:String">
                 <On Platform="Android" Value="ic_action_image.png"/>
             </OnPlatform>
@@ -89,6 +93,10 @@
 
             <OnPlatform x:Key="Icon.History" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_history.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.Home" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_home.png"/>
             </OnPlatform>
 
             <OnPlatform x:Key="Icon.Image" x:TypeArguments="ImageSource">
@@ -215,6 +223,19 @@
                 <Setter Property="HeightRequest" Value="32"/>
             </Style>
 
+            <Style x:Key="Style.FloatingButton" TargetType="ui:MaterialIconButton">
+                <Setter Property="AbsoluteLayout.LayoutBounds" Value="0.95,0.95,80,80"/>
+                <Setter Property="AbsoluteLayout.LayoutFlags" Value="PositionProportional"/>
+                <Setter Property="CornerRadius" Value="40"/>
+                <Setter Property="TintColor" Value="{StaticResource Color.OnSecondary}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Color.Secondary}"/>
+            </Style>
+
+            <Style x:Key="Style.SaveFloatingButton" TargetType="ui:MaterialIconButton"
+                   BasedOn="{StaticResource Style.FloatingButton}">
+                <Setter Property="Image" Value="{StaticResource IconPath.Save}"/>
+            </Style>
+
             <!--#endregion-->
 
             <!--#region Cards-->
@@ -227,6 +248,11 @@
             <Style x:Key="Style.ClickableSurfaceCard" TargetType="ui:MaterialCard">
                 <Setter Property="Elevation" Value="2"/>
                 <Setter Property="IsClickable" Value="True"/>
+            </Style>
+
+            <Style x:Key="Style.FloatingCard" TargetType="ui:MaterialCard"
+                   BasedOn="{StaticResource Style.SurfaceCard}">
+                <Setter Property="CornerRadius" Value="5"/>
             </Style>
 
             <Style x:Key="Style.StepCard" TargetType="ui:MaterialCard">

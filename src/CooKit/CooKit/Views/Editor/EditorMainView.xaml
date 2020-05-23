@@ -21,11 +21,6 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style x:Key="Style.FloatingCard" TargetType="ui:MaterialCard"
-                   BasedOn="{StaticResource Style.SurfaceCard}">
-                <Setter Property="CornerRadius" Value="5"/>
-            </Style>
-
             <DataTemplate x:Key="Template.TextStep">
                 <steps:TextStepView/>
             </DataTemplate>
@@ -94,7 +89,7 @@
                         </Grid>
                     </ui:MaterialCard>
 
-                    <Grid Margin="20,0,20,0"
+                    <Grid Margin="20,0"
                           HeightRequest="40">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -147,13 +142,13 @@
                         </ui:MaterialCard>
                     </Grid>
 
-                    <controls:RecipeMainInfoCard Margin="20,0,20,0"
+                    <controls:RecipeMainInfoCard Margin="20,0"
                                                  Name="{Binding EditorRecipe.Name}"
                                                  Description="{Binding EditorRecipe.Description}"
                                                  ClickCommand="{Binding ChangeMainInfoCommand}"
                                                  Style="{StaticResource Style.ClickableSurfaceCard}"/>
 
-                    <ui:MaterialCard Margin="20,0,20,0"
+                    <ui:MaterialCard Margin="20,0"
                                      Style="{StaticResource Style.FloatingCard}">
                         <StackLayout>
                             <ui:MaterialLabel Text="You'll need:"
@@ -202,13 +197,8 @@
                 </StackLayout>
             </ScrollView>
 
-            <ui:MaterialIconButton AbsoluteLayout.LayoutBounds="0.95,0.95,80,80"
-                                   AbsoluteLayout.LayoutFlags="PositionProportional"
-                                   CornerRadius="40"
-                                   Command="{Binding SaveCommand}"
-                                   Image="{StaticResource IconPath.Save}"
-                                   TintColor="{StaticResource Color.OnSecondary}"
-                                   BackgroundColor="{StaticResource Color.Secondary}"/>
+            <ui:MaterialIconButton Command="{Binding SaveCommand}"
+                                   Style="{StaticResource Style.SaveFloatingButton}"/>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

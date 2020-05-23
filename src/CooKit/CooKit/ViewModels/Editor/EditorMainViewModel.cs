@@ -41,16 +41,17 @@ namespace CooKit.ViewModels.Editor
         {
             using var loading = await AlertService.DisplayLoading("Saving...");
 
-            //_recipe.Name = Name;
-            //_recipe.Description = Description;
-            //_recipe.EstimatedTime = EstimatedTime;
+            _recipe.Name = EditorRecipe.Name;
+            _recipe.Description = EditorRecipe.Description;
+            _recipe.EstimatedTime = EditorRecipe.EstimatedTime;
+            _recipe.IsFavorite = EditorRecipe.IsFavorite;
 
-            //_recipe.PreviewImage = PreviewImage;
-            //_recipe.Images = Images.ToList();
+            _recipe.PreviewImage = EditorRecipe.PreviewImage;
+            _recipe.Images = EditorRecipe.Images;
 
-            //_recipe.Ingredients = Ingredients.ToList();
-            //_recipe.Pictograms = Pictograms.ToList();
-            //_recipe.Steps = Steps.ToList();
+            _recipe.Ingredients = EditorRecipe.Ingredients;
+            _recipe.Pictograms = EditorRecipe.Pictograms;
+            _recipe.Steps = EditorRecipe.Steps;
 
             await _store.Update(_recipe);
         }

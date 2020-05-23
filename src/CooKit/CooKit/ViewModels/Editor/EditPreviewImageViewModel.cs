@@ -20,15 +20,17 @@ namespace CooKit.ViewModels.Editor
             return Task.CompletedTask;
         }
 
-        private async Task Save()
+        private Task Save()
         {
             _recipe.PreviewImage = Image;
+            return NavigationService.PopAsync();
         }
 
         #region Commands
 
         public ICommand SaveCommand => new Command(async () => await Save());
         public ICommand SetCommand => new Command(() => Image = EditableImage);
+        public ICommand ClearCommand => new Command(() => EditableImage = string.Empty);
 
         #endregion
 

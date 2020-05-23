@@ -19,6 +19,18 @@
              vm:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="Template.TextStep">
+                <steps:TextStepView/>
+            </DataTemplate>
+
+            <DataTemplate x:Key="Template.ImageStep">
+                <steps:ImageStepView/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <NavigationPage.TitleView>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -49,23 +61,6 @@
             </ui:MaterialIconButton>
         </Grid>
     </NavigationPage.TitleView>
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style x:Key="Style.FloatingCard" TargetType="ui:MaterialCard"
-                   BasedOn="{StaticResource Style.SurfaceCard}">
-                <Setter Property="CornerRadius" Value="5"/>
-            </Style>
-
-            <DataTemplate x:Key="Template.TextStep">
-                <steps:TextStepView/>
-            </DataTemplate>
-
-            <DataTemplate x:Key="Template.ImageStep">
-                <steps:ImageStepView/>
-            </DataTemplate>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <ContentPage.Content>
         <ScrollView>
@@ -107,7 +102,7 @@
                     </Grid>
                 </ui:MaterialCard>
 
-                <Grid Margin="20,0,20,0"
+                <Grid Margin="20,0"
                       HeightRequest="40">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -159,12 +154,12 @@
                     </ui:MaterialCard>
                 </Grid>
 
-                <controls:RecipeMainInfoCard Margin="20,0,20,0"
+                <controls:RecipeMainInfoCard Margin="20,0"
                                              Name="{Binding Name}"
                                              Description="{Binding Description}"
                                              Style="{StaticResource Style.FloatingCard}"/>
 
-                <ui:MaterialCard Margin="20,0,20,0"
+                <ui:MaterialCard Margin="20,0"
                                  Style="{StaticResource Style.FloatingCard}">
                     <StackLayout>
                         <ui:MaterialLabel Text="You'll need:"

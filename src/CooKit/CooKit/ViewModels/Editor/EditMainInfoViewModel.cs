@@ -20,53 +20,32 @@ namespace CooKit.ViewModels.Editor
             Name = _recipe.Name;
             Description = _recipe.Description;
 
-            EditableName = Name;
-            EditableDescription = Description;
-
             return Task.CompletedTask;
         }
 
         private Task Save()
         {
-            return Task.CompletedTask;
-        }
+            _recipe.Name = Name;
+            _recipe.Description = Description;
 
-        private void SetChanges()
-        {
-            Name = EditableName;
-            Description = EditableDescription;
+            return NavigationService.PopAsync();
         }
 
         public ICommand SaveCommand => new Command(async () => await Save());
-        public ICommand SetCommand => new Command(SetChanges);
 
         public string Name
         {
             get => _name;
-            private set => OnPropertyChange(ref _name, value);
+            set => OnPropertyChange(ref _name, value);
         }
 
         public string Description
         {
             get => _description;
-            private set => OnPropertyChange(ref _description, value);
-        }
-
-        public string EditableName
-        {
-            get => _editableName;
-            set => OnPropertyChange(ref _editableName, value);
-        }
-
-        public string EditableDescription
-        {
-            get => _editableDescription;
-            set => OnPropertyChange(ref _editableDescription, value);
+            set => OnPropertyChange(ref _description, value);
         }
 
         private string _name;
         private string _description;
-        private string _editableName;
-        private string _editableDescription;
     }
 }
