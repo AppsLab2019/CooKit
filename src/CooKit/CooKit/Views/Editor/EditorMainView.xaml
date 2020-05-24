@@ -119,7 +119,8 @@
 
                         <ui:MaterialCard Grid.Column="1"
                                          Padding="4"
-                                         Style="{StaticResource Style.FloatingCard}">
+                                         ClickCommand="{Binding ChangePictogramsCommand}"
+                                         Style="{StaticResource Style.ClickableSurfaceCard}">
                             <CollectionView ItemsSource="{Binding EditorRecipe.ObservablePictograms}">
                                 <CollectionView.ItemsLayout>
                                     <LinearItemsLayout Orientation="Horizontal"
@@ -128,14 +129,9 @@
 
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="pictograms:IPictogram">
-                                        <ui:MaterialCard Padding="0"
-                                                         IsClickable="True"
-                                                         ClickCommandParameter="{Binding}"
-                                                         Style="{StaticResource Style.IconSize}"
-                                                         ClickCommand="{Binding BindingContext.SelectPictogramCommand, Source={x:Reference Root}}">
-                                            <forms:CachedImage Source="{Binding Icon}"
-                                                               DownsampleToViewSize="True"/>
-                                        </ui:MaterialCard>
+                                        <forms:CachedImage Source="{Binding Icon}"
+                                                           DownsampleToViewSize="True"
+                                                           Style="{StaticResource Style.IconSize}"/>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
@@ -149,7 +145,7 @@
                                                  Style="{StaticResource Style.ClickableSurfaceCard}"/>
 
                     <ui:MaterialCard Margin="20,0"
-                                     Style="{StaticResource Style.FloatingCard}">
+                                     Style="{StaticResource Style.ClickableSurfaceCard}">
                         <StackLayout>
                             <ui:MaterialLabel Text="You'll need:"
                                               Style="{StaticResource FontStyle.SecondSubtitle}"

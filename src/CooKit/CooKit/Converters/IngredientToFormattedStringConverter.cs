@@ -53,7 +53,7 @@ namespace CooKit.Converters
             var finalPair = valuesWithAbbreviation
                 .Where(pair => pair.Value >= 1.0f)
                 .OrderBy(pair => pair.Value)
-                .FirstOrDefault() 
+                .FirstOrDefault()
                             ?? valuesWithAbbreviation
                 .Where(pair => pair.Value < 1.0f)
                 .OrderByDescending(pair => pair.Value)
@@ -63,7 +63,7 @@ namespace CooKit.Converters
             builder.Append(finalPair.Abbreviation);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => 
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
     }
 }

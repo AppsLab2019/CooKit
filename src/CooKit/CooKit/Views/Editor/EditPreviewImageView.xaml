@@ -39,8 +39,7 @@
                     </Grid.ColumnDefinitions>
 
                     <ui:MaterialTextField Placeholder="Preview Image Source"
-                                          Text="{Binding EditableImage}"
-                                          HorizontalOptions="StartAndExpand"/>
+                                          Text="{Binding EditableImage}"/>
 
                     <ui:MaterialIconButton Grid.Column="1"
                                            ButtonType="Outlined"

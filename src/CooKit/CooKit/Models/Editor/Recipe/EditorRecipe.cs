@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using CooKit.Extensions;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
@@ -12,7 +10,7 @@ using CooKit.Models.Steps;
 
 namespace CooKit.Models.Editor.Recipe
 {
-    public sealed class EditorRecipe : IEditorRecipe
+    public sealed class EditorRecipe : BaseEditorModel, IEditorRecipe
     {
         public EditorRecipe()
         {
@@ -138,21 +136,6 @@ namespace CooKit.Models.Editor.Recipe
         private ObservableCollection<IIngredient> _observableIngredients;
         private ObservableCollection<IPictogram> _observablePictograms;
         private ObservableCollection<IStep> _observableSteps;
-
-        #endregion
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged<T>(ref T backingField, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (Equals(backingField, value))
-                return;
-
-            backingField = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         #endregion
     }

@@ -96,6 +96,11 @@ namespace CooKit.ViewModels.Editor
             return NavigationService.PushAsync<EditPreviewImageViewModel>(EditorRecipe);
         }
 
+        private Task ChangePictograms()
+        {
+            return NavigationService.PushAsync<EditSelectedPictogramsViewModel>(EditorRecipe);
+        }
+
         private Task ErrorMessage(string message)
         {
             return AlertService.DisplayAlert("Error", message, "Ok");
@@ -109,6 +114,7 @@ namespace CooKit.ViewModels.Editor
         public ICommand ChangeMainInfoCommand => new Command(async () => await ChangeMainInfo());
         public ICommand ChangeEstimatedTimeCommand => new Command(async () => await ChangeEstimatedTime());
         public ICommand ChangePreviewImageCommand => new Command(async () => await ChangePreviewImage());
+        public ICommand ChangePictogramsCommand => new Command(async () => await ChangePictograms());
 
         #endregion
 
