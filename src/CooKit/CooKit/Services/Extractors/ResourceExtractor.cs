@@ -48,7 +48,6 @@ namespace CooKit.Services.Extractors
             await resource!.CopyToAsync(destination);
         }
 
-        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Local
         private static void ValidateArguments(Assembly assembly, string resourceName, string destinationPath)
         {
             if (assembly is null)

@@ -2,7 +2,6 @@
 
 namespace CooKit.Models.RootDetails
 {
-    // TODO: move me
     public interface IRootDetailEntry
     {
         string Icon { get; set; }

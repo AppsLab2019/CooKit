@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CooKit.Extensions;
-using CooKit.Models;
+using CooKit.Converters.Json;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
@@ -14,32 +13,35 @@ namespace CooKit.Repositories.Recipes
 {
     public sealed class SQLiteRecipeRepository : MappingRepository<IRecipe, SQLiteRawRecipeDto>, IRecipeRepository
     {
-        private readonly IQueryEntitiesByIds<IIngredient> _ingredientsQuery;
-        private readonly IQueryEntitiesByIds<IPictogram> _pictogramsQuery;
-        private readonly IQueryEntitiesByIds<IStep> _stepsQuery;
+        private readonly IJsonConverter _converter;
+        private readonly IQueryEntitiesByIds<IPictogram> _queryPictograms;
+        private readonly IQueryEntitiesByIds<IIngredientTemplate> _queryTemplates;
 
-        public SQLiteRecipeRepository(ISQLiteRawRecipeDtoRepository repository,
-            IQueryEntitiesByIds<IIngredient> ingredientsQuery, 
-            IQueryEntitiesByIds<IPictogram> pictogramsQuery,
-            IQueryEntitiesByIds<IStep> stepsQuery) : base(repository)
+        public SQLiteRecipeRepository(IJsonConverter converter,
+            IQueryEntitiesByIds<IPictogram> queryPictograms,
+            IQueryEntitiesByIds<IIngredientTemplate> queryTemplates,
+            ISQLiteRawRecipeDtoRepository repository) : base(repository)
         {
-            if (ingredientsQuery is null)
-                throw new ArgumentNullException(nameof(ingredientsQuery));
+            if (converter is null)
+                throw new ArgumentNullException(nameof(converter));
 
-            if (pictogramsQuery is null)
-                throw new ArgumentNullException(nameof(pictogramsQuery));
+            if (queryPictograms is null)
+                throw new ArgumentNullException(nameof(queryPictograms));
 
-            if (stepsQuery is null)
-                throw new ArgumentNullException(nameof(stepsQuery));
+            if (queryTemplates is null)
+                throw new ArgumentNullException(nameof(queryTemplates));
 
-            _ingredientsQuery = ingredientsQuery;
-            _pictogramsQuery = pictogramsQuery;
-            _stepsQuery = stepsQuery;
+            _converter = converter;
+            _queryPictograms = queryPictograms;
+            _queryTemplates = queryTemplates;
         }
 
         protected override async Task<IRecipe> MapDtoToEntity(SQLiteRawRecipeDto dto)
         {
-            return new Recipe
+            var ingredientsTask = DeserializeIngredients(dto.Ingredients);
+            var pictogramsTask = DeserializePictograms(dto.Pictograms);
+
+            var recipe = new Recipe
             {
                 Id = dto.Id,
                 Name = dto.Name,
@@ -48,12 +50,17 @@ namespace CooKit.Repositories.Recipes
                 IsFavorite = dto.IsFavorite,
 
                 PreviewImage = dto.PreviewImage,
-                Images = StringToImageList(dto.Images),
+                Images = _converter.Deserialize<List<string>>(dto.Images),
 
-                Ingredients = await QueryEntitiesAndHandleNull(_ingredientsQuery, dto.IngredientIds),
-                Pictograms = await QueryEntitiesAndHandleNull(_pictogramsQuery, dto.PictogramIds),
-                Steps = await QueryEntitiesAndHandleNull(_stepsQuery, dto.StepIds)
+                Steps = DeserializeSteps(dto.Steps)
             };
+
+            await Task.WhenAll(ingredientsTask, pictogramsTask);
+
+            recipe.Ingredients = ingredientsTask.Result;
+            recipe.Pictograms = pictogramsTask.Result;
+
+            return recipe;
         }
 
         protected override Task<SQLiteRawRecipeDto> MapEntityToDto(IRecipe entity)
@@ -67,44 +74,86 @@ namespace CooKit.Repositories.Recipes
                 IsFavorite = entity.IsFavorite,
 
                 PreviewImage = entity.PreviewImage,
-                Images = entity.Images?.ToString(Separator, Escape),
+                Images = _converter.Serialize(entity.Images),
 
-                IngredientIds = entity.Ingredients?.ToString(Separator, ingredient => ingredient.Id.ToString()),
-                PictogramIds = entity.Pictograms?.ToString(Separator, pictogram => pictogram.Id.ToString()),
-                StepIds = entity.Steps?.ToString(Separator, step => step.Id.ToString())
+                Ingredients = SerializeIngredients(entity.Ingredients),
+                Pictograms = SerializePictograms(entity.Pictograms),
+                Steps = SerializeSteps(entity.Steps)
             };
 
             return Task.FromResult(dto);
         }
 
-        private const char Separator = '|';
-        private const char Escape = '^';
-
-        // TODO: move this to some converter
-        // TODO: rename these methods
-
-        private static async Task<IList<T>> QueryEntitiesAndHandleNull<T>(IQueryEntitiesByIds<T> query, string rawIds)
-            where T : IEntity
+        private string SerializeIngredients(IEnumerable<IIngredient> ingredients)
         {
-            if (string.IsNullOrEmpty(rawIds))
-                return new List<T>();
+            if (ingredients is null)
+                return null;
 
-            var ids = rawIds
-                .Split(Separator)
-                .Select(Guid.Parse);
+            var dtos = ingredients
+                .Select(ingredient => new IngredientDto
+                {
+                    TemplateId = ingredient.Template.Id,
+                    Note = ingredient.Note,
+                    Quantity = ingredient.Quantity
+                });
 
-            var entities = await query.GetByIds(ids);
-            return entities ?? new List<T>();
+            return _converter.Serialize(dtos);
         }
 
-        private static IList<string> StringToImageList(string imageString)
+        private string SerializePictograms(IEnumerable<IPictogram> pictograms)
         {
-            if (imageString is null)
-                return new List<string>();
+            if (pictograms is null)
+                return null;
 
-            return imageString
-                .SplitWithEscape(Separator, Escape, StringSplitOptions.RemoveEmptyEntries)
+            var ids = pictograms.Select(pictogram => pictogram.Id);
+            return _converter.Serialize(ids);
+        }
+
+        private string SerializeSteps(IEnumerable<IStep> steps)
+        {
+            return steps is null ? null : _converter.Serialize(steps);
+        }
+
+        private async Task<IList<IIngredient>> DeserializeIngredients(string rawIngredients)
+        {
+            if (string.IsNullOrEmpty(rawIngredients))
+                return new List<IIngredient>();
+
+            var dtos = _converter.Deserialize<IngredientDto[]>(rawIngredients);
+            var templates = await _queryTemplates.GetByIds(dtos.Select(dto => dto.TemplateId));
+
+            return dtos
+                .Select(dto => new Ingredient
+                {
+                    Template = templates.First(template => template.Id == dto.TemplateId), 
+                    Note = dto.Note, 
+                    Quantity = dto.Quantity
+                })
+                .Cast<IIngredient>()
                 .ToList();
+        }
+
+        private Task<IList<IPictogram>> DeserializePictograms(string rawPictograms)
+        {
+            if (string.IsNullOrEmpty(rawPictograms))
+                return GetEmptyListTask<IPictogram>();
+
+            var ids = _converter.Deserialize<Guid[]>(rawPictograms);
+            return _queryPictograms.GetByIds(ids);
+        }
+
+        private IList<IStep> DeserializeSteps(string rawSteps)
+        {
+            if (string.IsNullOrEmpty(rawSteps))
+                return new List<IStep>();
+
+            return _converter.Deserialize<List<IStep>>(rawSteps);
+        }
+
+        private static Task<IList<T>> GetEmptyListTask<T>()
+        {
+            IList<T> list = new List<T>();
+            return Task.FromResult(list);
         }
     }
 }

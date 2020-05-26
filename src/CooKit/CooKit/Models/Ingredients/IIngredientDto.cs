@@ -2,7 +2,7 @@
 
 namespace CooKit.Models.Ingredients
 {
-    public interface IIngredientDto : IEntity
+    public interface IIngredientDto
     {
         Guid TemplateId { get; set; }
         string Note { get; set; }

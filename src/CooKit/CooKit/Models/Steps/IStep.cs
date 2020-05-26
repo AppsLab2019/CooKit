@@ -1,6 +1,6 @@
 ﻿namespace CooKit.Models.Steps
 {
-    public interface IStep : IEntity
+    public interface IStep
     {
     }
 }

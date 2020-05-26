@@ -14,16 +14,9 @@ namespace CooKit.Models.Editor.Ingredients
             if (ingredient is null)
                 throw new ArgumentNullException(nameof(ingredient));
 
-            _id = ingredient.Id;
             _template = ingredient.Template;
             _note = ingredient.Note;
             _quantity = ingredient.Quantity;
-        }
-
-        public Guid Id
-        {
-            get => _id;
-            set => OnPropertyChanged(ref _id, value);
         }
 
         public IIngredientTemplate Template
@@ -44,7 +37,6 @@ namespace CooKit.Models.Editor.Ingredients
             set => OnPropertyChanged(ref _quantity, value);
         }
 
-        private Guid _id;
         private IIngredientTemplate _template;
         private string _note;
         private float _quantity;
