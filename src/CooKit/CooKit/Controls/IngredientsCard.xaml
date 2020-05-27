@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui:MaterialCard xmlns="http://xamarin.com/schemas/2014/forms" 
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+                 xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
+                 xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                 mc:Ignorable="d"
+                 x:Class="CooKit.Controls.IngredientsCard">
+
+    <ui:MaterialCard.Content>
+        <StackLayout>
+            <ui:MaterialLabel Text="You'll need:"
+                              Style="{StaticResource FontStyle.SecondSubtitle}"
+                              TextColor="{StaticResource Color.OnSurface}"/>
+
+            <StackLayout x:Name="IngredientsLayout">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="ingredients:IIngredient">
+                        <StackLayout Padding="4"
+                                     Spacing="10"
+                                     HeightRequest="40"
+                                     Orientation="Horizontal">
+                            <forms:CachedImage DownsampleToViewSize="True"
+                                               Source="{Binding Template.Icon}"
+                                               Style="{StaticResource Style.IconSize}"/>
+
+                            <ui:MaterialLabel VerticalOptions="Center"
+                                              Style="{StaticResource FontStyle.Body}"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Text="{Binding Converter={StaticResource Converter.IngredientToFormattedStringConverter}}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
+        </StackLayout>
+    </ui:MaterialCard.Content>
+</ui:MaterialCard>

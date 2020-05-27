@@ -19,12 +19,23 @@
                   AbsoluteLayout.LayoutBounds="0,0,1,1"
                   AbsoluteLayout.LayoutFlags="SizeProportional">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <ui:MaterialCard Style="{StaticResource Style.SurfaceCard}">
+                <ScrollView>
+                    <StackLayout>
+                        <controls:RecipeMainInfoCard Margin="20,0"
+                                                     Name="{Binding Name}"
+                                                     HorizontalOptions="FillAndExpand"
+                                                     Description="{Binding Description}"
+                                                     Style="{StaticResource Style.FloatingCard}"/>
+                    </StackLayout>
+                </ScrollView>
+
+                <ui:MaterialCard Grid.Row="1"
+                                 Style="{StaticResource Style.SurfaceCard}">
                     <StackLayout>
                         <ui:MaterialLabel Text="Name:"
                                           TextColor="{StaticResource Color.OnSurface}"
@@ -34,7 +45,7 @@
                     </StackLayout>
                 </ui:MaterialCard>
 
-                <ui:MaterialCard Grid.Row="1"
+                <ui:MaterialCard Grid.Row="2"
                                  Style="{StaticResource Style.SurfaceCard}">
                     <StackLayout>
                         <ui:MaterialLabel Text="Description:"
@@ -45,15 +56,6 @@
                                 Text="{Binding Description}"/>
                     </StackLayout>
                 </ui:MaterialCard>
-
-                <ScrollView Grid.Row="2">
-                    <AbsoluteLayout>
-                        <controls:RecipeMainInfoCard Margin="20,0"
-                                                     Name="{Binding Name}"
-                                                     Description="{Binding Description}"
-                                                     Style="{StaticResource Style.FloatingCard}"/>
-                    </AbsoluteLayout>
-                </ScrollView>
             </Grid>
 
             <ui:MaterialIconButton Command="{Binding SaveCommand}"

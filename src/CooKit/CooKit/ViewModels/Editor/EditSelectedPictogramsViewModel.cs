@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using CooKit.Models.Editor.Recipe;
+using CooKit.Models.Editor.Recipes;
 using CooKit.Models.Pictograms;
 using CooKit.Services.Stores.Pictograms;
 using XF.Material.Forms.Models;

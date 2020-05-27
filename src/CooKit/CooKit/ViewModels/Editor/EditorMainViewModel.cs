@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.Models.Editor.Recipe;
+using CooKit.Models.Editor.Recipes;
 using CooKit.Models.Recipes;
 using CooKit.Services.Stores.Recipes;
 using Xamarin.Forms;
@@ -101,6 +101,16 @@ namespace CooKit.ViewModels.Editor
             return NavigationService.PushAsync<EditSelectedPictogramsViewModel>(EditorRecipe);
         }
 
+        private Task ChangeIngredients()
+        {
+            return NavigationService.PushAsync<EditIngredientsViewModel>(EditorRecipe);
+        }
+
+        private Task ChangeSteps()
+        {
+            return NavigationService.PushAsync<EditStepsViewModel>(EditorRecipe);
+        }
+
         private Task ErrorMessage(string message)
         {
             return AlertService.DisplayAlert("Error", message, "Ok");
@@ -115,6 +125,8 @@ namespace CooKit.ViewModels.Editor
         public ICommand ChangeEstimatedTimeCommand => new Command(async () => await ChangeEstimatedTime());
         public ICommand ChangePreviewImageCommand => new Command(async () => await ChangePreviewImage());
         public ICommand ChangePictogramsCommand => new Command(async () => await ChangePictograms());
+        public ICommand ChangeIngredientsCommand => new Command(async () => await ChangeIngredients());
+        public ICommand ChangeStepsCommand => new Command(async () => await ChangeSteps());
 
         #endregion
 

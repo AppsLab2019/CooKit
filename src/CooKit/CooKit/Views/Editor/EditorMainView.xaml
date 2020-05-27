@@ -8,28 +8,12 @@
              xmlns:vm="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              xmlns:pictograms="clr-namespace:CooKit.Models.Pictograms;assembly=CooKit"
-             xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
-             xmlns:steps="clr-namespace:CooKit.Views.Steps;assembly=CooKit"
-             xmlns:selectors="clr-namespace:CooKit.Selectors;assembly=CooKit"
              xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditorMainView"
              x:DataType="editor:EditorMainViewModel"
-             x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}">
-
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <DataTemplate x:Key="Template.TextStep">
-                <steps:TextStepView/>
-            </DataTemplate>
-
-            <DataTemplate x:Key="Template.ImageStep">
-                <steps:ImageStepView/>
-            </DataTemplate>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <NavigationPage.TitleView>
         <Grid>
@@ -144,52 +128,15 @@
                                                  ClickCommand="{Binding ChangeMainInfoCommand}"
                                                  Style="{StaticResource Style.ClickableSurfaceCard}"/>
 
-                    <ui:MaterialCard Margin="20,0"
-                                     Style="{StaticResource Style.ClickableSurfaceCard}">
-                        <StackLayout>
-                            <ui:MaterialLabel Text="You'll need:"
-                                              Style="{StaticResource FontStyle.SecondSubtitle}"
-                                              TextColor="{StaticResource Color.OnSurface}"/>
+                    <controls:IngredientsCard Margin="20,0"
+                                              ClickCommand="{Binding ChangeIngredientsCommand}"
+                                              Style="{StaticResource Style.ClickableSurfaceCard}"
+                                              Ingredients="{Binding EditorRecipe.ObservableIngredients}"/>
 
-                            <StackLayout BindableLayout.ItemsSource="{Binding EditorRecipe.ObservableIngredients}">
-                                <BindableLayout.ItemTemplate>
-                                    <DataTemplate x:DataType="ingredients:IIngredient">
-                                        <StackLayout Padding="4"
-                                                     Spacing="10"
-                                                     HeightRequest="40"
-                                                     Orientation="Horizontal">
-                                            <forms:CachedImage DownsampleToViewSize="True"
-                                                               Source="{Binding Template.Icon}"
-                                                               Style="{StaticResource Style.IconSize}"/>
-
-                                            <ui:MaterialLabel VerticalOptions="Center"
-                                                              Style="{StaticResource FontStyle.Body}"
-                                                              TextColor="{StaticResource Color.OnSurface}"
-                                                              Text="{Binding Converter={StaticResource Converter.IngredientToFormattedStringConverter}}"/>
-                                        </StackLayout>
-                                    </DataTemplate>
-                                </BindableLayout.ItemTemplate>
-                            </StackLayout>
-                        </StackLayout>
-                    </ui:MaterialCard>
-
-                    <ui:MaterialCard Margin="20,0,20,10"
-                                     Style="{StaticResource Style.FloatingCard}">
-                        <StackLayout>
-                            <CarouselView HeightRequest="250"
-                                          ItemsSource="{Binding EditorRecipe.ObservableSteps}"
-                                          IndicatorView="StepIndicator">
-                                <CarouselView.ItemTemplate>
-                                    <selectors:StepTemplateSelector TextTemplate="{StaticResource Template.TextStep}"
-                                                                    ImageTemplate="{StaticResource Template.ImageStep}"/>
-                                </CarouselView.ItemTemplate>
-                            </CarouselView>
-
-                            <IndicatorView x:Name="StepIndicator"
-                                           IndicatorColor="LightGray"
-                                           SelectedIndicatorColor="Gray"/>
-                        </StackLayout>
-                    </ui:MaterialCard>
+                    <controls:StepsCard Margin="20,0,20,10"
+                                        ClickCommand="{Binding ChangeStepsCommand}"
+                                        Steps="{Binding EditorRecipe.ObservableSteps}"
+                                        Style="{StaticResource Style.ClickableSurfaceCard}"/>
                 </StackLayout>
             </ScrollView>
 

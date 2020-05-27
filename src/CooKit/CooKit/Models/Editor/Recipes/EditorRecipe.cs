@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CooKit.Extensions;
+using CooKit.Models.Editor.Ingredients;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
 using CooKit.Models.Steps;
 
-namespace CooKit.Models.Editor.Recipe
+namespace CooKit.Models.Editor.Recipes
 {
     public sealed class EditorRecipe : BaseEditorModel, IEditorRecipe
     {
@@ -30,7 +31,10 @@ namespace CooKit.Models.Editor.Recipe
             _previewImage = recipe.PreviewImage;
             _observableImages = recipe.Images.ToObservableCollection();
 
-            _observableIngredients = recipe.Ingredients.ToObservableCollection();
+            _observableIngredients = recipe.Ingredients
+                .Select(ingredient => new EditorIngredient(ingredient) as IEditorIngredient)
+                .ToObservableCollection();
+
             _observablePictograms = recipe.Pictograms.ToObservableCollection();
             _observableSteps = recipe.Steps.ToObservableCollection();
         }
@@ -81,7 +85,7 @@ namespace CooKit.Models.Editor.Recipe
 
         public IList<IIngredient> Ingredients
         {
-            get => ObservableIngredients.ToList();
+            get => ObservableIngredients.Cast<IIngredient>().ToList();
             set => throw new NotSupportedException();
         }
 
@@ -114,16 +118,16 @@ namespace CooKit.Models.Editor.Recipe
             set => OnPropertyChanged(ref _observableImages, value);
         }
 
-        public ObservableCollection<IIngredient> ObservableIngredients
-        {
-            get => _observableIngredients;
-            set => OnPropertyChanged(ref _observableIngredients, value);
-        }
-
         public ObservableCollection<IPictogram> ObservablePictograms
         {
             get => _observablePictograms;
             set => OnPropertyChanged(ref _observablePictograms, value);
+        }
+
+        public ObservableCollection<IEditorIngredient> ObservableIngredients
+        {
+            get => _observableIngredients;
+            set => OnPropertyChanged(ref _observableIngredients, value);
         }
 
         public ObservableCollection<IStep> ObservableSteps
@@ -133,8 +137,9 @@ namespace CooKit.Models.Editor.Recipe
         }
 
         private ObservableCollection<string> _observableImages;
-        private ObservableCollection<IIngredient> _observableIngredients;
         private ObservableCollection<IPictogram> _observablePictograms;
+
+        private ObservableCollection<IEditorIngredient> _observableIngredients;
         private ObservableCollection<IStep> _observableSteps;
 
         #endregion
