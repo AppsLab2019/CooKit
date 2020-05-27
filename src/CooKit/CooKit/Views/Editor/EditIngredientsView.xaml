@@ -7,7 +7,6 @@
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
-             xmlns:ingredients="clr-namespace:CooKit.Models.Ingredients;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditIngredientsView"
              x:DataType="editor:EditIngredientsViewModel"
