@@ -109,7 +109,7 @@ namespace CooKit.ViewModels.Editor
 
         private Task ChangeSteps()
         {
-            return NavigationService.PushAsync<EditStepsViewModel>(EditorRecipe);
+            return NavigationService.PushAsync<EditStepsViewModel>(EditorRecipe.ObservableSteps);
         }
 
         private Task ErrorMessage(string message)

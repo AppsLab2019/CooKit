@@ -5,16 +5,76 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
+             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:steps="clr-namespace:CooKit.Models.Steps;assembly=CooKit"
+             xmlns:selectors="clr-namespace:CooKit.Selectors;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditStepsView"
              x:DataType="editor:EditStepsViewModel"
              viewModels:ViewModelLocator.AutoWireVM="True">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="Template.TextStep"
+                          x:DataType="steps:ITextStep">
+                <Grid Padding="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:MaterialLabel Text="Text Step"/>
+                </Grid>
+            </DataTemplate>            
+            
+            <DataTemplate x:Key="Template.ImageStep"
+                          x:DataType="steps:IImageStep">
+                <Grid Padding="6">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:MaterialLabel Text="Text Step"/>
+                </Grid>
+            </DataTemplate>
+
+            <selectors:StepTemplateSelector x:Key="Selector.StepTemplates"
+                                            TextTemplate="{StaticResource Template.TextStep}"
+                                            ImageTemplate="{StaticResource Template.ImageStep}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid Padding="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <controls:StepsCard Margin="10,0"
+                                Steps="{Binding Steps}"
+                                Style="{StaticResource Style.FloatingCard}"/>
+
+            <ui:MaterialCard Grid.Row="2"
+                             Style="{StaticResource Style.FloatingCard}">
+                <CollectionView ItemsSource="{Binding Steps}"
+                                ItemTemplate="{StaticResource Selector.StepTemplates}"/>
+            </ui:MaterialCard>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

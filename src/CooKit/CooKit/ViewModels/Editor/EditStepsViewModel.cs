@@ -11,6 +11,15 @@ namespace CooKit.ViewModels.Editor
 {
     public sealed class EditStepsViewModel : ViewModel
     {
+        public override Task InitializeAsync(object parameter)
+        {
+            if (!(parameter is ObservableCollection<IEditorStep> steps))
+                throw new ArgumentException(nameof(parameter));
+
+            Steps = steps;
+            return Task.CompletedTask;
+        }
+
         private Task AddStep()
         {
             throw new NotImplementedException();
