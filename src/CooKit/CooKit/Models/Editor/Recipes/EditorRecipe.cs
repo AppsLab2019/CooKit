@@ -2,43 +2,16 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using CooKit.Extensions;
 using CooKit.Models.Editor.Ingredients;
+using CooKit.Models.Editor.Steps;
 using CooKit.Models.Ingredients;
 using CooKit.Models.Pictograms;
-using CooKit.Models.Recipes;
 using CooKit.Models.Steps;
 
 namespace CooKit.Models.Editor.Recipes
 {
     public sealed class EditorRecipe : BaseEditorModel, IEditorRecipe
     {
-        public EditorRecipe()
-        {
-        }
-
-        public EditorRecipe(IRecipe recipe)
-        {
-            if (recipe is null)
-                throw new ArgumentNullException(nameof(recipe));
-
-            _id = recipe.Id;
-            _name = recipe.Name;
-            _description = recipe.Description;
-            _estimatedTime = recipe.EstimatedTime;
-            _isFavorite = recipe.IsFavorite;
-
-            _previewImage = recipe.PreviewImage;
-            _observableImages = recipe.Images.ToObservableCollection();
-
-            _observableIngredients = recipe.Ingredients
-                .Select(ingredient => new EditorIngredient(ingredient) as IEditorIngredient)
-                .ToObservableCollection();
-
-            _observablePictograms = recipe.Pictograms.ToObservableCollection();
-            _observableSteps = recipe.Steps.ToObservableCollection();
-        }
-
         #region IRecipe
 
         public Guid Id
@@ -97,7 +70,7 @@ namespace CooKit.Models.Editor.Recipes
 
         public IList<IStep> Steps
         {
-            get => ObservableSteps.ToList();
+            get => ObservableSteps.Cast<IStep>().ToList();
             set => throw new NotSupportedException();
         }
 
@@ -130,7 +103,7 @@ namespace CooKit.Models.Editor.Recipes
             set => OnPropertyChanged(ref _observableIngredients, value);
         }
 
-        public ObservableCollection<IStep> ObservableSteps
+        public ObservableCollection<IEditorStep> ObservableSteps
         {
             get => _observableSteps;
             set => OnPropertyChanged(ref _observableSteps, value);
@@ -140,7 +113,7 @@ namespace CooKit.Models.Editor.Recipes
         private ObservableCollection<IPictogram> _observablePictograms;
 
         private ObservableCollection<IEditorIngredient> _observableIngredients;
-        private ObservableCollection<IStep> _observableSteps;
+        private ObservableCollection<IEditorStep> _observableSteps;
 
         #endregion
     }

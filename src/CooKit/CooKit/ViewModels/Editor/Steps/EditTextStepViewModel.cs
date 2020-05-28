@@ -11,12 +11,15 @@ namespace CooKit.ViewModels.Editor.Steps
 
         protected override IEditorTextStep CloneStep(IEditorTextStep step)
         {
-            throw new System.NotImplementedException();
+            return step is null ? null : new EditorTextStep { Text = step.Text };
         }
 
         protected override void ProjectStep(IEditorTextStep from, IEditorTextStep target)
         {
-            throw new System.NotImplementedException();
+            if (from is null || target is null)
+                return;
+
+            from.Text = target.Text;
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using CooKit.Models.Editor.Ingredients;
+using CooKit.Models.Editor.Steps;
 using CooKit.Models.Pictograms;
 using CooKit.Models.Recipes;
-using CooKit.Models.Steps;
 
 namespace CooKit.Models.Editor.Recipes
 {
@@ -12,6 +12,6 @@ namespace CooKit.Models.Editor.Recipes
         ObservableCollection<IPictogram> ObservablePictograms { get; set; }
 
         ObservableCollection<IEditorIngredient> ObservableIngredients { get; set; }
-        ObservableCollection<IStep> ObservableSteps { get; set; }
+        ObservableCollection<IEditorStep> ObservableSteps { get; set; }
     }
 }

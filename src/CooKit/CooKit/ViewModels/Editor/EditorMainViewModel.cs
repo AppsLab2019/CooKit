@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CooKit.Extensions;
 using CooKit.Models.Editor.Recipes;
 using CooKit.Models.Recipes;
 using CooKit.Services.Stores.Recipes;
@@ -30,7 +31,7 @@ namespace CooKit.ViewModels.Editor
             if (_recipe is null)
                 throw new ArgumentNullException(nameof(parameter));
 
-            EditorRecipe = new EditorRecipe(_recipe);
+            EditorRecipe = _recipe.ToEditorRecipe();
 
             return Task.CompletedTask;
         }

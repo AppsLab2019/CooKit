@@ -1,24 +1,9 @@
-﻿using System;
-using CooKit.Models.Ingredients;
+﻿using CooKit.Models.Ingredients;
 
 namespace CooKit.Models.Editor.Ingredients
 {
     public sealed class EditorIngredient : BaseEditorModel, IEditorIngredient
     {
-        public EditorIngredient()
-        {
-        }
-
-        public EditorIngredient(IIngredient ingredient)
-        {
-            if (ingredient is null)
-                throw new ArgumentNullException(nameof(ingredient));
-
-            _template = ingredient.Template;
-            _note = ingredient.Note;
-            _quantity = ingredient.Quantity;
-        }
-
         public IIngredientTemplate Template
         {
             get => _template;
