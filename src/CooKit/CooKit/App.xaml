@@ -300,6 +300,7 @@
 
             <!--#region Converters-->
 
+            <converters:CutStringConverter x:Key="Converter.CutString"/>
             <converters:IngredientToFormattedStringConverter x:Key="Converter.IngredientToFormattedStringConverter"/>
 
             <!--#endregion-->
