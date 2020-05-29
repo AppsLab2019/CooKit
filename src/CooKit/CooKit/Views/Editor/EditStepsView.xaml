@@ -12,10 +12,33 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditStepsView"
              x:DataType="editor:EditStepsViewModel"
+             x:Name="Root"
              viewModels:ViewModelLocator.AutoWireVM="True">
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Style x:Key="Style.IconButton" TargetType="ui:MaterialIconButton"
+                   BasedOn="{StaticResource Style.IconSize}">
+                <Setter Property="ButtonType" Value="Text"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="TintColor" Value="{StaticResource Color.OnSurface}"/>
+            </Style>
+
+            <Style x:Key="Style.TemplateEditButton" TargetType="ui:MaterialIconButton"
+                   BasedOn="{StaticResource Style.IconButton}">
+                <Setter Property="Image" Value="{StaticResource IconPath.Edit}"/>
+                <Setter Property="Command" Value="{Binding Source={x:Reference Root}, Path=BindingContext.EditCommand}"/>
+                <Setter Property="CommandParameter" Value="{Binding}"/>
+            </Style>
+
+            <Style x:Key="Style.TemplateDeleteButton" TargetType="ui:MaterialIconButton"
+                   BasedOn="{StaticResource Style.IconButton}">
+                <Setter Property="Image" Value="{StaticResource IconPath.Delete}"/>
+                <Setter Property="Command" Value="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteCommand}"/>
+                <Setter Property="CommandParameter" Value="{Binding}"/>
+            </Style>
+
+
             <DataTemplate x:Key="Template.TextStep"
                           x:DataType="steps:ITextStep">
                 <Grid Padding="6">
@@ -30,7 +53,25 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <ui:MaterialLabel Text="Text Step"/>
+                    <ui:MaterialLabel Text="Text Step"
+                                      TextColor="{StaticResource Color.OnSurface}"
+                                      Style="{StaticResource FontStyle.Body}"/>
+
+                    <ui:MaterialLabel Grid.Row="1"
+                                      Grid.Column="0"
+                                      Text="{Binding Text}"
+                                      Style="{StaticResource FontStyle.SecondBody}"
+                                      TextColor="{StaticResource Color.OnSurface}"/>
+
+                    <ui:MaterialIconButton Grid.Row="0"
+                                           Grid.Column="1"
+                                           Grid.RowSpan="2"
+                                           Style="{StaticResource Style.TemplateEditButton}"/>
+
+                    <ui:MaterialIconButton Grid.Row="0"
+                                           Grid.Column="2"
+                                           Grid.RowSpan="2"
+                                           Style="{StaticResource Style.TemplateDeleteButton}"/>
                 </Grid>
             </DataTemplate>            
             
@@ -48,7 +89,25 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <ui:MaterialLabel Text="Text Step"/>
+                    <ui:MaterialLabel Text="Image Step"
+                                      TextColor="{StaticResource Color.OnSurface}"
+                                      Style="{StaticResource FontStyle.Body}"/>
+
+                    <ui:MaterialLabel Grid.Row="1"
+                                      Grid.Column="0"
+                                      Text="{Binding Image}"
+                                      Style="{StaticResource FontStyle.SecondBody}"
+                                      TextColor="{StaticResource Color.OnSurface}"/>
+
+                    <ui:MaterialIconButton Grid.Row="0"
+                                           Grid.Column="1"
+                                           Grid.RowSpan="2"
+                                           Style="{StaticResource Style.TemplateEditButton}"/>
+
+                    <ui:MaterialIconButton Grid.Row="0"
+                                           Grid.Column="2"
+                                           Grid.RowSpan="2"
+                                           Style="{StaticResource Style.TemplateDeleteButton}"/>
                 </Grid>
             </DataTemplate>
 
@@ -71,9 +130,36 @@
                                 Style="{StaticResource Style.FloatingCard}"/>
 
             <ui:MaterialCard Grid.Row="2"
+                             Padding="10"
                              Style="{StaticResource Style.FloatingCard}">
-                <CollectionView ItemsSource="{Binding Steps}"
-                                ItemTemplate="{StaticResource Selector.StepTemplates}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ui:MaterialLabel Text="Recipe Steps:"
+                                      VerticalOptions="Center"
+                                      Style="{StaticResource FontStyle.Body}"
+                                      TextColor="{StaticResource Color.OnSurface}"/>
+
+                    <ui:MaterialIconButton Grid.Row="0"
+                                           Grid.Column="1"
+                                           Command="{Binding AddCommand}"
+                                           Image="{StaticResource IconPath.Add}"
+                                           Style="{StaticResource Style.IconButton}"/>
+
+                    <CollectionView Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="2"
+                                    ItemsSource="{Binding Steps}"
+                                    ItemTemplate="{StaticResource Selector.StepTemplates}"/>
+                </Grid>
             </ui:MaterialCard>
         </Grid>
     </ContentPage.Content>

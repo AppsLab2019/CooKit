@@ -3,24 +3,24 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Models.Editor.CollectionElementPair;
-using CooKit.Models.Steps;
+using CooKit.Models.Editor.Steps;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor.Steps
 {
-    public abstract class BaseEditStepViewModel<TStep> : ViewModel where TStep : class, IStep
+    public abstract class BaseEditStepViewModel<T> : ViewModel where T : class, IEditorStep
     {
-        private ObservableCollection<IStep> _stepCollection;
-        private TStep _originalStep;
+        private ObservableCollection<IEditorStep> _stepCollection;
+        private T _originalStep;
 
         public override Task InitializeAsync(object parameter)
         {
-            if (!(parameter is ICollectionElementPair<IStep> pair))
+            if (!(parameter is ICollectionElementPair<IEditorStep> pair))
                 throw new ArgumentException(nameof(parameter));
 
             switch (pair.Element)
             {
-                case TStep step:
+                case T step:
                     IsNew = false;
                     Step = CloneStep(step);
                     _originalStep = step;
@@ -41,9 +41,9 @@ namespace CooKit.ViewModels.Editor.Steps
             return Task.CompletedTask;
         }
 
-        protected abstract TStep CreateStep();
-        protected abstract TStep CloneStep(TStep step);
-        protected abstract void ProjectStep(TStep from, TStep target);
+        protected abstract T CreateStep();
+        protected abstract T CloneStep(T step);
+        protected abstract void ProjectStep(T from, T target);
 
         protected virtual Task Save()
         {
@@ -57,7 +57,7 @@ namespace CooKit.ViewModels.Editor.Steps
 
         public ICommand SaveCommand => new Command(async () => await Save());
 
-        public TStep Step
+        public T Step
         {
             get => _step;
             set => OnPropertyChange(ref _step, value);
@@ -69,7 +69,7 @@ namespace CooKit.ViewModels.Editor.Steps
             set => OnPropertyChange(ref _isNew, value);
         }
 
-        private TStep _step;
+        private T _step;
         private bool _isNew;
     }
 }

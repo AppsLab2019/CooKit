@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using XF.Material.Forms.UI.Dialogs;
 
@@ -15,7 +16,7 @@ namespace CooKit.Services.Alerts
         {
             var output = await MaterialDialog.Instance.ConfirmAsync
                 (message, title, confirm, cancel);
-
+            
             return output ?? false;
         }
 
@@ -24,6 +25,11 @@ namespace CooKit.Services.Alerts
         {
             return MaterialDialog.Instance.InputAsync(title, message, inputText, 
                 inputPlaceholder, confirm, cancel);
+        }
+
+        public Task<int> DisplaySelectAction(string title, IList<string> actions)
+        {
+            return MaterialDialog.Instance.SelectActionAsync(title, actions);
         }
 
         public async Task<IDisposable> DisplayLoading(string message)

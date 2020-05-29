@@ -6,7 +6,7 @@ namespace CooKit.ViewModels.Editor.Steps
     {
         protected override IEditorTextStep CreateStep()
         {
-            throw new System.NotImplementedException();
+            return new EditorTextStep { Text = "Example Text" };
         }
 
         protected override IEditorTextStep CloneStep(IEditorTextStep step)

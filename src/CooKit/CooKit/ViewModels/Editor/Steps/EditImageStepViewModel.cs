@@ -6,7 +6,7 @@ namespace CooKit.ViewModels.Editor.Steps
     {
         protected override IEditorImageStep CreateStep()
         {
-            throw new System.NotImplementedException();
+            return new EditorImageStep { Image = string.Empty };
         }
 
         protected override IEditorImageStep CloneStep(IEditorImageStep step)
