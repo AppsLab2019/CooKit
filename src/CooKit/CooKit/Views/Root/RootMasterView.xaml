@@ -23,7 +23,8 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ListView SelectionMode="None"
+        <ListView Margin="0,50,0,0"
+                  SelectionMode="None"
                   ItemsSource="{Binding Entries}">
             <ListView.Behaviors>
                 <behaviors:EventToCommandBehavior EventName="ItemTapped"

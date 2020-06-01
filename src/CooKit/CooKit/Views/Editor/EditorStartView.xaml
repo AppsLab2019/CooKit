@@ -11,7 +11,8 @@
              x:Class="CooKit.Views.Editor.EditorStartView"
              x:DataType="editor:EditorStartViewModel"
              viewModels:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="Editor">
 
     <ContentPage.Resources>
         <ResourceDictionary>

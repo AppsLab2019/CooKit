@@ -11,9 +11,9 @@
              x:Class="CooKit.Views.Recipes.FavoriteRecipesView"
              x:DataType="recipes1:FavoriteRecipesViewModel"
              viewModels:ViewModelLocator.AutoWireVM="True"
-             Title="Favorite Recipes"
              x:Name="Root"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="Favorite Recipes">
 
     <ContentPage.Content>
         <CollectionView Margin="10"

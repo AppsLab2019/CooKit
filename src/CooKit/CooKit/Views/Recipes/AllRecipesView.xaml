@@ -6,40 +6,18 @@
              xmlns:recipes="clr-namespace:CooKit.ViewModels.Recipes;assembly=CooKit"
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:recipes2="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
-             xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Recipes.AllRecipesView"
              x:DataType="recipes:AllRecipesViewModel"
              viewModels:ViewModelLocator.AutoWireVM="True"
              x:Name="Root"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="All Recipes">
 
     <ContentPage.Content>
         <CollectionView Margin="10"
                         ItemsSource="{Binding Recipes}">
-            <CollectionView.Header>
-                <Grid Margin="15,15,15,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <ui:MaterialIcon Grid.Column="1"
-                                     Source="{StaticResource Icon.List}"
-                                     Style="{StaticResource Style.IconSize}"
-                                     TintColor="{StaticResource Color.OnSurface}"/>
-
-                    <ui:MaterialLabel Grid.Column="2"
-                                      Text="All Recipes"
-                                      VerticalOptions="Center"
-                                      TextColor="{StaticResource Color.OnSurface}"
-                                      Style="{StaticResource FontStyle.SmallHeadline}"/>
-                </Grid>
-            </CollectionView.Header>
-
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Span="2"
                                  Orientation="Vertical"

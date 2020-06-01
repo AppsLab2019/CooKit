@@ -13,7 +13,8 @@
              x:Class="CooKit.Views.Editor.EditorMainView"
              x:DataType="editor:EditorMainViewModel"
              vm:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="Edit Recipe">
 
     <NavigationPage.TitleView>
         <Grid>

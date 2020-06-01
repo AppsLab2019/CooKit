@@ -9,13 +9,12 @@ namespace CooKit.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException("Untested!");
-
             if (!(value is string text))
                 return null;
 
-            if (!(parameter is int count))
-                return value;
+            if (!(parameter is int count)) 
+                if (!int.TryParse(parameter.ToString(), out count))
+                    return value;
 
             if (text.Length <= count)
                 return text;

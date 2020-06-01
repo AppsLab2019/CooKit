@@ -13,7 +13,8 @@
              x:DataType="recipes:MainRecipeViewModel"
              x:Name="Root"
              viewModels:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="Welcome to CooKit!">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -42,7 +43,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <ui:MaterialCard Padding="0"
+                <!--<ui:MaterialCard Padding="0"
                                  Margin="0,0,0,10"
                                  HeightRequest="160"
                                  Style="{StaticResource Style.SurfaceCard}">
@@ -72,11 +73,14 @@
                                           HorizontalOptions="Center"
                                           Style="{StaticResource FontStyle.Body}"/>
                     </Grid>
-                </ui:MaterialCard>
+                </ui:MaterialCard>-->
 
-                <controls:RecipeFeature Margin="10,0"
-                                        Recipe="{Binding FeaturedRecipe}"
-                                        Command="{Binding OpenRecipeCommand}"/>
+                <controls:RecipeFeature Margin="10,10,10,0"
+                                        Name="{Binding FeaturedRecipe.Name}"
+                                        Description="{Binding FeaturedRecipe.Description, Converter={StaticResource Converter.CutString}, ConverterParameter=100}"
+                                        Image="{Binding FeaturedRecipe.PreviewImage}"
+                                        Command="{Binding OpenRecipeCommand}"
+                                        CommandParameter="{Binding FeaturedRecipe}"/>
 
                 <Grid ColumnSpacing="10">
                     <Grid.ColumnDefinitions>

@@ -11,7 +11,8 @@
              x:Class="CooKit.Views.Editor.EditMainInfoView"
              x:DataType="editor:EditMainInfoViewModel"
              viewModels:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="Edit Main Info">
 
     <ContentPage.Content>
         <AbsoluteLayout>

@@ -11,7 +11,8 @@
              x:Class="CooKit.Views.Editor.EditPreviewImageView"
              x:DataType="editor:EditPreviewImageViewModel"
              viewModels:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="Edit Preview Image">
 
     <ContentPage.Content>
         <AbsoluteLayout>

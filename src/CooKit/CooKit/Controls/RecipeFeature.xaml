@@ -14,24 +14,26 @@
                      Style="{StaticResource Style.ClickableSurfaceCard}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <forms:CachedImage Grid.RowSpan="3"
+            <forms:CachedImage Grid.RowSpan="2"
                                x:Name="RecipeImage"
                                Aspect="AspectFill"
                                DownsampleToViewSize="True"/>
 
-            <ui:MaterialLabel Grid.Row="0"
-                              Grid.Column="1"
-                              Text="Featured Recipe"/>
+            <StackLayout Grid.Row="1"
+                         Padding="6"
+                         BackgroundColor="#B0000000">
+                <ui:MaterialLabel x:Name="NameLabel"
+                                  TextColor="{StaticResource Color.OnPrimary}"
+                                  Style="{StaticResource FontStyle.SmallHeadline}"/>
+
+                <ui:MaterialLabel x:Name="DescriptionLabel"
+                                  TextColor="{StaticResource Color.OnPrimary}"
+                                  Style="{StaticResource FontStyle.SecondBody}"/>
+            </StackLayout>
         </Grid>
     </ui:MaterialCard>
 </ContentView>

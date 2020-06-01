@@ -14,7 +14,8 @@
              x:DataType="recipes:RecipeViewModel"
              x:Name="Root"
              vm:ViewModelLocator.AutoWireVM="True"
-             Style="{StaticResource Style.Page}">
+             Style="{StaticResource Style.Page}"
+             Title="Recipe">
 
     <NavigationPage.TitleView>
         <Grid>

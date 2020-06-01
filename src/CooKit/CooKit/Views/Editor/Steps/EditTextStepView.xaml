@@ -8,7 +8,8 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.Steps.EditTextStepView"
              x:DataType="steps:EditImageStepViewModel"
-             viewModels:ViewModelLocator.AutoWireVM="True">
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             Title="Edit Text Step">
 
     <ContentPage.Content>
         <StackLayout>

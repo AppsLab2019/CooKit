@@ -12,7 +12,8 @@
              x:Class="CooKit.Views.Editor.EditSelectedPictogramsView"
              x:DataType="editor:EditSelectedPictogramsViewModel"
              x:Name="Root"
-             viewModels:ViewModelLocator.AutoWireVM="True">
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             Title="Edit Pictograms">
 
     <ContentPage.Content>
         <AbsoluteLayout>

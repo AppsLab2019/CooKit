@@ -13,7 +13,8 @@
              x:Class="CooKit.Views.Editor.EditStepsView"
              x:DataType="editor:EditStepsViewModel"
              x:Name="Root"
-             viewModels:ViewModelLocator.AutoWireVM="True">
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             Title="Edit Steps">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -59,9 +60,9 @@
 
                     <ui:MaterialLabel Grid.Row="1"
                                       Grid.Column="0"
-                                      Text="{Binding Text}"
                                       Style="{StaticResource FontStyle.SecondBody}"
-                                      TextColor="{StaticResource Color.OnSurface}"/>
+                                      TextColor="{StaticResource Color.OnSurface}"
+                                      Text="{Binding Text, Converter={StaticResource Converter.CutString}, ConverterParameter=30}"/>
 
                     <ui:MaterialIconButton Grid.Row="0"
                                            Grid.Column="1"
@@ -95,9 +96,9 @@
 
                     <ui:MaterialLabel Grid.Row="1"
                                       Grid.Column="0"
-                                      Text="{Binding Image}"
                                       Style="{StaticResource FontStyle.SecondBody}"
-                                      TextColor="{StaticResource Color.OnSurface}"/>
+                                      TextColor="{StaticResource Color.OnSurface}"
+                                      Text="{Binding Image, Converter={StaticResource Converter.CutString}, ConverterParameter=30}"/>
 
                     <ui:MaterialIconButton Grid.Row="0"
                                            Grid.Column="1"

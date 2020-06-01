@@ -10,7 +10,8 @@
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditIngredientsView"
              x:DataType="editor:EditIngredientsViewModel"
-             viewModels:ViewModelLocator.AutoWireVM="True">
+             viewModels:ViewModelLocator.AutoWireVM="True"
+             Title="Edit Ingredients">
 
     <ContentPage.Content>
         <AbsoluteLayout>
