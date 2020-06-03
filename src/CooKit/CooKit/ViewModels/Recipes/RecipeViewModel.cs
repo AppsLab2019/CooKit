@@ -56,9 +56,10 @@ namespace CooKit.ViewModels.Recipes
                 return;
 
             IsBusy = true;
-
             IsFavorite = await _favoriteService.ToggleFavorite(_recipe);
-            await SnackbarService.SnackbarAsync("Toggled favorite status!", 2750);
+
+            var message = IsFavorite ? "Added to favorites!" : "Removed from favorites!";
+            await SnackbarService.SnackbarAsync(message, "Ok", 2750);
 
             IsBusy = false;
         }
