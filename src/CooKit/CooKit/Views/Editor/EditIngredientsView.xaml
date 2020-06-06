@@ -11,7 +11,8 @@
              x:Class="CooKit.Views.Editor.EditIngredientsView"
              x:DataType="editor:EditIngredientsViewModel"
              viewModels:ViewModelLocator.AutoWireVM="True"
-             Title="Edit Ingredients">
+             Title="Edit Ingredients"
+             Style="{StaticResource Style.Page}">
 
     <ContentPage.Content>
         <AbsoluteLayout>

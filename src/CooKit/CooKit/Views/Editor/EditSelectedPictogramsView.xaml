@@ -13,6 +13,7 @@
              x:DataType="editor:EditSelectedPictogramsViewModel"
              x:Name="Root"
              viewModels:ViewModelLocator.AutoWireVM="True"
+             Style="{StaticResource Style.Page}"
              Title="Edit Pictograms">
 
     <ContentPage.Content>

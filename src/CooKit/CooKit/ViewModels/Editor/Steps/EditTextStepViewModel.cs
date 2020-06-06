@@ -19,7 +19,7 @@ namespace CooKit.ViewModels.Editor.Steps
             if (from is null || target is null)
                 return;
 
-            from.Text = target.Text;
+            target.Text = from.Text;
         }
     }
 }

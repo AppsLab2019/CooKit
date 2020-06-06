@@ -14,6 +14,7 @@
              x:DataType="editor:EditStepsViewModel"
              x:Name="Root"
              viewModels:ViewModelLocator.AutoWireVM="True"
+             Style="{StaticResource Style.Page}"
              Title="Edit Steps">
 
     <ContentPage.Resources>
