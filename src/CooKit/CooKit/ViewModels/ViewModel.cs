@@ -84,4 +84,18 @@ namespace CooKit.ViewModels
 
         #endregion
     }
+
+    public abstract class ViewModel<TParamType> : ViewModel
+    {
+        public abstract Task InitializeAsync(TParamType parameter);
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public override Task InitializeAsync(object parameter)
+        {
+            if (!(parameter is TParamType cast))
+                throw new ArgumentException();
+
+            return InitializeAsync(cast);
+        }
+    }
 }

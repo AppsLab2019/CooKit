@@ -51,42 +51,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Spacing="10">
-                <ui:MaterialCard Padding="0"
-                                 Elevation="2"
-                                 BackgroundColor="{StaticResource Color.Background}">
-                    <Grid HeightRequest="250">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="0.01*"/>
-                        </Grid.RowDefinitions>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <CarouselView Grid.RowSpan="3"
-                                      Grid.ColumnSpan="3"
-                                      IndicatorView="ImageIndicator"
-                                      ItemsSource="{Binding Images}">
-                            <CarouselView.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <forms:CachedImage Source="{Binding}"
-                                                       Aspect="AspectFill"
-                                                       DownsampleToViewSize="True"/>
-                                </DataTemplate>
-                            </CarouselView.ItemTemplate>
-                        </CarouselView>
-
-                        <IndicatorView Grid.Row="1"
-                                       Grid.Column="1"
-                                       x:Name="ImageIndicator"
-                                       SelectedIndicatorColor="White"
-                                       IndicatorColor="LightGray"/>
-                    </Grid>
-                </ui:MaterialCard>
+                <controls:ImageCarouselView Images="{Binding Images}"/>
 
                 <Grid Margin="20,0"
                       HeightRequest="40">

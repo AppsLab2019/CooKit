@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui:MaterialCard xmlns="http://xamarin.com/schemas/2014/forms" 
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:ui="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+                 mc:Ignorable="d"
+                 x:Class="CooKit.Controls.EditListCard">
+
+    <ui:MaterialCard.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <ui:MaterialLabel x:Name="HeaderLabel"
+                              VerticalOptions="Center"
+                              Style="{StaticResource FontStyle.Body}"
+                              TextColor="{StaticResource Color.OnSurface}"/>
+
+            <ui:MaterialIconButton Grid.Row="0"
+                                   Grid.Column="1"
+                                   x:Name="AddButton"
+                                   ButtonType="Text"
+                                   VerticalOptions="Center"
+                                   Image="{StaticResource IconPath.Add}"
+                                   TintColor="{StaticResource Color.OnSurface}"/>
+
+            <ListView Grid.Row="1"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2"
+                      x:Name="WrappedListView"
+                      SelectionMode="None"/>
+        </Grid>
+    </ui:MaterialCard.Content>
+</ui:MaterialCard>

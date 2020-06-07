@@ -73,6 +73,11 @@ namespace CooKit.ViewModels.Editor
             return NavigationService.PushAsync<EditMainInfoViewModel>(EditorRecipe);
         }
 
+        private Task ChangeImages()
+        {
+            return NavigationService.PushAsync<EditImagesViewModel>(EditorRecipe.ObservableImages);
+        }
+
         private async Task ChangeEstimatedTime()
         {
             var rawTime = await AlertService.DisplayInput("Estimated Time",
@@ -123,6 +128,7 @@ namespace CooKit.ViewModels.Editor
         public ICommand ExitCommand => new Command(async () => await Exit());
 
         public ICommand ChangeMainInfoCommand => new Command(async () => await ChangeMainInfo());
+        public ICommand ChangeImagesCommand => new Command(async () => await ChangeImages());
         public ICommand ChangeEstimatedTimeCommand => new Command(async () => await ChangeEstimatedTime());
         public ICommand ChangePreviewImageCommand => new Command(async () => await ChangePreviewImage());
         public ICommand ChangePictogramsCommand => new Command(async () => await ChangePictograms());
