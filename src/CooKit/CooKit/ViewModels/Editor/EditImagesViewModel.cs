@@ -15,7 +15,13 @@ namespace CooKit.ViewModels.Editor
 
         private async Task AddImage()
         {
+            var image = await AlertService.DisplayInput("Add image", "Enter source", 
+                confirm: "Ok", cancel: "Cancel");
 
+            if (string.IsNullOrEmpty(image))
+                return;
+
+            Images.Add(image);
         }
 
         private void RemoveImage(string image)

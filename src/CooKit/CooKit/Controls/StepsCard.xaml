@@ -27,7 +27,7 @@
 
     <ui:MaterialCard.Content>
         <StackLayout>
-            <CarouselView HeightRequest="250"
+            <CarouselView HeightRequest="340"
                           x:Name="StepCarousel"
                           IndicatorView="StepIndicator"
                           ItemTemplate="{StaticResource Selector.StepTemplate}"/>

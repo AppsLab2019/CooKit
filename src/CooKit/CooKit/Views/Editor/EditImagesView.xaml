@@ -24,7 +24,7 @@
                                    AddCommand="{Binding AddCommand}"
                                    Style="{StaticResource Style.FloatingCard}">
                 <controls:EditListCard.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="x:String">
                         <ViewCell>
                             <Grid ColumnSpacing="10">
                                 <Grid.ColumnDefinitions>
