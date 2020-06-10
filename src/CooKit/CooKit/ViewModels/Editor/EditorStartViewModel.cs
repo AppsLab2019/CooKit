@@ -13,23 +13,12 @@ namespace CooKit.ViewModels.Editor
     {
         private readonly IRecipeStore _store;
 
-        public ICommand AddCommand { get; }
-        public ICommand EditCommand { get; }
-        public ICommand DeleteCommand { get; }
-
-        public IRecipe SelectedRecipe { get; set; }
-        public ObservableCollection<IRecipe> Recipes { get; private set; }
-
         public EditorStartViewModel(IRecipeStore store)
         {
             if (store is null)
                 throw new ArgumentNullException(nameof(store));
 
             _store = store;
-
-            AddCommand = new Command(async () => await HandleAdd());
-            EditCommand = new Command(async () => await HandleEdit());
-            DeleteCommand = new Command(async () => await HandleDelete());
         }
 
         public override async Task InitializeAsync(object parameter)
@@ -38,31 +27,44 @@ namespace CooKit.ViewModels.Editor
 
             var recipes = await _store.GetAll();
             Recipes = recipes.ToObservableCollection();
-            SelectedRecipe = null;
 
             IsBusy = false;
-            RaiseAllPropertiesChanged();
         }
 
-        private Task HandleAdd()
+        private Task AddRecipe()
         {
             return NavigationService.PushAsync<EditorMainViewModel>();
         }
 
-        private async Task HandleEdit()
+        private Task EditRecipe(IRecipe recipe)
         {
-            if (SelectedRecipe is null)
-                return;
-
-            await NavigationService.PushAsync<EditorMainViewModel>(SelectedRecipe);
-        }
-
-        private Task HandleDelete()
-        {
-            if (SelectedRecipe is null)
+            if (recipe is null)
                 return Task.CompletedTask;
 
-            throw new NotImplementedException();
+            return NavigationService.PushAsync<EditorMainViewModel>(recipe);
         }
+
+        private async Task RemoveRecipe(IRecipe recipe)
+        {
+            if (recipe is null)
+                return;
+
+            Recipes.Remove(recipe);
+            // TODO: remove from store
+
+            await SnackbarService.SnackbarAsync("Recipe removed!", 2750);
+        }
+
+        public ICommand AddCommand => new Command(async () => await AddRecipe());
+        public ICommand EditCommand => new Command<IRecipe>(async recipe => await EditRecipe(recipe));
+        public ICommand RemoveCommand => new Command<IRecipe>(async recipe => await RemoveRecipe(recipe));
+
+        public ObservableCollection<IRecipe> Recipes
+        {
+            get => _recipes;
+            set => OnPropertyChange(ref _recipes, value);
+        }
+
+        private ObservableCollection<IRecipe> _recipes;
     }
 }

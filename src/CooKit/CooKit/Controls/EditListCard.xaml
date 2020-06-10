@@ -36,6 +36,7 @@
                       Grid.Column="0"
                       Grid.ColumnSpan="2"
                       x:Name="WrappedListView"
+                      HasUnevenRows="True"
                       SelectionMode="None"/>
         </Grid>
     </ui:MaterialCard.Content>

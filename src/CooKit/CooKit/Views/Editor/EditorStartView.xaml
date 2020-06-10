@@ -7,69 +7,76 @@
              xmlns:viewModels="clr-namespace:CooKit.ViewModels;assembly=CooKit"
              xmlns:editor="clr-namespace:CooKit.ViewModels.Editor;assembly=CooKit"
              xmlns:recipes="clr-namespace:CooKit.Models.Recipes;assembly=CooKit"
+             xmlns:controls="clr-namespace:CooKit.Controls;assembly=CooKit"
              mc:Ignorable="d"
              x:Class="CooKit.Views.Editor.EditorStartView"
              x:DataType="editor:EditorStartViewModel"
+             x:Name="Root"
              viewModels:ViewModelLocator.AutoWireVM="True"
              Style="{StaticResource Style.Page}"
              Title="Editor">
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <Style TargetType="ui:MaterialButton">
-                <Setter Property="ButtonType" Value="Outlined"/>
+            <Style x:Key="Style.ActionButton" TargetType="ui:MaterialIconButton">
+                <Setter Property="ButtonType" Value="Text"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="Style" Value="{StaticResource Style.IconSize}"/>
+                <Setter Property="TintColor" Value="{StaticResource Color.OnSurface}"/>
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <Grid Padding="10">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <controls:EditListCard Margin="10"
+                               HeaderText="Recipes"
+                               ItemsSource="{Binding Recipes}"
+                               AddCommand="{Binding AddCommand}"
+                               Style="{StaticResource Style.FloatingCard}">
+            <controls:EditListCard.ItemTemplate>
+                <DataTemplate x:DataType="recipes:IRecipe">
+                    <ViewCell>
+                        <Grid Padding="4">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-            <CollectionView Grid.ColumnSpan="3"
-                            SelectionMode="Single"
-                            SelectedItem="{Binding SelectedRecipe}"
-                            ItemsSource="{Binding Recipes}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="recipes:IRecipe">
-                        <StackLayout Spacing="5"
-                                     Padding="5"
-                                     BackgroundColor="{StaticResource Color.Surface}">
                             <ui:MaterialLabel Text="{Binding Name}"
-                                              Style="{StaticResource FontStyle.SmallHeadline}"
-                                              TextColor="{StaticResource Color.OnSurface}"/>
-
-                            <ui:MaterialLabel Style="{StaticResource FontStyle.Body}"
                                               TextColor="{StaticResource Color.OnSurface}"
-                                              Text="{Binding Description, Converter={StaticResource Converter.CutString}, ConverterParameter=40}"/>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                                              Style="{StaticResource FontStyle.SmallHeadline}"/>
 
-            <ui:MaterialButton Grid.Row="1"
-                               Grid.Column="0"
-                               Text="Add"
-                               Command="{Binding AddCommand}"/>
+                            <ui:MaterialLabel Grid.Row="1"
+                                              Grid.Column="0"
+                                              TextColor="{StaticResource Color.OnSurface}"
+                                              Style="{StaticResource FontStyle.Body}"
+                                              Text="{Binding Description, Converter={StaticResource Converter.CutString}, ConverterParameter=60}"/>
 
-            <ui:MaterialButton Grid.Row="1"
-                               Grid.Column="1"
-                               Text="Edit"
-                               Command="{Binding EditCommand}"/>
+                            <ui:MaterialIconButton Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Grid.RowSpan="2"
+                                                   Image="{StaticResource IconPath.Edit}"
+                                                   Style="{StaticResource Style.ActionButton}"
+                                                   CommandParameter="{Binding}"
+                                                   Command="{Binding Source={x:Reference Root}, Path=BindingContext.EditCommand}"/>
 
-            <ui:MaterialButton Grid.Row="1"
-                               Grid.Column="2"
-                               Text="Remove"
-                               Command="{Binding DeleteCommand}"/>
-        </Grid>
+                            <ui:MaterialIconButton Grid.Row="0"
+                                                   Grid.Column="2"
+                                                   Grid.RowSpan="2"
+                                                   Image="{StaticResource IconPath.Delete}"
+                                                   Style="{StaticResource Style.ActionButton}"
+                                                   CommandParameter="{Binding}"
+                                                   Command="{Binding Source={x:Reference Root}, Path=BindingContext.RemoveCommand}"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </controls:EditListCard.ItemTemplate>
+        </controls:EditListCard>
     </ContentPage.Content>
 </ContentPage>
