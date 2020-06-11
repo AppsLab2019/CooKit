@@ -50,7 +50,7 @@ namespace CooKit.Repositories.Recipes
                 IsFavorite = dto.IsFavorite,
 
                 PreviewImage = dto.PreviewImage,
-                Images = _converter.Deserialize<List<string>>(dto.Images),
+                Images = DeserializeImages(dto.Images),
 
                 Steps = DeserializeSteps(dto.Steps)
             };
@@ -112,6 +112,14 @@ namespace CooKit.Repositories.Recipes
         private string SerializeSteps(IEnumerable<IStep> steps)
         {
             return steps is null ? null : _converter.Serialize(steps);
+        }
+
+        private IList<string> DeserializeImages(string rawImages)
+        {
+            if (string.IsNullOrEmpty(rawImages))
+                return new List<string>();
+
+            return _converter.Deserialize<List<string>>(rawImages);
         }
 
         private async Task<IList<IIngredient>> DeserializeIngredients(string rawIngredients)
