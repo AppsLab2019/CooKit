@@ -36,6 +36,10 @@
                 <On Platform="Android" Value="ic_action_favorite_border.png"/>
             </OnPlatform>
 
+            <OnPlatform x:Key="IconPath.Group" x:TypeArguments="x:String">
+                <On Platform="Android" Value="ic_action_group.png"/>
+            </OnPlatform>
+
             <OnPlatform x:Key="IconPath.History" x:TypeArguments="x:String">
                 <On Platform="Android" Value="ic_action_history.png"/>
             </OnPlatform>
@@ -89,6 +93,10 @@
 
             <OnPlatform x:Key="Icon.FavoriteBorder" x:TypeArguments="ImageSource">
                 <On Platform="Android" Value="ic_action_favorite_border.png"/>
+            </OnPlatform>
+
+            <OnPlatform x:Key="Icon.Group" x:TypeArguments="ImageSource">
+                <On Platform="Android" Value="ic_action_group.png"/>
             </OnPlatform>
 
             <OnPlatform x:Key="Icon.History" x:TypeArguments="ImageSource">

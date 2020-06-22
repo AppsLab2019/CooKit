@@ -33,7 +33,7 @@ namespace CooKit.ViewModels.Root
                 },
                 new RootDetailEntry
                 {
-                    Icon = null,
+                    Icon = "ic_action_group.png",
                     Text = "About",
                     ViewModelType = typeof(UnfinishedViewModel)
                 }
@@ -45,12 +45,12 @@ namespace CooKit.ViewModels.Root
             return Task.CompletedTask;
         }
 
-        public async Task SelectDetail(IRootDetailEntry entry)
+        public Task SelectDetail(IRootDetailEntry entry)
         {
             if (entry is null)
-                return;
+                return Task.CompletedTask;
 
-            await NavigationService.SetRootAsync(entry.ViewModelType);
+            return NavigationService.SetRootAsync(entry.ViewModelType);
         }
     }
 }
