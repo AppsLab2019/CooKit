@@ -11,7 +11,7 @@ using CooKit.Services.Queries;
 
 namespace CooKit.Repositories.Recipes
 {
-    public sealed class SQLiteRecipeRepository : MappingRepository<IRecipe, SQLiteRawRecipeDto>, IRecipeRepository
+    public sealed class SQLiteRecipeRepository : MappingRepository<IRecipe, SQLiteRawRecipeDto>
     {
         private readonly IJsonConverter _converter;
         private readonly IQueryEntitiesByIds<IPictogram> _queryPictograms;
@@ -20,7 +20,7 @@ namespace CooKit.Repositories.Recipes
         public SQLiteRecipeRepository(IJsonConverter converter,
             IQueryEntitiesByIds<IPictogram> queryPictograms,
             IQueryEntitiesByIds<IIngredientTemplate> queryTemplates,
-            ISQLiteRawRecipeDtoRepository repository) : base(repository)
+            IRepository<SQLiteRawRecipeDto> repository) : base(repository)
         {
             if (converter is null)
                 throw new ArgumentNullException(nameof(converter));

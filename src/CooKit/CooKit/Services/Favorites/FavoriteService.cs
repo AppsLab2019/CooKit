@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using CooKit.Models.Recipes;
 using CooKit.Services.Messages;
-using CooKit.Services.Stores.Recipes;
+using CooKit.Services.Stores;
 
 namespace CooKit.Services.Favorites
 {
     public sealed class FavoriteService : IFavoriteService
     {
-        private readonly IRecipeStore _store;
+        private readonly IStore<IRecipe> _store;
         private readonly IMessageBroker _broker;
 
-        public FavoriteService(IRecipeStore store, IMessageBroker broker)
+        public FavoriteService(IStore<IRecipe> store, IMessageBroker broker)
         {
             if (store is null) 
                 throw new ArgumentNullException(nameof(store));

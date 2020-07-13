@@ -4,7 +4,7 @@ using System.Windows.Input;
 using CooKit.Extensions;
 using CooKit.Models.Editor.Recipes;
 using CooKit.Models.Recipes;
-using CooKit.Services.Stores.Recipes;
+using CooKit.Services.Stores;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
@@ -12,11 +12,11 @@ namespace CooKit.ViewModels.Editor
     public sealed class EditorMainViewModel : ViewModel
     {
         private IRecipe _recipe;
-        private readonly IRecipeStore _store;
+        private readonly IStore<IRecipe> _store;
 
         #region Initialization
 
-        public EditorMainViewModel(IRecipeStore store)
+        public EditorMainViewModel(IStore<IRecipe> store)
         {
             if (store is null)
                 throw new ArgumentNullException(nameof(store));

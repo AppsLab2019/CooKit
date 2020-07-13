@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Extensions;
 using CooKit.Models.Recipes;
-using CooKit.Services.Stores.Recipes;
+using CooKit.Services.Stores;
 using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
     public sealed class EditorStartViewModel : ViewModel
     {
-        private readonly IRecipeStore _store;
+        private readonly IStore<IRecipe> _store;
 
-        public EditorStartViewModel(IRecipeStore store)
+        public EditorStartViewModel(IStore<IRecipe> store)
         {
             if (store is null)
                 throw new ArgumentNullException(nameof(store));

@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using CooKit.Services.Extractors;
 using CooKit.Services.Messages;
+using CooKit.Services.Stores;
 
 namespace CooKit.Services
 {
@@ -8,8 +9,7 @@ namespace CooKit.Services
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(type => type.Name.EndsWith("Store"))
+            builder.RegisterType(typeof(RepositoryStore<>))
                 .AsImplementedInterfaces()
                 .SingleInstance();
 

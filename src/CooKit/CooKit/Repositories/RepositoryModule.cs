@@ -1,6 +1,7 @@
 ﻿using Autofac;
-using CooKit.Repositories.Ingredients;
-using CooKit.Repositories.Pictograms;
+using CooKit.Models.Ingredients;
+using CooKit.Models.Pictograms;
+using CooKit.Models.Recipes;
 using CooKit.Repositories.Recipes;
 
 namespace CooKit.Repositories
@@ -9,12 +10,13 @@ namespace CooKit.Repositories
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<SQLiteIngredientTemplateRepository>().As<IIngredientTemplateRepository>().SingleInstance();
+            builder.RegisterType(typeof(SQLiteConcreteRepository<>)).As(typeof(IRepository<>));
 
-            builder.RegisterType<SQLitePictogramRepository>().As<IPictogramRepository>().SingleInstance();
+            builder.RegisterType<SQLiteRepository<IIngredientTemplate, IngredientTemplate>>()
+                .As<IRepository<IIngredientTemplate>>();
 
-            builder.RegisterType<SQLiteRawRecipeDtoRepository>().As<ISQLiteRawRecipeDtoRepository>().SingleInstance();
-            builder.RegisterType<SQLiteRecipeRepository>().As<IRecipeRepository>().SingleInstance();
+            builder.RegisterType<SQLiteRepository<IPictogram, Pictogram>>().As<IRepository<IPictogram>>();
+            builder.RegisterType<SQLiteRecipeRepository>().As<IRepository<IRecipe>>();
         }
     }
 }

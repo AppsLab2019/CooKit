@@ -4,16 +4,16 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CooKit.Models.Editor.Recipes;
 using CooKit.Models.Pictograms;
-using CooKit.Services.Stores.Pictograms;
+using CooKit.Services.Stores;
 using XF.Material.Forms.Models;
 
 namespace CooKit.ViewModels.Editor
 {
     public sealed class EditSelectedPictogramsViewModel : ViewModel
     {
-        private readonly IPictogramStore _store;
+        private readonly IStore<IPictogram> _store;
 
-        public EditSelectedPictogramsViewModel(IPictogramStore store)
+        public EditSelectedPictogramsViewModel(IStore<IPictogram> store)
         {
             if (store is null)
                 throw new ArgumentNullException(nameof(store));
