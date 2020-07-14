@@ -6,17 +6,17 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditPreviewImageViewModel : ViewModel
+    public sealed class EditPreviewImageViewModel : ViewModel<IRecipe>
     {
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(IRecipe recipe)
         {
-            Recipe = parameter as IRecipe;
-            
-            if (Recipe is null)
-                throw new ArgumentException(nameof(parameter));
+            if (recipe is null)
+                throw new ArgumentException(nameof(recipe));
 
+            Recipe = recipe;
             Image = Recipe.PreviewImage;
             EditableImage = Image;
+
             return Task.CompletedTask;
         }
 
@@ -39,19 +39,19 @@ namespace CooKit.ViewModels.Editor
         public IRecipe Recipe
         {
             get => _recipe;
-            private set => OnPropertyChange(ref _recipe, value);
+            private set => OnPropertyChanged(ref _recipe, value);
         }
 
         public string Image
         {
             get => _image;
-            private set => OnPropertyChange(ref _image, value);
+            private set => OnPropertyChanged(ref _image, value);
         }
 
         public string EditableImage
         {
             get => _editableImage;
-            set => OnPropertyChange(ref _editableImage, value);
+            set => OnPropertyChanged(ref _editableImage, value);
         }
 
         #endregion

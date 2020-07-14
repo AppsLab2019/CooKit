@@ -6,16 +6,16 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditMainInfoViewModel : ViewModel
+    public sealed class EditMainInfoViewModel : ViewModel<IRecipe>
     {
         private IRecipe _recipe;
 
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(IRecipe recipe)
         {
-            _recipe = parameter as IRecipe;
-            
-            if (_recipe is null)
-                throw new ArgumentException(nameof(parameter));
+            if (recipe is null)
+                throw new ArgumentException(nameof(recipe));
+
+            _recipe = recipe;
 
             Name = _recipe.Name;
             Description = _recipe.Description;
@@ -36,13 +36,13 @@ namespace CooKit.ViewModels.Editor
         public string Name
         {
             get => _name;
-            set => OnPropertyChange(ref _name, value);
+            set => OnPropertyChanged(ref _name, value);
         }
 
         public string Description
         {
             get => _description;
-            set => OnPropertyChange(ref _description, value);
+            set => OnPropertyChanged(ref _description, value);
         }
 
         private string _name;

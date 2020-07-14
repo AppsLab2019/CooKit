@@ -44,7 +44,7 @@ namespace CooKit.ViewModels.Recipes
             MessageBroker.Subscribe(this, handler, "Change");
         }
 
-        public override async Task InitializeAsync(object parameter)
+        public override async Task InitializeAsync()
         {
             IsBusy = true;
 

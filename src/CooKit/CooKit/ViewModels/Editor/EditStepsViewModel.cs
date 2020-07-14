@@ -12,7 +12,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditStepsViewModel : ViewModel
+    public sealed class EditStepsViewModel : ViewModel<ObservableCollection<IEditorStep>>
     {
         private readonly IList<StepTypeInfo> _types;
 
@@ -25,10 +25,10 @@ namespace CooKit.ViewModels.Editor
             };
         }
 
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(ObservableCollection<IEditorStep> steps)
         {
-            if (!(parameter is ObservableCollection<IEditorStep> steps))
-                throw new ArgumentException(nameof(parameter));
+            if (steps is null)
+                throw new ArgumentNullException(nameof(steps));
 
             Steps = steps;
             return Task.CompletedTask;
@@ -87,7 +87,7 @@ namespace CooKit.ViewModels.Editor
         public ObservableCollection<IEditorStep> Steps
         {
             get => _steps;
-            set => OnPropertyChange(ref _steps, value);
+            set => OnPropertyChanged(ref _steps, value);
         }
 
         private ObservableCollection<IEditorStep> _steps;

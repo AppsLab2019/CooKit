@@ -9,7 +9,7 @@ using XF.Material.Forms.Models;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditSelectedPictogramsViewModel : ViewModel
+    public sealed class EditSelectedPictogramsViewModel : ViewModel<IEditorRecipe>
     {
         private readonly IStore<IPictogram> _store;
 
@@ -27,15 +27,14 @@ namespace CooKit.ViewModels.Editor
             };
         }
 
-        public override async Task InitializeAsync(object parameter)
+        public override async Task InitializeAsync(IEditorRecipe recipe)
         {
-            _recipe = parameter as IEditorRecipe;
-
-            if (_recipe is null)
-                throw new ArgumentException(nameof(parameter));
+            if (recipe is null)
+                throw new ArgumentException(nameof(recipe));
 
             IsBusy = true;
 
+            _recipe = recipe;
             AllPictograms = await _store.GetAll();
             SelectedPictograms = _recipe.ObservablePictograms;
 
@@ -47,13 +46,13 @@ namespace CooKit.ViewModels.Editor
         public IList<IPictogram> AllPictograms
         {
             get => _allPictograms;
-            private set => OnPropertyChange(ref _allPictograms, value);
+            private set => OnPropertyChanged(ref _allPictograms, value);
         }
 
         public ObservableCollection<IPictogram> SelectedPictograms
         {
             get => _selectedPictograms;
-            private set => OnPropertyChange(ref _selectedPictograms, value);
+            private set => OnPropertyChanged(ref _selectedPictograms, value);
         }
 
         private IEditorRecipe _recipe;

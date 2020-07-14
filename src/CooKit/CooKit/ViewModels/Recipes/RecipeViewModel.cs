@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Recipes
 {
-    public sealed class RecipeViewModel : ViewModel
+    public sealed class RecipeViewModel : ViewModel<IRecipe>
     {
         public ICommand ToggleFavoriteCommand => new Command(async () => await ToggleFavorite());
         public ICommand SelectPictogramCommand => new Command<IPictogram>(async p => await SelectPictogram(p));
@@ -27,12 +27,9 @@ namespace CooKit.ViewModels.Recipes
             _favoriteService = favoriteService;
         }
 
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(IRecipe recipe)
         {
-            _recipe = parameter as IRecipe;
-
-            if (_recipe is null)
-                throw new ArgumentException(nameof(parameter));
+            _recipe = recipe ?? throw new ArgumentNullException(nameof(recipe));
 
             var messageTask = MessageBroker.Send(this, "View", _recipe);
 
@@ -77,43 +74,43 @@ namespace CooKit.ViewModels.Recipes
         public string Name
         {
             get => _name;
-            private set => OnPropertyChange(ref _name, value);
+            private set => OnPropertyChanged(ref _name, value);
         }
         public string Description
         {
             get => _description;
-            private set => OnPropertyChange(ref _description, value);
+            private set => OnPropertyChanged(ref _description, value);
         }
         public int EstimatedTime
         {
             get => _estimatedTime;
-            set => OnPropertyChange(ref _estimatedTime, value);
+            set => OnPropertyChanged(ref _estimatedTime, value);
         }
         public bool IsFavorite
         {
             get => _isFavorite;
-            set => OnPropertyChange(ref _isFavorite, value);
+            set => OnPropertyChanged(ref _isFavorite, value);
         }
 
         public IEnumerable<string> Images
         {
             get => _images;
-            set => OnPropertyChange(ref _images, value);
+            set => OnPropertyChanged(ref _images, value);
         }
         public IEnumerable<IPictogram> Pictograms
         {
             get => _pictograms;
-            set => OnPropertyChange(ref _pictograms, value);
+            set => OnPropertyChanged(ref _pictograms, value);
         }
         public IEnumerable<IIngredient> Ingredients
         {
             get => _ingredients;
-            set => OnPropertyChange(ref _ingredients, value);
+            set => OnPropertyChanged(ref _ingredients, value);
         }
         public IEnumerable<IStep> Steps
         {
             get => _steps;
-            set => OnPropertyChange(ref _steps, value);
+            set => OnPropertyChanged(ref _steps, value);
         }
 
         #endregion

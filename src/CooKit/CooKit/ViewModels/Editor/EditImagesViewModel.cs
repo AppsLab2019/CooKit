@@ -35,7 +35,7 @@ namespace CooKit.ViewModels.Editor
         public ObservableCollection<string> Images
         {
             get => _images;
-            set => OnPropertyChange(ref _images, value);
+            set => OnPropertyChanged(ref _images, value);
         }
 
         private ObservableCollection<string> _images;

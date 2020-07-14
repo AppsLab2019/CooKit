@@ -21,7 +21,7 @@ namespace CooKit.ViewModels.Editor
             _store = store;
         }
 
-        public override async Task InitializeAsync(object parameter)
+        public override async Task InitializeAsync()
         {
             IsBusy = true;
 
@@ -62,7 +62,7 @@ namespace CooKit.ViewModels.Editor
         public ObservableCollection<IRecipe> Recipes
         {
             get => _recipes;
-            set => OnPropertyChange(ref _recipes, value);
+            set => OnPropertyChanged(ref _recipes, value);
         }
 
         private ObservableCollection<IRecipe> _recipes;

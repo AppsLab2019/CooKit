@@ -27,7 +27,7 @@ namespace CooKit
             var container = BuildIoC();
 
             ViewModelLocator.Initialize(container);
-            ViewModel.Initialize(container);
+            BaseViewModel.Initialize(container);
 
             InitializeResources(container);
             await InitializeDatabase(container);

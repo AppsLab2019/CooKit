@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditorMainViewModel : ViewModel
+    public sealed class EditorMainViewModel : ViewModel<IRecipe>
     {
         private IRecipe _recipe;
         private readonly IStore<IRecipe> _store;
@@ -24,13 +24,12 @@ namespace CooKit.ViewModels.Editor
             _store = store;
         }
 
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(IRecipe recipe)
         {
-            _recipe = parameter as IRecipe;
+            if (recipe is null)
+                throw new ArgumentNullException(nameof(recipe));
 
-            if (_recipe is null)
-                throw new ArgumentNullException(nameof(parameter));
-
+            _recipe = recipe;
             EditorRecipe = _recipe.ToEditorRecipe();
 
             return Task.CompletedTask;
@@ -140,7 +139,7 @@ namespace CooKit.ViewModels.Editor
         public IEditorRecipe EditorRecipe
         {
             get => _editorRecipe;
-            set => OnPropertyChange(ref _editorRecipe, value);
+            set => OnPropertyChanged(ref _editorRecipe, value);
         }
 
         private IEditorRecipe _editorRecipe;

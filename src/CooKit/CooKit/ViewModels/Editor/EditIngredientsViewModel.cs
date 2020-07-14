@@ -9,17 +9,17 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor
 {
-    public sealed class EditIngredientsViewModel : ViewModel
+    public sealed class EditIngredientsViewModel : ViewModel<IEditorRecipe>
     {
         private IEditorRecipe _recipe;
 
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(IEditorRecipe recipe)
         {
-            _recipe = parameter as IEditorRecipe;
-            
-            if (_recipe is null)
-                throw new ArgumentException(nameof(parameter));
+            if (recipe is null)
+                throw new ArgumentNullException(nameof(recipe));
 
+            _recipe = recipe;
+            
             // copy ingredients
             Ingredients = _recipe.ObservableIngredients.ToObservableCollection();
             return Task.CompletedTask;
@@ -60,7 +60,7 @@ namespace CooKit.ViewModels.Editor
         public ObservableCollection<IEditorIngredient> Ingredients
         {
             get => _ingredients;
-            set => OnPropertyChange(ref _ingredients, value);
+            set => OnPropertyChanged(ref _ingredients, value);
         }
 
         private ObservableCollection<IEditorIngredient> _ingredients;

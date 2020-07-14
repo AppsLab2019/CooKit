@@ -51,7 +51,7 @@ namespace CooKit.ViewModels.Recipes
             return Task.CompletedTask;
         }
 
-        public override async Task InitializeAsync(object parameter)
+        public override async Task InitializeAsync()
         {
             IsBusy = true;
 

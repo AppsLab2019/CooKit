@@ -14,7 +14,7 @@ namespace CooKit.ViewModels.Root
         public IEnumerable<IRootDetailEntry> Entries { get; private set; }
         public ICommand SelectCommand => new Command<IRootDetailEntry>(async e => await SelectDetail(e));
 
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync()
         {
             IsBusy = true;
             Entries = new[]

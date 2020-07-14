@@ -8,15 +8,15 @@ using Xamarin.Forms;
 
 namespace CooKit.ViewModels.Editor.Steps
 {
-    public abstract class BaseEditStepViewModel<T> : ViewModel where T : class, IEditorStep
+    public abstract class BaseEditStepViewModel<T> : ViewModel<ICollectionElementPair<IEditorStep>> where T : class, IEditorStep
     {
         private ObservableCollection<IEditorStep> _stepCollection;
         private T _originalStep;
 
-        public override Task InitializeAsync(object parameter)
+        public override Task InitializeAsync(ICollectionElementPair<IEditorStep> pair)
         {
-            if (!(parameter is ICollectionElementPair<IEditorStep> pair))
-                throw new ArgumentException(nameof(parameter));
+            if (pair is null)
+                throw new ArgumentNullException(nameof(pair));
 
             switch (pair.Element)
             {
@@ -37,7 +37,6 @@ namespace CooKit.ViewModels.Editor.Steps
             }
 
             _stepCollection = pair.Collection;
-
             return Task.CompletedTask;
         }
 
@@ -60,13 +59,13 @@ namespace CooKit.ViewModels.Editor.Steps
         public T Step
         {
             get => _step;
-            set => OnPropertyChange(ref _step, value);
+            set => OnPropertyChanged(ref _step, value);
         }
 
         public bool IsNew
         {
             get => _isNew;
-            set => OnPropertyChange(ref _isNew, value);
+            set => OnPropertyChanged(ref _isNew, value);
         }
 
         private T _step;

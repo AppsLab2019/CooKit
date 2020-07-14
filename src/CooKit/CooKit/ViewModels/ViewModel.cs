@@ -11,7 +11,7 @@ using IContainer = Autofac.IContainer;
 
 namespace CooKit.ViewModels
 {
-    public class ViewModel : IViewModel, INotifyPropertyChanged
+    public class BaseViewModel : IViewModel, INotifyPropertyChanged
     {
         private readonly Lazy<IAlertService> _lazyAlertService;
         private readonly Lazy<ISnackbarService> _lazySnackbarService;
@@ -23,7 +23,7 @@ namespace CooKit.ViewModels
         protected INavigationService NavigationService => _lazyNavigationService.Value;
         protected IMessageBroker MessageBroker => _lazyMessageBroker.Value;
 
-        protected ViewModel()
+        protected BaseViewModel()
         {
             _lazyAlertService = _container.LazyResolve<IAlertService>();
             _lazySnackbarService = _container.LazyResolve<ISnackbarService>();
@@ -31,10 +31,7 @@ namespace CooKit.ViewModels
             _lazyMessageBroker = _container.LazyResolve<IMessageBroker>();
         }
 
-        public virtual Task InitializeAsync(object parameter)
-        {
-            return Task.CompletedTask;
-        }
+        public virtual Task InitializeAsync(object parameter) => Task.CompletedTask;
 
         #region Static Container Initialization
 
@@ -55,7 +52,7 @@ namespace CooKit.ViewModels
         public bool IsBusy
         {
             get => _isBusy;
-            set => OnPropertyChange(ref _isBusy, value);
+            set => OnPropertyChanged(ref _isBusy, value);
         }
 
         private bool _isBusy;
@@ -66,7 +63,7 @@ namespace CooKit.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChange<T>(ref T field, T value, 
+        protected void OnPropertyChanged<T>(ref T field, T value, 
             [CallerMemberName] string propertyName = null)
         {
             if (Equals(field, value))
@@ -85,13 +82,27 @@ namespace CooKit.ViewModels
         #endregion
     }
 
-    public abstract class ViewModel<TParamType> : ViewModel
+    public class ViewModel : BaseViewModel
+    {
+        public virtual Task InitializeAsync() => Task.CompletedTask;
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public sealed override Task InitializeAsync(object parameter)
+        {
+            return InitializeAsync();
+        }
+    }
+
+    public abstract class ViewModel<TParamType> : BaseViewModel
     {
         public abstract Task InitializeAsync(TParamType parameter);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override Task InitializeAsync(object parameter)
+        public sealed override Task InitializeAsync(object parameter)
         {
+            if (parameter is null)
+                return InitializeAsync(default);
+
             if (!(parameter is TParamType cast))
                 throw new ArgumentException();
 

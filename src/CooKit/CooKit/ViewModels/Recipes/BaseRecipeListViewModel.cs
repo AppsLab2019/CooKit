@@ -13,7 +13,7 @@ namespace CooKit.ViewModels.Recipes
 
         protected abstract Task<IEnumerable<IRecipe>> GetRecipes();
 
-        public override async Task InitializeAsync(object parameter)
+        public override async Task InitializeAsync()
         {
             IsBusy = true;
 
