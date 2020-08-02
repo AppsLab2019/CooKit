@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using CooKit.Mobile.Factories;
 
 namespace CooKit.Mobile.Droid
 {
@@ -18,7 +19,9 @@ namespace CooKit.Mobile.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
 
-            LoadApplication(new App());
+            var serviceProvider = ServiceProviderFactory.CreateServiceProvider();
+            var application = (Xamarin.Forms.Application) serviceProvider.GetService(typeof(Xamarin.Forms.Application));
+            LoadApplication(application);
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
