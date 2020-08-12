@@ -3,10 +3,60 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mtrlresources="clr-namespace:XF.Material.Forms.Resources;assembly=XF.Material"
+             xmlns:mtrltypo="clr-namespace:XF.Material.Forms.Resources.Typography;assembly=XF.Material"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              mc:Ignorable="d"
              x:Class="CooKit.Mobile.App">
 
     <Application.Resources>
+        <ImageSource x:Key="Icon.Time">ic_action_access_time.png</ImageSource>
 
+        <Color x:Key="Color.Primary">#6200EE</Color>
+        <Color x:Key="Color.OnPrimary">#FFFFFF</Color>
+        <Color x:Key="Color.PrimaryVariant">#3700B3</Color>
+        <Color x:Key="Color.Secondary">#03DAC6</Color>
+        <Color x:Key="Color.OnSecondary">#000000</Color>
+        <Color x:Key="Color.SecondaryVariant">#018786</Color>
+        <Color x:Key="Color.Error">#B00020</Color>
+        <Color x:Key="Color.OnError">#FFFFFF</Color>
+        <Color x:Key="Color.Surface">#FFFFFF</Color>
+        <Color x:Key="Color.OnSurface">#000000</Color>
+        <Color x:Key="Color.Background">#FAFAFA</Color>
+        <Color x:Key="Color.OnBackground">#000000</Color>
+
+        <Color x:Key="Color.WhiteText">#EFEFEF</Color>
+
+        <mtrlresources:MaterialColorConfiguration x:Key="Material.Color"
+                                                  Primary="{StaticResource Color.Primary}"
+                                                  OnPrimary="{StaticResource Color.OnPrimary}"
+                                                  PrimaryVariant="{StaticResource Color.PrimaryVariant}"
+                                                  Secondary="{StaticResource Color.Secondary}"
+                                                  OnSecondary="{StaticResource Color.OnSecondary}"
+                                                  SecondaryVariant="{StaticResource Color.SecondaryVariant}"
+                                                  Error="{StaticResource Color.Error}"
+                                                  OnError="{StaticResource Color.OnError}"
+                                                  Surface="{StaticResource Color.Surface}"
+                                                  OnSurface="{StaticResource Color.OnSurface}"
+                                                  Background="{StaticResource Color.Background}"
+                                                  OnBackground="{StaticResource Color.OnBackground}"/>
+
+        <mtrltypo:MaterialFontConfiguration x:Key="Material.Font"
+                                            Body1="Oxygen-Regular"/>
+
+        <Style x:Key="FontStyle.Body1" TargetType="mtrl:MaterialLabel">
+            <Setter Property="FontFamily" Value="Oxygen-Regular"/>
+            <Setter Property="LetterSpacing" Value="0.5"/>
+            <Setter Property="FontSize" Value="16"/>
+        </Style>
+
+        <mtrlresources:MaterialConfiguration x:Key="Material.Configuration"
+                                             FontConfiguration="{StaticResource Material.Font}"
+                                             ColorConfiguration="{StaticResource Material.Color}"/>
+
+        <Style x:Key="Style.IconSize" TargetType="ContentView">
+            <Setter Property="WidthRequest" Value="32"/>
+            <Setter Property="HeightRequest" Value="32"/>
+        </Style>
     </Application.Resources>
 </Application>

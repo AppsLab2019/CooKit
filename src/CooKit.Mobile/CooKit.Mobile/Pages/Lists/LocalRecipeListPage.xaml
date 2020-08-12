@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CooKit.Mobile.Models;assembly=CooKit.Mobile"
+             xmlns:recipes="clr-namespace:CooKit.Mobile.Controls.Recipes;assembly=CooKit.Mobile"
+             x:Class="CooKit.Mobile.Pages.Lists.LocalRecipeListPage"
+             x:Name="Root">
+    <ContentPage.Content>
+        <CollectionView Margin="6"
+                        ItemsLayout="VerticalGrid, 2"
+                        ItemsSource="{Binding Recipes}">
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Recipe">
+                    <AbsoluteLayout Padding="6">
+                        <recipes:SmallRecipePreviewCard Recipe="{Binding}"
+                                                        HorizontalOptions="FillAndExpand"
+                                                        ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"/>
+                    </AbsoluteLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

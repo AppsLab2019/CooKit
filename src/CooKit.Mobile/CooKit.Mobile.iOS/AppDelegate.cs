@@ -10,6 +10,8 @@ namespace CooKit.Mobile.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             Xamarin.Forms.Forms.Init();
+            XF.Material.iOS.Material.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
             var serviceProvider = ServiceProviderFactory.CreateServiceProvider();
             var application = (Xamarin.Forms.Application) serviceProvider.GetService(typeof(Xamarin.Forms.Application));
