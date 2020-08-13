@@ -2,6 +2,7 @@
 using CooKit.Mobile.Factories.Page;
 using CooKit.Mobile.Pages.Master;
 using CooKit.Mobile.Providers.Page.MasterDetail;
+using CooKit.Mobile.Services.Database;
 using Microsoft.Extensions.Logging;
 
 namespace CooKit.Mobile
@@ -9,15 +10,20 @@ namespace CooKit.Mobile
     public partial class App
     {
         private readonly ILogger<App> _logger;
+        private readonly IDatabaseInitializationService _initializationService;
+
         private readonly IPageFactory _pageFactory;
         private readonly IMasterDetailPageProvider _masterDetailPageProvider;
 
-        public App(ILogger<App> logger, IPageFactory pageFactory, IMasterDetailPageProvider masterDetailPageProvider)
+        public App(ILogger<App> logger, IDatabaseInitializationService initializationService,
+            IPageFactory pageFactory, IMasterDetailPageProvider masterDetailPageProvider)
         {
             InitializeComponent();
             XF.Material.Forms.Material.Init(this, "Material.Configuration");
 
             _logger = logger;
+            _initializationService = initializationService;
+
             _pageFactory = pageFactory;
             _masterDetailPageProvider = masterDetailPageProvider;
         }
@@ -26,6 +32,8 @@ namespace CooKit.Mobile
         protected override async void OnStart()
         {
             base.OnStart();
+
+            await _initializationService.InitializeDatabaseAsync();
 
             var mainPage = _masterDetailPageProvider.GetMasterDetailPage();
             var masterPage = _pageFactory.CreatePage<MasterPage>();

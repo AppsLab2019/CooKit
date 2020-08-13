@@ -15,8 +15,11 @@ using CooKit.Mobile.Providers.Page.MasterDetail;
 using CooKit.Mobile.Registries.PageViewmodel;
 using CooKit.Mobile.Repositories.Pictograms;
 using CooKit.Mobile.Repositories.Recipes;
+using CooKit.Mobile.Resources;
+using CooKit.Mobile.Resources.Database;
 using CooKit.Mobile.Selectors.Steps;
 using CooKit.Mobile.Services.Alert;
+using CooKit.Mobile.Services.Database;
 using CooKit.Mobile.Services.Injector;
 using CooKit.Mobile.Services.Navigation;
 using CooKit.Mobile.Services.Root;
@@ -128,6 +131,10 @@ namespace CooKit.Mobile.Factories
             services.AddTransient<INavigationService, NavigationService>();
             services.AddSingleton<IRootService, CachingRootService>();
             services.AddTransient<IViewModelInjector, PageViewModelInjector>();
+
+            services.AddTransient<IResourceExtractor, ResourceExtractor>();
+            services.AddTransient<IDatabaseExtractor, DatabaseExtractor>();
+            services.AddTransient<IDatabaseInitializationService, DatabaseInitializationService>();
         }
 
         private static void AddSelectors(this IServiceCollection services)
