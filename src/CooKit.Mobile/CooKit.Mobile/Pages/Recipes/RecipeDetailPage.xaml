@@ -87,16 +87,21 @@
                     </StackLayout>
                 </mtrl:MaterialCard>
 
-                <CarouselView x:Name="StepCarousel"
-                              HeightRequest="400"
-                              IndicatorView="StepIndicator"
-                              ItemsSource="{Binding Steps}"/>
+                <mtrl:MaterialCard>
+                    <StackLayout>
+                        <mtrl:MaterialLabel Text="Steps:"/>
 
-                <IndicatorView x:Name="StepIndicator"
-                               Margin="0,0,0,10"
-                               HorizontalOptions="Center"
-                               IndicatorColor="LightGray"
-                               SelectedIndicatorColor="DarkGray"/>
+                        <CarouselView x:Name="StepCarousel"
+                                      HeightRequest="400"
+                                      IndicatorView="StepIndicator"
+                                      ItemsSource="{Binding Steps}"/>
+
+                        <IndicatorView x:Name="StepIndicator"
+                                       HorizontalOptions="Center"
+                                       IndicatorColor="LightGray"
+                                       SelectedIndicatorColor="DarkGray"/>
+                    </StackLayout>
+                </mtrl:MaterialCard>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

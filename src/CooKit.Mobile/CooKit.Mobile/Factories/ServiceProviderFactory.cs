@@ -4,6 +4,8 @@ using CooKit.Mobile.Contexts;
 using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Factories.Page;
 using CooKit.Mobile.Factories.Page.Root;
+using CooKit.Mobile.Factories.Views;
+using CooKit.Mobile.Pages.Editor;
 using CooKit.Mobile.Pages.Lists;
 using CooKit.Mobile.Pages.Master;
 using CooKit.Mobile.Pages.Recipes;
@@ -17,15 +19,20 @@ using CooKit.Mobile.Repositories.Pictograms;
 using CooKit.Mobile.Repositories.Recipes;
 using CooKit.Mobile.Resources;
 using CooKit.Mobile.Resources.Database;
+using CooKit.Mobile.Selectors;
 using CooKit.Mobile.Selectors.Steps;
 using CooKit.Mobile.Services.Alert;
+using CooKit.Mobile.Services.Alert.Loading;
 using CooKit.Mobile.Services.Database;
 using CooKit.Mobile.Services.Injector;
 using CooKit.Mobile.Services.Navigation;
+using CooKit.Mobile.Services.Publish;
 using CooKit.Mobile.Services.Root;
+using CooKit.Mobile.Viewmodels.Editor;
 using CooKit.Mobile.Viewmodels.Lists;
 using CooKit.Mobile.Viewmodels.Master;
 using CooKit.Mobile.Viewmodels.Recipes;
+using CooKit.Mobile.Views.Editor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -51,6 +58,7 @@ namespace CooKit.Mobile.Factories
             services.AddServices();
             services.AddSelectors();
             services.AddRegistries();
+            services.AddViews();
 
             services.AddSingleton<Application, App>();
 
@@ -94,6 +102,8 @@ namespace CooKit.Mobile.Factories
 
             services.AddTransient<LocalRecipeListPage>();
             services.AddTransient<RecipeDetailPage>();
+
+            services.AddTransient<EditorMainPage>();
         }
 
         private static void AddViewModels(this IServiceCollection services)
@@ -102,10 +112,13 @@ namespace CooKit.Mobile.Factories
 
             services.AddTransient<LocalRecipeListViewmodel>();
             services.AddTransient<RecipeDetailViewmodel>();
+
+            services.AddTransient<EditorMainViewmodel>();
         }
 
         private static void AddFactories(this IServiceCollection services)
         {
+            services.AddTransient<IViewFactory, ServiceProviderViewFactory>();
             services.AddTransient<IPageFactory, ServiceProviderInjectionPageFactory>();
             services.AddTransient<IRootPageFactory, MaterialRootPageFactory>();
         }
@@ -128,18 +141,21 @@ namespace CooKit.Mobile.Factories
         private static void AddServices(this IServiceCollection services)
         {
             services.AddTransient<IAlertService, MaterialAlertService>();
+            services.AddTransient<ILoadingAlertService, MaterialLoadingAlertService>();
             services.AddTransient<INavigationService, NavigationService>();
             services.AddSingleton<IRootService, CachingRootService>();
             services.AddTransient<IViewModelInjector, PageViewModelInjector>();
+            services.AddTransient<IPublishService, MockPublishService>();
 
             services.AddTransient<IResourceExtractor, ResourceExtractor>();
             services.AddTransient<IDatabaseExtractor, DatabaseExtractor>();
-            services.AddTransient<IDatabaseInitializationService, DatabaseInitializationService>();
+            services.AddTransient<IDatabaseInitializationService, EnsuringDatabaseInitializationService>();
         }
 
         private static void AddSelectors(this IServiceCollection services)
         {
             services.AddTransient<RecipeDetailStepTemplateSelector>();
+            services.AddTransient<ReturnIfTemplateSelector>();
         }
 
         private static void AddRegistries(this IServiceCollection services)
@@ -151,9 +167,19 @@ namespace CooKit.Mobile.Factories
                 registry.Register<MasterPage, MasterViewmodel>();
                 registry.Register<LocalRecipeListPage, LocalRecipeListViewmodel>();
                 registry.Register<RecipeDetailPage, RecipeDetailViewmodel>();
+                registry.Register<EditorMainPage, EditorMainViewmodel>();
 
                 return registry;
             });
+        }
+
+        private static void AddViews(this IServiceCollection services)
+        {
+            services.AddTransient<EditorNameView>();
+            services.AddTransient<EditorDescriptionView>();
+            services.AddTransient<EditorPictogramView>();
+            services.AddTransient<EditorIngredientView>();
+            services.AddTransient<EditorStepView>();
         }
     }
 }

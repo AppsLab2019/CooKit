@@ -1,15 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using CooKit.Mobile.Providers.DatabasePath;
 using CooKit.Mobile.Resources.Database;
 
 namespace CooKit.Mobile.Services.Database
 {
-    public class DatabaseInitializationService : IDatabaseInitializationService
+    public class ExtractingDatabaseInitializationService : IDatabaseInitializationService
     {
         private readonly IDatabaseExtractor _extractor;
         private readonly IDatabasePathProvider _pathProvider;
 
-        public DatabaseInitializationService(IDatabaseExtractor extractor, IDatabasePathProvider pathProvider)
+        public ExtractingDatabaseInitializationService(IDatabaseExtractor extractor, IDatabasePathProvider pathProvider)
         {
             _extractor = extractor;
             _pathProvider = pathProvider;
@@ -18,7 +19,10 @@ namespace CooKit.Mobile.Services.Database
         public Task InitializeDatabaseAsync()
         {
             var path = _pathProvider.GetDatabasePath();
-            return _extractor.ExtractDatabaseAsync(path);
+
+            return !File.Exists(path)
+                ? _extractor.ExtractDatabaseAsync(path)
+                : Task.CompletedTask;
         }
     }
 }

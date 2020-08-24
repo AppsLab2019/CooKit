@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             x:Class="CooKit.Mobile.Pages.Editor.EditorMainPage"
+             Title="Create recipe">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+
+            <CarouselView x:Name="CreationCarousel"
+                          IsSwipeEnabled="False"
+                          PositionChanged="OnPositionChanged"/>
+
+            <mtrl:MaterialCard Grid.Row="1"
+                               Elevation="8"
+                               Padding="0"
+                               HeightRequest="40">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <mtrl:MaterialButton x:Name="PrevButton" 
+                                         Text="&lt; Previous"
+                                         Clicked="OnPrevClicked"
+                                         IsVisible="False"/>
+
+                    <mtrl:MaterialButton x:Name="NextButton"
+                                         Grid.Column="1"
+                                         Text="Next >"
+                                         Clicked="OnNextClicked"/>
+
+                    <mtrl:MaterialButton x:Name="PublishButton"
+                                         Grid.Column="1"
+                                         Text="Publish"
+                                         IsVisible="False"
+                                         Command="{Binding PublishCommand}"/>
+                </Grid>
+            </mtrl:MaterialCard>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

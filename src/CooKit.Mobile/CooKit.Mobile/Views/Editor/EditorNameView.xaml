@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             x:Class="CooKit.Mobile.Views.Editor.EditorNameView">
+    <ContentView.Content>
+        <StackLayout>
+            <AbsoluteLayout VerticalOptions="CenterAndExpand"
+                            HorizontalOptions="CenterAndExpand">
+                <mtrl:MaterialCard>
+                    <mtrl:MaterialLabel Text="Name editing!"/>
+                </mtrl:MaterialCard>
+            </AbsoluteLayout>
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>
