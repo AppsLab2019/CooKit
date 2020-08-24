@@ -4,10 +4,24 @@
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              x:Class="CooKit.Mobile.Views.Editor.EditorDescriptionView">
     <ContentView.Content>
-        <StackLayout>
-            <mtrl:MaterialLabel Text="Description Editing"
-                                HorizontalOptions="CenterAndExpand"
-                                VerticalOptions="CenterAndExpand"/>
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <mtrl:MaterialCard Grid.Row="1" 
+                               Margin="10,0">
+                <StackLayout>
+                    <mtrl:MaterialLabel Text="Enter description:"/>
+
+                    <Editor Placeholder="Description"
+                            VerticalOptions="FillAndExpand"
+                            HorizontalOptions="FillAndExpand"
+                            Text="{Binding Description}"/>
+                </StackLayout>
+            </mtrl:MaterialCard>
+        </Grid>
     </ContentView.Content>
 </ContentView>

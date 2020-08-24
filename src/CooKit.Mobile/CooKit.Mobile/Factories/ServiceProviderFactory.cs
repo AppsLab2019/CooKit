@@ -88,11 +88,20 @@ namespace CooKit.Mobile.Factories
         {
             services.AddTransient<MasterPage>();
             services.AddSingleton<MasterDetailPage>();
-
             services.AddTransient<LocalRecipeListPage>();
-            services.AddTransient<RecipeDetailPage>();
 
-            services.AddTransient<EditorMainPage>();
+            services.AddTransient(serviceProvider =>
+            {
+                var selector = serviceProvider.GetRequiredService<RecipeDetailStepTemplateSelector>();
+                return new RecipeDetailPage(selector);
+            });
+
+            services.AddTransient(serviceProvider =>
+            {
+                var viewFactory = serviceProvider.GetRequiredService<IViewFactory>();
+                var selector = serviceProvider.GetRequiredService<ReturnIfTemplateSelector>();
+                return new EditorMainPage(viewFactory, selector);
+            });
         }
 
         private static void AddViewModels(this IServiceCollection services)

@@ -1,13 +1,13 @@
-﻿using CooKit.Mobile.Selectors.Steps;
+﻿using Xamarin.Forms;
 
 namespace CooKit.Mobile.Pages.Recipes
 {
     public partial class RecipeDetailPage
     {
-        public RecipeDetailPage(RecipeDetailStepTemplateSelector stepTemplateSelector)
+        public RecipeDetailPage(DataTemplate stepTemplate)
         {
             InitializeComponent();
-            StepCarousel.ItemTemplate = stepTemplateSelector;
+            StepCarousel.ItemTemplate = stepTemplate;
         }
     }
 }

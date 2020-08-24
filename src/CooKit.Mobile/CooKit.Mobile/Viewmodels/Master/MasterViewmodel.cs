@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CooKit.Mobile.Services.Root;
-using CooKit.Mobile.Viewmodels.Editor;
+using CooKit.Mobile.Viewmodels.Lists;
 
 namespace CooKit.Mobile.Viewmodels.Master
 {
@@ -15,7 +15,7 @@ namespace CooKit.Mobile.Viewmodels.Master
 
         protected override Task InitializeAsync()
         {
-            return _rootService.SetRootAsync(typeof(EditorMainViewmodel));
+            return _rootService.SetRootAsync(typeof(LocalRecipeListViewmodel));
         }
     }
 }

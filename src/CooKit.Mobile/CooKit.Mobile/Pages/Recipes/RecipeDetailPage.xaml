@@ -57,7 +57,7 @@
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <mtrl:MaterialIconButton BackgroundColor="Transparent"
-                                                             Image="{Binding Icon}"
+                                                             Image="{Binding Icon, Converter={StaticResource Converter.ImageToImageSource}}"
                                                              Style="{StaticResource Style.IconSize}"
                                                              Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectPictogramCommand}"
                                                              CommandParameter="{Binding}"/>
@@ -83,7 +83,16 @@
                         <mtrl:MaterialLabel Text="You'll need:"/>
 
                         <StackLayout x:Name="IngredientLayout"
-                                     BindableLayout.ItemsSource="{Binding Ingredients}"/>
+                                     BindableLayout.ItemsSource="{Binding Ingredients}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <StackLayout Orientation="Horizontal">
+                                        <!-- TODO: add * -->
+                                        <mtrl:MaterialLabel Text="{Binding Text}"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
                     </StackLayout>
                 </mtrl:MaterialCard>
 

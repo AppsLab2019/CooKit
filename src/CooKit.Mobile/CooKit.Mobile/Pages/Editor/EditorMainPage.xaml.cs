@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CooKit.Mobile.Factories.Views;
-using CooKit.Mobile.Selectors;
 using CooKit.Mobile.Views.Editor;
 using Xamarin.Forms;
 
@@ -13,7 +12,7 @@ namespace CooKit.Mobile.Pages.Editor
         private readonly IViewFactory _viewFactory;
         private readonly IList<DataTemplate> _stepTemplates;
 
-        public EditorMainPage(IViewFactory viewFactory, ReturnIfTemplateSelector templateSelector)
+        public EditorMainPage(IViewFactory viewFactory, DataTemplate template)
         {
             _viewFactory = viewFactory;
             InitializeComponent();
@@ -28,7 +27,7 @@ namespace CooKit.Mobile.Pages.Editor
                 ViewToTemplate<EditorStepView>()
             };
 
-            CreationCarousel.ItemTemplate = templateSelector;
+            CreationCarousel.ItemTemplate = template;
             CreationCarousel.ItemsSource = _stepTemplates;
         }
 
