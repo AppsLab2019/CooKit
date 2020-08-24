@@ -4,13 +4,23 @@
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              x:Class="CooKit.Mobile.Views.Editor.EditorNameView">
     <ContentView.Content>
-        <StackLayout>
-            <AbsoluteLayout VerticalOptions="CenterAndExpand"
-                            HorizontalOptions="CenterAndExpand">
-                <mtrl:MaterialCard>
-                    <mtrl:MaterialLabel Text="Name editing!"/>
-                </mtrl:MaterialCard>
-            </AbsoluteLayout>
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <mtrl:MaterialCard Grid.Row="1" 
+                               Margin="10,0">
+                <StackLayout>
+                    <mtrl:MaterialLabel Text="Enter name:"/>
+
+                    <Entry Placeholder="Name"
+                           Text="{Binding Name}"
+                           HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+            </mtrl:MaterialCard>
+        </Grid>
     </ContentView.Content>
 </ContentView>

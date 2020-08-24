@@ -1,5 +1,4 @@
 ﻿using System;
-using AutoMapper;
 using CooKit.Mobile.Contexts;
 using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Factories.Page;
@@ -9,7 +8,6 @@ using CooKit.Mobile.Pages.Editor;
 using CooKit.Mobile.Pages.Lists;
 using CooKit.Mobile.Pages.Master;
 using CooKit.Mobile.Pages.Recipes;
-using CooKit.Mobile.Profiles;
 using CooKit.Mobile.Providers.DatabasePath;
 using CooKit.Mobile.Providers.Page.CurrentRoot;
 using CooKit.Mobile.Providers.Page.Main;
@@ -48,7 +46,6 @@ namespace CooKit.Mobile.Factories
 
             services.AddConfiguredLogging();
             services.AddConfiguredRecipeContext();
-            services.AddConfiguredAutoMapper();
 
             services.AddPages();
             services.AddViewModels();
@@ -84,14 +81,6 @@ namespace CooKit.Mobile.Factories
                 // TODO: refactor this out
                 contextBuilder.UseSqlite($"Data Source={path}");
                 contextBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            });
-        }
-
-        private static void AddConfiguredAutoMapper(this IServiceCollection services)
-        {
-            services.AddAutoMapper(mapperBuilder =>
-            {
-                mapperBuilder.AddProfile<RecipeProfile>();
             });
         }
 

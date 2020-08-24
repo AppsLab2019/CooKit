@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using CooKit.Mobile.Contexts;
-using CooKit.Mobile.Contexts.Entities;
 using CooKit.Mobile.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,37 +10,49 @@ namespace CooKit.Mobile.Repositories.Recipes
     public class RecipeRepository : IRecipeRepository
     {
         private readonly RecipeContext _recipeContext;
-        private readonly IMapper _mapper;
 
-        public RecipeRepository(RecipeContext recipeContext, IMapper mapper)
+        public RecipeRepository(RecipeContext recipeContext)
         {
             _recipeContext = recipeContext;
-            _mapper = mapper;
         }
 
-        private IQueryable<RecipeEntity> GetBaseQueryable()
+        private IQueryable<Recipe> GetBaseQueryable()
         {
             return _recipeContext.Recipes
                 .Include(entity => entity.Ingredients)
                 .Include(entity => entity.Pictograms)
                 .ThenInclude(entity => entity.Pictogram)
-                .Include(entity => entity.Steps);
+                .Include(entity => entity.Steps)
+                .Select(entity => new Recipe
+                {
+                    Id = entity.Id,
+                    Name = entity.Name,
+                    Description = entity.Description,
+                    EstimatedTime = entity.EstimatedTime,
+
+                    PreviewImage = entity.PreviewImage,
+                    Images = entity.Images,
+
+                    Pictograms = entity.Pictograms
+                        .Select(pair => pair.Pictogram)
+                        .ToList(),
+
+                    Ingredients = entity.Ingredients,
+                    Steps = entity.Steps
+                });
         }
 
-        public async ValueTask<Recipe> GetRecipeAsync(int id)
+        public ValueTask<Recipe> GetRecipeAsync(int id)
         {
-            var recipeEntity = await GetBaseQueryable()
-                .FirstOrDefaultAsync(entity => entity.Id == id)
-                .ConfigureAwait(false);
+            var queryTask = GetBaseQueryable()
+                .FirstOrDefaultAsync(entity => entity.Id == id);
 
-            return recipeEntity != null ? _mapper.Map<Recipe>(recipeEntity) : null;
+            return new ValueTask<Recipe>(queryTask);
         }
 
         public async ValueTask<IList<Recipe>> GetAllRecipesAsync()
         {
-            return await GetBaseQueryable()
-                .ProjectTo<Recipe>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            return await GetBaseQueryable().ToListAsync();
         }
     }
 }
