@@ -42,6 +42,11 @@ namespace CooKit.Mobile.Factories
     {
         public static IServiceProvider CreateServiceProvider()
         {
+            return CreateServiceProvider(null);
+        }
+
+        public static IServiceProvider CreateServiceProvider(Action<IServiceCollection> registrationAction)
+        {
             var services = new ServiceCollection();
 
             services.AddConfiguredLogging();
@@ -59,6 +64,7 @@ namespace CooKit.Mobile.Factories
 
             services.AddSingleton<Application, App>();
 
+            registrationAction?.Invoke(services);
             return services.BuildServiceProvider();
         }
 
