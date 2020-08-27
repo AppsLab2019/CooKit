@@ -3,17 +3,17 @@ using CooKit.Mobile.Models.Images;
 
 namespace CooKit.Mobile.Models.Root
 {
-    public class RootViewmodelEntry : IRootViewmodelEntry
+    public class RootEntry : IRootEntry
     {
         public Image Icon { get; set; }
         public string Title { get; set; }
         public Type ViewmodelType { get; set; }
 
-        public RootViewmodelEntry()
+        public RootEntry()
         {
         }
 
-        public RootViewmodelEntry(Image icon, string title, Type viewmodelType)
+        public RootEntry(Image icon, string title, Type viewmodelType)
         {
             Icon = icon;
             Title = title;

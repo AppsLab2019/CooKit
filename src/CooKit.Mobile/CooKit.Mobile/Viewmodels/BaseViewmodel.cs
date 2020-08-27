@@ -49,6 +49,7 @@ namespace CooKit.Mobile.Viewmodels
             RaisePropertyChanged(propertyName);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         protected void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

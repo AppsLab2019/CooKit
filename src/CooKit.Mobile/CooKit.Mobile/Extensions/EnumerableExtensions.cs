@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace CooKit.Mobile.Extensions
 {
@@ -21,6 +22,14 @@ namespace CooKit.Mobile.Extensions
             }
 
             return -1;
+        }
+
+        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
+        {
+            if (enumerable == null)
+                throw new ArgumentNullException(nameof(enumerable));
+
+            return new ObservableCollection<T>(enumerable);
         }
     }
 }

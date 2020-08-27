@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ingredients="clr-namespace:CooKit.Mobile.Views.Ingredients;assembly=CooKit.Mobile"
              x:Class="CooKit.Mobile.Pages.Recipes.RecipeDetailPage"
              x:Name="Root">
     <ContentPage.Content>
@@ -86,10 +87,7 @@
                                      BindableLayout.ItemsSource="{Binding Ingredients}">
                             <BindableLayout.ItemTemplate>
                                 <DataTemplate>
-                                    <StackLayout Orientation="Horizontal">
-                                        <!-- TODO: add * -->
-                                        <mtrl:MaterialLabel Text="{Binding Text}"/>
-                                    </StackLayout>
+                                    <ingredients:IngredientView/>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
                         </StackLayout>

@@ -4,6 +4,7 @@ using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Factories.Page;
 using CooKit.Mobile.Factories.Page.Root;
 using CooKit.Mobile.Factories.Views;
+using CooKit.Mobile.Models.Root;
 using CooKit.Mobile.Pages.Editor;
 using CooKit.Mobile.Pages.Lists;
 using CooKit.Mobile.Pages.Master;
@@ -13,6 +14,7 @@ using CooKit.Mobile.Providers.Page.CurrentRoot;
 using CooKit.Mobile.Providers.Page.Main;
 using CooKit.Mobile.Providers.Page.MasterDetail;
 using CooKit.Mobile.Registries.PageViewmodel;
+using CooKit.Mobile.Registries.RootEntry;
 using CooKit.Mobile.Repositories.Pictograms;
 using CooKit.Mobile.Repositories.Recipes;
 using CooKit.Mobile.Resources;
@@ -95,6 +97,7 @@ namespace CooKit.Mobile.Factories
             services.AddTransient<MasterPage>();
             services.AddSingleton<MasterDetailPage>();
             services.AddTransient<LocalRecipeListPage>();
+            services.AddTransient<EditorSelectionPage>();
 
             services.AddTransient(serviceProvider =>
             {
@@ -117,6 +120,7 @@ namespace CooKit.Mobile.Factories
             services.AddTransient<LocalRecipeListViewmodel>();
             services.AddTransient<RecipeDetailViewmodel>();
 
+            services.AddTransient<EditorSelectionViewmodel>();
             services.AddTransient<EditorMainViewmodel>();
         }
 
@@ -147,7 +151,7 @@ namespace CooKit.Mobile.Factories
             services.AddTransient<IAlertService, MaterialAlertService>();
             services.AddTransient<ILoadingAlertService, MaterialLoadingAlertService>();
             services.AddTransient<INavigationService, NavigationService>();
-            services.AddSingleton<IRootService, CachingRootService>();
+            services.AddTransient<IRootService, CachingRootService>();
             services.AddTransient<IViewModelInjector, PageViewModelInjector>();
             services.AddTransient<IPublishService, MockPublishService>();
 
@@ -164,14 +168,26 @@ namespace CooKit.Mobile.Factories
 
         private static void AddRegistries(this IServiceCollection services)
         {
-            services.AddSingleton<IPageViewmodelTypeRegistry, PageViewmodelTypeRegistry>(serviceProvider =>
+            services.AddSingleton<IPageViewmodelTypeRegistry, PageViewmodelTypeRegistry>(_ =>
             {
                 var registry = new PageViewmodelTypeRegistry();
 
                 registry.Register<MasterPage, MasterViewmodel>();
                 registry.Register<LocalRecipeListPage, LocalRecipeListViewmodel>();
                 registry.Register<RecipeDetailPage, RecipeDetailViewmodel>();
+                registry.Register<EditorSelectionPage, EditorSelectionViewmodel>();
                 registry.Register<EditorMainPage, EditorMainViewmodel>();
+
+                return registry;
+            });
+
+            services.AddSingleton<IRootEntryRegistry, RootEntryRegistry>(_ =>
+            {
+                var registry = new RootEntryRegistry();
+
+                registry.Register(new RootEntry(null, "Recipes", typeof(LocalRecipeListViewmodel)));
+                registry.Register(new RootEntry(null, "Editor", typeof(EditorMainViewmodel)));
+                //registry.Register(new RootEntry(null, "Editor", typeof(EditorSelectionViewmodel)));
 
                 return registry;
             });
