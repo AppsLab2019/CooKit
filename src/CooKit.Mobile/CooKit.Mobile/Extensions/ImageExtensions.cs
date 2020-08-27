@@ -12,7 +12,9 @@ namespace CooKit.Mobile.Extensions
             return image.Type switch
             {
                 ImageType.Uri => ImageSource.FromUri(new Uri(image.Data)),
-                _ => throw new NotImplementedException()
+                ImageType.File => ImageSource.FromFile(image.Data),
+                ImageType.Resource => throw new NotImplementedException(),
+                _ => throw new ArgumentOutOfRangeException()
             };
         }
     }

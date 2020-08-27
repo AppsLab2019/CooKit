@@ -1,5 +1,4 @@
-﻿using CooKit.Mobile.Factories;
-using Foundation;
+﻿using Foundation;
 using UIKit;
 
 namespace CooKit.Mobile.iOS
@@ -13,7 +12,7 @@ namespace CooKit.Mobile.iOS
             XF.Material.iOS.Material.Init();
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
 
-            var serviceProvider = ServiceProviderFactory.CreateServiceProvider();
+            var serviceProvider = Bootstrap.CreateServiceProvider();
             var application = (Xamarin.Forms.Application) serviceProvider.GetService(typeof(Xamarin.Forms.Application));
             LoadApplication(application);
 

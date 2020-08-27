@@ -26,6 +26,7 @@ using CooKit.Mobile.Services.Alert.Loading;
 using CooKit.Mobile.Services.Database;
 using CooKit.Mobile.Services.Injector;
 using CooKit.Mobile.Services.Navigation;
+using CooKit.Mobile.Services.Pickers;
 using CooKit.Mobile.Services.Publish;
 using CooKit.Mobile.Services.Root;
 using CooKit.Mobile.Viewmodels.Editor;
@@ -38,9 +39,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xamarin.Forms;
 
-namespace CooKit.Mobile.Factories
+namespace CooKit.Mobile
 {
-    public static class ServiceProviderFactory
+    public static class Bootstrap
     {
         public static IServiceProvider CreateServiceProvider()
         {
@@ -154,6 +155,7 @@ namespace CooKit.Mobile.Factories
             services.AddTransient<IRootService, CachingRootService>();
             services.AddTransient<IViewModelInjector, PageViewModelInjector>();
             services.AddTransient<IPublishService, MockPublishService>();
+            services.AddTransient<IImagePicker, MediaPluginImagePicker>();
 
             services.AddTransient<IResourceExtractor, ResourceExtractor>();
             services.AddTransient<IDatabaseExtractor, DatabaseExtractor>();
@@ -197,6 +199,7 @@ namespace CooKit.Mobile.Factories
         {
             services.AddTransient<EditorNameView>();
             services.AddTransient<EditorDescriptionView>();
+            services.AddTransient<EditorImageView>();
             services.AddTransient<EditorPictogramView>();
             services.AddTransient<EditorIngredientView>();
             services.AddTransient<EditorStepView>();

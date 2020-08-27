@@ -22,6 +22,7 @@ namespace CooKit.Mobile.Pages.Editor
             {
                 ViewToTemplate<EditorNameView>(),
                 ViewToTemplate<EditorDescriptionView>(),
+                ViewToTemplate<EditorImageView>(),
                 ViewToTemplate<EditorPictogramView>(),
                 ViewToTemplate<EditorIngredientView>(),
                 ViewToTemplate<EditorStepView>()

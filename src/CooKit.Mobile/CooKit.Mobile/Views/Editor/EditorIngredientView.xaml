@@ -15,8 +15,7 @@
             </Grid.RowDefinitions>
 
             <mtrl:MaterialCard Grid.Row="1"
-                               Margin="10,0"
-                               MinimumHeightRequest="400">
+                               Margin="10,0">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="32"/>

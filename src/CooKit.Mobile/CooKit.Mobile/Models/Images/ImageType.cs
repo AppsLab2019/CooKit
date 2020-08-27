@@ -3,6 +3,7 @@
     public enum ImageType
     {
         Uri,
+        File,
         Resource
     }
 }

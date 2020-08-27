@@ -2,7 +2,6 @@
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
-using CooKit.Mobile.Factories;
 
 namespace CooKit.Mobile.Droid
 {
@@ -22,7 +21,7 @@ namespace CooKit.Mobile.Droid
             XF.Material.Droid.Material.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
 
-            var serviceProvider = ServiceProviderFactory.CreateServiceProvider();
+            var serviceProvider = Bootstrap.CreateServiceProvider();
             var application = (Xamarin.Forms.Application) serviceProvider.GetService(typeof(Xamarin.Forms.Application));
             LoadApplication(application);
         }

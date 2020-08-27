@@ -9,9 +9,11 @@ using CooKit.Mobile.Models.Editor;
 using CooKit.Mobile.Models.Ingredients;
 using CooKit.Mobile.Models.Steps;
 using CooKit.Mobile.Repositories.Pictograms;
+using CooKit.Mobile.Services.Pickers;
 using CooKit.Mobile.Services.Publish;
 using Xamarin.Forms;
 using XF.Material.Forms.Models;
+using Image = CooKit.Mobile.Models.Images.Image;
 
 namespace CooKit.Mobile.Viewmodels.Editor
 {
@@ -20,18 +22,25 @@ namespace CooKit.Mobile.Viewmodels.Editor
         // TODO: maybe replace this with IPictogramService (logical separation)
         private readonly IPictogramRepository _pictogramRepository;
         private readonly IPublishService _publishService;
+        private readonly IImagePicker _imagePicker;
 
-        public ICommand PublishCommand => new Command(async () => await PublishAsync());
+        public ICommand SelectPreviewImageCommand => new Command(async () => await SelectPreviewImageAsync());
+        public ICommand AddImageCommand => new Command(async () => await AddImageAsync());
+
         public ICommand NewIngredientCommand => new Command(async () => await NewIngredientAsync());
-
         // TODO: use wrapper class (don't rely on MaterialMenuResult)
         public ICommand InteractIngredientCommand => new Command<MaterialMenuResult>(async result => await InteractIngredientAsync(result));
 
-        public EditorMainViewmodel(IPictogramRepository pictogramRepository, IPublishService publishService)
+        public ICommand PublishCommand => new Command(async () => await PublishAsync());
+
+        public EditorMainViewmodel(IPictogramRepository pictogramRepository, IPublishService publishService, 
+            IImagePicker imagePicker)
         {
             _pictogramRepository = pictogramRepository;
             _publishService = publishService;
+            _imagePicker = imagePicker;
 
+            _images = new ObservableCollection<Image>();
             _pictograms = new ObservableCollection<Pictogram>();
             _ingredients = new ObservableCollection<Ingredient>();
             _steps = new ObservableCollection<Step>();
@@ -47,6 +56,18 @@ namespace CooKit.Mobile.Viewmodels.Editor
         {
             get => _description;
             set => OnPropertyChanged(ref _description, value);
+        }
+
+        public Image PreviewImage
+        {
+            get => _previewImage;
+            set => OnPropertyChanged(ref _previewImage, value);
+        }
+
+        public ObservableCollection<Image> Images
+        {
+            get => _images;
+            set => OnPropertyChanged(ref _images, value);
         }
 
         public IList<Pictogram> AvailablePictograms
@@ -76,6 +97,9 @@ namespace CooKit.Mobile.Viewmodels.Editor
         private string _name;
         private string _description;
 
+        private Image _previewImage;
+        private ObservableCollection<Image> _images;
+
         private IList<Pictogram> _availablePictograms;
         private ObservableCollection<Pictogram> _pictograms;
         private ObservableCollection<Ingredient> _ingredients;
@@ -91,10 +115,28 @@ namespace CooKit.Mobile.Viewmodels.Editor
             Name = recipe.Name;
             Description = recipe.Description;
 
-            // create copies in case changes are discarded
+            PreviewImage = recipe.PreviewImage;
+            Images = recipe.Images.ToObservableCollection();
+
             Pictograms = recipe.Pictograms.ToObservableCollection();
             Ingredients = recipe.Ingredients.ToObservableCollection();
             Steps = recipe.Steps.ToObservableCollection();
+        }
+
+        private async Task SelectPreviewImageAsync()
+        {
+            var image = await _imagePicker.PickImageAsync();
+
+            if (image != null)
+                PreviewImage = image;
+        }
+
+        private async Task AddImageAsync()
+        {
+            var image = await _imagePicker.PickImageAsync();
+
+            if (image != null)
+                Images.Add(image);
         }
 
         private async Task NewIngredientAsync()
