@@ -18,7 +18,7 @@
                                       IndicatorView="ImageIndicator">
                             <CarouselView.ItemTemplate>
                                 <DataTemplate>
-                                    <ffimageloading:CachedImage Source="{Binding}"
+                                    <ffimageloading:CachedImage Source="{Binding Converter={StaticResource Converter.ImageToImageSource}}"
                                                                 Aspect="AspectFill"
                                                                 DownsampleToViewSize="True"/>
                                 </DataTemplate>

@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:CooKit.Mobile.Models;assembly=CooKit.Mobile"
-             xmlns:recipes="clr-namespace:CooKit.Mobile.Controls.Recipes;assembly=CooKit.Mobile"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              x:Class="CooKit.Mobile.Pages.Lists.LocalRecipeListPage"
              x:Name="Root">
     <ContentPage.Content>
@@ -13,9 +14,33 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Recipe">
                     <AbsoluteLayout Padding="6">
-                        <recipes:SmallRecipePreviewCard Recipe="{Binding}"
-                                                        HorizontalOptions="FillAndExpand"
-                                                        ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}"/>
+                        <mtrl:MaterialCard Padding="0"
+                                           Elevation="2"
+                                           CornerRadius="10"
+                                           HeightRequest="150"
+                                           IsClickable="True"
+                                           ClickCommandParameter="{Binding}"
+                                           ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.SelectCommand}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <ffimageloading:CachedImage Grid.RowSpan="2"
+                                                            Aspect="AspectFill"
+                                                            DownsampleToViewSize="True"
+                                                            Source="{Binding PreviewImage, Converter={StaticResource Converter.ImageToImageSource}}"/>
+
+                                <AbsoluteLayout Grid.Row="1"
+                                                Padding="6"
+                                                BackgroundColor="#B0000000">
+                                    <mtrl:MaterialLabel Text="{Binding Name}"
+                                                        TextColor="{StaticResource Color.WhiteText}"
+                                                        Style="{StaticResource FontStyle.Body1}"/>
+                                </AbsoluteLayout>
+                            </Grid>
+                        </mtrl:MaterialCard>
                     </AbsoluteLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

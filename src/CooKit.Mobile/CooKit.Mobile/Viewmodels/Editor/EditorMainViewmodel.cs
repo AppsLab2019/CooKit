@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Mobile.Extensions;
@@ -185,21 +186,36 @@ namespace CooKit.Mobile.Viewmodels.Editor
         {
             await using var loadingAlert = await LoadingAlertService.LoadingAlertAsync("Starting publishing!");
             var progress = new Progress<string>(message => loadingAlert.SetMessage(message));
-
-            // mocking recipe creation for now
-            // TODO: replace this with actual logic
-            var recipe = new Recipe();
+            var recipe = CreateRecipe();
 
             try
             {
                 await _publishService.PublishRecipeAsync(recipe, progress);
                 await AlertService.AlertAsync("Success", "Recipe was successfully published!", "Close");
             }
-            catch
+            catch (Exception e)
             {
                 // TODO: format this message based on thrown exception
-                await AlertService.AlertAsync("Failure", "There was an error publishing your recipe!", "Close");
+                await AlertService.AlertAsync("Failure", $"There was an error publishing your recipe!\n{e.Message}", "Close");
             }
+        }
+
+        private Recipe CreateRecipe()
+        {
+            return new Recipe
+            {
+                // Id = Id,
+                Name = Name,
+                Description = Description,
+                // EstimatedTime = EstimatedTime,
+
+                PreviewImage = PreviewImage,
+                Images = Images,
+
+                Pictograms = Pictograms.ToList(),
+                Ingredients = Ingredients.ToList(),
+                Steps = Steps.ToList()
+            };
         }
     }
 }
