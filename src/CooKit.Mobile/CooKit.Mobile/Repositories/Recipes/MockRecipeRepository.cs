@@ -53,6 +53,17 @@ namespace CooKit.Mobile.Repositories.Recipes
             };
         }
 
+        public ValueTask AddRecipeAsync(Recipe recipe)
+        {
+            _recipes.Add(recipe);
+            return default;
+        }
+
+        public ValueTask UpdateRecipeAsync(Recipe recipe)
+        {
+            return default;
+        }
+
         public ValueTask<Recipe> GetRecipeAsync(int id)
         {
             var recipe = _recipes.FirstOrDefault(r => r.Id == id);

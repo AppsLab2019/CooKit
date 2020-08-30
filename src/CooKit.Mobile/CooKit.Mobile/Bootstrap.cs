@@ -1,5 +1,6 @@
 ﻿using System;
 using CooKit.Mobile.Contexts;
+using CooKit.Mobile.Converters;
 using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Factories.Page;
 using CooKit.Mobile.Factories.Page.Root;
@@ -13,6 +14,7 @@ using CooKit.Mobile.Providers.DatabasePath;
 using CooKit.Mobile.Providers.Page.CurrentRoot;
 using CooKit.Mobile.Providers.Page.Main;
 using CooKit.Mobile.Providers.Page.MasterDetail;
+using CooKit.Mobile.Providers.ResourcePath;
 using CooKit.Mobile.Registries.PageViewmodel;
 using CooKit.Mobile.Registries.RootEntry;
 using CooKit.Mobile.Repositories.Pictograms;
@@ -28,6 +30,7 @@ using CooKit.Mobile.Services.Injector;
 using CooKit.Mobile.Services.Navigation;
 using CooKit.Mobile.Services.Pickers;
 using CooKit.Mobile.Services.Publish;
+using CooKit.Mobile.Services.Resources;
 using CooKit.Mobile.Services.Root;
 using CooKit.Mobile.Viewmodels.Editor;
 using CooKit.Mobile.Viewmodels.Lists;
@@ -65,6 +68,7 @@ namespace CooKit.Mobile
             services.AddRegistries();
             services.AddViews();
 
+            services.AddTransient<ImageToImageSourceConverter>();
             services.AddSingleton<Application, App>();
 
             registrationAction?.Invoke(services);
@@ -135,6 +139,7 @@ namespace CooKit.Mobile
         private static void AddProviders(this IServiceCollection services)
         {
             services.AddTransient<IDatabasePathProvider, DatabasePathProvider>();
+            services.AddTransient<IResourcePathProvider, ResourcePathProvider>();
 
             services.AddTransient<IMainPageProvider, MainPageProvider>();
             services.AddTransient<ICurrentRootPageProvider, CurrentRootPageProvider>();
@@ -144,7 +149,7 @@ namespace CooKit.Mobile
         private static void AddRepositories(this IServiceCollection services)
         {
             services.AddTransient<IPictogramRepository, PictogramRepository>();
-            services.AddTransient<IRecipeRepository, MockRecipeRepository>();
+            services.AddTransient<IRecipeRepository, RecipeRepository>();
         }
 
         private static void AddServices(this IServiceCollection services)
@@ -154,12 +159,14 @@ namespace CooKit.Mobile
             services.AddTransient<INavigationService, NavigationService>();
             services.AddTransient<IRootService, CachingRootService>();
             services.AddTransient<IViewModelInjector, PageViewModelInjector>();
-            services.AddTransient<IPublishService, MockPublishService>();
+            services.AddTransient<IPublishService, LocalPublishService>();
             services.AddTransient<IImagePicker, MediaPluginImagePicker>();
 
+            // TODO: rename IResourceExtractor to IEmbeddedResourceExtractor
             services.AddTransient<IResourceExtractor, ResourceExtractor>();
             services.AddTransient<IDatabaseExtractor, DatabaseExtractor>();
             services.AddTransient<IDatabaseInitializationService, EnsuringDatabaseInitializationService>();
+            services.AddTransient<IResourceInitializationService, ResourceInitializationService>();
         }
 
         private static void AddSelectors(this IServiceCollection services)

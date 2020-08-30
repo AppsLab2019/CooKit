@@ -6,7 +6,6 @@
              xmlns:mtrlresources="clr-namespace:XF.Material.Forms.Resources;assembly=XF.Material"
              xmlns:mtrltypo="clr-namespace:XF.Material.Forms.Resources.Typography;assembly=XF.Material"
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             xmlns:converters="clr-namespace:CooKit.Mobile.Converters;assembly=CooKit.Mobile"
              mc:Ignorable="d"
              x:Class="CooKit.Mobile.App">
 
@@ -59,7 +58,5 @@
             <Setter Property="WidthRequest" Value="32"/>
             <Setter Property="HeightRequest" Value="32"/>
         </Style>
-
-        <converters:ImageToImageSourceConverter x:Key="Converter.ImageToImageSource"/>
     </Application.Resources>
 </Application>

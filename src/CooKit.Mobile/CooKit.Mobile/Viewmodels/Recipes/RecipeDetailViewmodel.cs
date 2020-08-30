@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Models;
 using CooKit.Mobile.Models.Ingredients;
 using CooKit.Mobile.Models.Steps;
 using Xamarin.Forms;
+using Image = CooKit.Mobile.Models.Images.Image;
 
 namespace CooKit.Mobile.Viewmodels.Recipes
 {
@@ -31,7 +30,7 @@ namespace CooKit.Mobile.Viewmodels.Recipes
             set => OnPropertyChanged(ref _estimatedTime, value);
         }
 
-        public IList<ImageSource> Images
+        public IList<Image> Images
         {
             get => _images;
             set => OnPropertyChanged(ref _images, value);
@@ -61,7 +60,7 @@ namespace CooKit.Mobile.Viewmodels.Recipes
         private string _name;
         private string _description;
         private TimeSpan _estimatedTime;
-        private IList<ImageSource> _images;
+        private IList<Image> _images;
 
         private IList<Pictogram> _pictograms;
         private IList<Ingredient> _ingredients;
@@ -76,9 +75,7 @@ namespace CooKit.Mobile.Viewmodels.Recipes
             Description = recipe.Description;
             EstimatedTime = recipe.EstimatedTime;
 
-            Images = recipe.Images?
-                .Select(image => image.ToImageSource())
-                .ToArray();
+            Images = recipe.Images;
 
             Pictograms = recipe.Pictograms;
             Ingredients = recipe.Ingredients;
