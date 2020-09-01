@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Models;
-using CooKit.Mobile.Models.Editor;
 using CooKit.Mobile.Models.Ingredients;
 using CooKit.Mobile.Models.Steps;
 using CooKit.Mobile.Repositories.Pictograms;
 using CooKit.Mobile.Services.Pickers;
 using CooKit.Mobile.Services.Publish;
 using Xamarin.Forms;
-using XF.Material.Forms.Models;
 using Image = CooKit.Mobile.Models.Images.Image;
 
 namespace CooKit.Mobile.Viewmodels.Editor
@@ -27,10 +25,10 @@ namespace CooKit.Mobile.Viewmodels.Editor
 
         public ICommand SelectPreviewImageCommand => new Command(async () => await SelectPreviewImageAsync());
         public ICommand AddImageCommand => new Command(async () => await AddImageAsync());
+        public ICommand DeleteImageCommand => new Command<Image>(DeleteImage);
 
         public ICommand NewIngredientCommand => new Command(async () => await NewIngredientAsync());
-        // TODO: use wrapper class (don't rely on MaterialMenuResult)
-        public ICommand InteractIngredientCommand => new Command<MaterialMenuResult>(async result => await InteractIngredientAsync(result));
+        public ICommand DeleteIngredientCommand => new Command<Ingredient>(DeleteIngredient);
 
         public ICommand PublishCommand => new Command(async () => await PublishAsync());
 
@@ -140,6 +138,12 @@ namespace CooKit.Mobile.Viewmodels.Editor
                 Images.Add(image);
         }
 
+        private void DeleteImage(Image image)
+        {
+            if (image != null)
+                Images.Remove(image);
+        }
+
         private async Task NewIngredientAsync()
         {
             var input = await AlertService.InputAsync("New Ingredient", "Enter ingredient text:", "Ok", "Cancel");
@@ -151,35 +155,10 @@ namespace CooKit.Mobile.Viewmodels.Editor
             Ingredients.Add(ingredient);
         }
 
-        private async Task InteractIngredientAsync(MaterialMenuResult result)
+        private void DeleteIngredient(Ingredient ingredient)
         {
-            if (result == null)
-                return;
-
-            if (!(result.Parameter is Ingredient ingredient))
-                return;
-
-            switch ((IngredientAction) result.Index)
-            {
-                case IngredientAction.Edit:
-                    await EditIngredientAsync(ingredient);
-                    break;
-                case IngredientAction.Delete:
-                    Ingredients.Remove(ingredient);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
-
-        private async Task EditIngredientAsync(Ingredient ingredient)
-        {
-            var text = ingredient.Text;
-            var input = await AlertService.InputAsync("Edit Ingredient", "Enter modified ingredient text:", 
-                text, text, "Ok", "Cancel");
-
-            if (!string.IsNullOrEmpty(input))
-                ingredient.Text = input;
+            if (ingredient != null)
+                Ingredients.Remove(ingredient);
         }
 
         private async Task PublishAsync()

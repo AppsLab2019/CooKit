@@ -46,7 +46,7 @@
                                                Style="{StaticResource Style.IconSize}"/>
 
                             <mtrl:MaterialLabel VerticalOptions="Center"
-                                                Text="30 min."/>
+                                                Text="{Binding EstimatedTime.TotalMinutes, StringFormat='{0} min.'}"/>
                         </StackLayout>
                     </mtrl:MaterialCard>
 
@@ -90,18 +90,44 @@
                                     <ingredients:IngredientView/>
                                 </DataTemplate>
                             </BindableLayout.ItemTemplate>
+
+                            <BindableLayout.EmptyViewTemplate>
+                                <DataTemplate>
+                                    <StackLayout HeightRequest="50">
+                                        <mtrl:MaterialLabel Text="No ingredients!"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            HorizontalOptions="CenterAndExpand"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.EmptyViewTemplate>
                         </StackLayout>
                     </StackLayout>
                 </mtrl:MaterialCard>
 
-                <mtrl:MaterialCard>
+                <mtrl:MaterialCard Padding="0">
                     <StackLayout>
-                        <mtrl:MaterialLabel Text="Steps:"/>
+                        <mtrl:MaterialLabel Text="Steps:" 
+                                            Margin="20,20,20,0"/>
 
                         <CarouselView x:Name="StepCarousel"
                                       HeightRequest="400"
                                       IndicatorView="StepIndicator"
-                                      ItemsSource="{Binding Steps}"/>
+                                      ItemsSource="{Binding Steps}">
+                            <!-- TODO: use template -->
+                            <CarouselView.EmptyView>
+                                <ContentView>
+                                    <mtrl:MaterialCard Margin="10"
+                                                       Elevation="2"
+                                                       CornerRadius="10">
+                                        <StackLayout>
+                                            <mtrl:MaterialLabel VerticalOptions="CenterAndExpand"
+                                                                HorizontalOptions="CenterAndExpand"
+                                                                Text="There are no required steps for this recipe!"/>
+                                        </StackLayout>
+                                    </mtrl:MaterialCard>
+                                </ContentView>
+                            </CarouselView.EmptyView>
+                        </CarouselView>
 
                         <IndicatorView x:Name="StepIndicator"
                                        HorizontalOptions="Center"

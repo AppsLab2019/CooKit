@@ -32,6 +32,8 @@
 
                     <mtrl:MaterialIconButton Grid.Row="0"
                                              Grid.Column="1"
+                                             ButtonType="Text"
+                                             Image="{StaticResource Icon.Add}"
                                              Command="{Binding NewIngredientCommand}"/>
 
                     <StackLayout Grid.Row="1"
@@ -49,17 +51,11 @@
 
                                     <ingredients:IngredientView VerticalOptions="Center"/>
 
-                                    <mtrl:MaterialMenuButton Grid.Column="1"
-                                                             VerticalOptions="Center"
+                                    <mtrl:MaterialIconButton Grid.Column="1"
+                                                             ButtonType="Text"
+                                                             Image="{StaticResource Icon.Close}"
                                                              CommandParameter="{Binding}"
-                                                             Command="{Binding Source={x:Reference Root}, Path=BindingContext.InteractIngredientCommand}">
-                                        <mtrl:MaterialMenuButton.Choices>
-                                            <x:Array Type="{x:Type x:String}">
-                                                <x:String>Edit</x:String>
-                                                <x:String>Delete</x:String>
-                                            </x:Array>
-                                        </mtrl:MaterialMenuButton.Choices>
-                                    </mtrl:MaterialMenuButton>
+                                                             Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteIngredientCommand}"/>
                                 </Grid>
                             </DataTemplate>
                         </BindableLayout.ItemTemplate>

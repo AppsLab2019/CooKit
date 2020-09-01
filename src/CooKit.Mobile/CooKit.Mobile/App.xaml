@@ -6,10 +6,13 @@
              xmlns:mtrlresources="clr-namespace:XF.Material.Forms.Resources;assembly=XF.Material"
              xmlns:mtrltypo="clr-namespace:XF.Material.Forms.Resources.Typography;assembly=XF.Material"
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:converters="clr-namespace:CooKit.Mobile.Converters;assembly=CooKit.Mobile"
              mc:Ignorable="d"
              x:Class="CooKit.Mobile.App">
 
     <Application.Resources>
+        <ImageSource x:Key="Icon.Add">ic_action_add.png</ImageSource>
+        <ImageSource x:Key="Icon.Close">ic_action_close.png</ImageSource>
         <ImageSource x:Key="Icon.Time">ic_action_access_time.png</ImageSource>
 
         <Color x:Key="Color.Primary">#6200EE</Color>
@@ -58,5 +61,7 @@
             <Setter Property="WidthRequest" Value="32"/>
             <Setter Property="HeightRequest" Value="32"/>
         </Style>
+
+        <converters:IsNotNullBoolConverter x:Key="Converter.IsNotNullBool"/>
     </Application.Resources>
 </Application>

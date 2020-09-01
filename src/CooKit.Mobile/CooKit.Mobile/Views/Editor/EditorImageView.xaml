@@ -2,7 +2,9 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
-             x:Class="CooKit.Mobile.Views.Editor.EditorImageView">
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="CooKit.Mobile.Views.Editor.EditorImageView"
+             x:Name="Root">
     <ContentView.Content>
         <Grid Padding="10">
             <Grid.RowDefinitions>
@@ -17,7 +19,17 @@
                 <StackLayout>
                     <mtrl:MaterialLabel Text="Select Preview Image:"/>
 
-                    <!-- TODO: selected image preview -->
+                    <StackLayout HeightRequest="40"
+                                 Orientation="Horizontal"
+                                 IsVisible="{Binding PreviewImage, Converter={StaticResource Converter.IsNotNullBool}}">
+                        <ffimageloading:CachedImage WidthRequest="40"
+                                                    DownsampleToViewSize="True"
+                                                    Source="{Binding PreviewImage, Converter={StaticResource Converter.ImageToImageSource}}"/>
+
+                        <mtrl:MaterialLabel Text="{Binding PreviewImage.Data}"
+                                            HorizontalOptions="FillAndExpand"
+                                            VerticalOptions="Center"/>
+                    </StackLayout>
 
                     <mtrl:MaterialButton Text="Select"
                                          HorizontalOptions="CenterAndExpand"
@@ -42,13 +54,40 @@
 
                     <mtrl:MaterialIconButton Grid.Row="0"
                                              Grid.Column="1"
+                                             ButtonType="Text"
+                                             Image="{StaticResource Icon.Add}"
                                              Command="{Binding AddImageCommand}"/>
 
                     <StackLayout Grid.Row="1"
                                  Grid.Column="0"
                                  Grid.ColumnSpan="2"
                                  BindableLayout.ItemsSource="{Binding Images}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid HeightRequest="40">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="32"/>
+                                    </Grid.ColumnDefinitions>
 
+                                    <ffimageloading:CachedImage DownsampleToViewSize="True"
+                                                                Source="{Binding Data, Converter={StaticResource Converter.ImageToImageSource}}"/>
+
+                                    <mtrl:MaterialLabel Grid.Column="1" 
+                                                        VerticalOptions="Center"
+                                                        Text="{Binding Data}"/>
+
+                                    <mtrl:MaterialIconButton Grid.Column="2"
+                                                             HeightRequest="32"
+                                                             ButtonType="Text"
+                                                             VerticalOptions="Center"
+                                                             Image="{StaticResource Icon.Close}"
+                                                             CommandParameter="{Binding}"
+                                                             Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteImageCommand}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
                     </StackLayout>
                 </Grid>
             </mtrl:MaterialCard>

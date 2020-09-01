@@ -52,10 +52,11 @@ namespace CooKit.Mobile.Repositories.Recipes
             // TODO: maybe check if recipe contains id?
 
             var entity = RecipeToEntity(recipe);
+
             var entry = await _recipeContext.Recipes.AddAsync(entity);
+            await _recipeContext.SaveChangesAsync();
 
             recipe.Id = entry.Entity.Id;
-            await _recipeContext.SaveChangesAsync();
         }
 
         public ValueTask UpdateRecipeAsync(Recipe recipe)

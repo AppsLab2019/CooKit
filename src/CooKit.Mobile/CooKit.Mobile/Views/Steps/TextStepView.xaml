@@ -5,7 +5,7 @@
              x:Class="CooKit.Mobile.Views.Steps.TextStepView">
     <ContentView.Content>
         <!-- TODO: add shared style for the outside card -->
-        <mtrl:MaterialCard Margin="5"
+        <mtrl:MaterialCard Margin="10"
                            Elevation="2"
                            CornerRadius="10">
             <StackLayout>

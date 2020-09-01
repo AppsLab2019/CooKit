@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,9 +27,7 @@ namespace CooKit.Mobile.Services.Publish
             if (recipe == null)
                 throw new ArgumentNullException(nameof(recipe));
 
-            var localImages = recipe.Images
-                .Append(recipe.PreviewImage)
-                .Where(image => image.Type == ImageType.File);
+            var localImages = GetLocalImages(recipe);
 
             foreach (var image in localImages)
             {
@@ -46,6 +45,16 @@ namespace CooKit.Mobile.Services.Publish
                 progress?.Report("Adding recipe to database.");
                 await _recipeRepository.AddRecipeAsync(recipe);
             }
+        }
+
+        private static IEnumerable<Image> GetLocalImages(Recipe recipe)
+        {
+            IEnumerable<Image> images = recipe.Images;
+
+            if (recipe.PreviewImage != null)
+                images = images.Append(recipe.PreviewImage);
+
+            return images.Where(image => image.Type == ImageType.File);
         }
 
         // TODO: clean this up

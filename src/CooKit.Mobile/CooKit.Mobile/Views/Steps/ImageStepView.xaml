@@ -7,7 +7,7 @@
     <ContentView.Content>
         <!-- TODO: add shared style for the outside card -->
         <mtrl:MaterialCard Padding="0"
-                           Margin="5"
+                           Margin="10"
                            Elevation="2"
                            CornerRadius="10">
             <StackLayout>
