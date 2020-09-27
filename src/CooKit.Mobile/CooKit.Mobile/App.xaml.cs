@@ -1,11 +1,12 @@
 ﻿using CooKit.Mobile.Converters;
 using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Factories.Page;
-using CooKit.Mobile.Pages.Master;
+using CooKit.Mobile.Pages;
 using CooKit.Mobile.Providers.Page.MasterDetail;
 using CooKit.Mobile.Services.Database;
 using CooKit.Mobile.Services.Resources;
 using Microsoft.Extensions.Logging;
+using Xamarin.Forms;
 using XF.Material.Forms;
 
 namespace CooKit.Mobile
@@ -34,7 +35,7 @@ namespace CooKit.Mobile
             Resources["Converter.ImageToImageSource"] = converter;
 
             // this is needed if the OnStart method is async
-            MainPage = new Xamarin.Forms.Page();
+            MainPage = new Page();
         }
 
         // TODO: refactor the page creation logic out of here

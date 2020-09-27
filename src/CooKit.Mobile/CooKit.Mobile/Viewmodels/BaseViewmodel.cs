@@ -11,9 +11,7 @@ namespace CooKit.Mobile.Viewmodels
 {
     public abstract class BaseViewmodel : IViewmodel, INotifyPropertyChanged
     {
-        protected bool IsBusy { get; set; }
         protected IServiceProvider ServiceProvider { get; private set; }
-
         protected IAlertService AlertService => _lazyAlertService.Value;
         protected ILoadingAlertService LoadingAlertService => _lazyLoadingAlertService.Value;
         protected INavigationService NavigationService => _lazyNavigationService.Value;
@@ -37,7 +35,6 @@ namespace CooKit.Mobile.Viewmodels
         }
 
         public virtual Task InitializeAsync(object parameter) => Task.CompletedTask;
-        public virtual Task<bool> OnExitAsync() => Task.FromResult(true);
 
         protected void OnPropertyChanged<T>(ref T backingField, T newValue,
             [CallerMemberName] string propertyName = null)

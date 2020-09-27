@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 
-namespace CooKit.Mobile.Pages.Recipes
+namespace CooKit.Mobile.Pages
 {
     public partial class RecipeDetailPage
     {

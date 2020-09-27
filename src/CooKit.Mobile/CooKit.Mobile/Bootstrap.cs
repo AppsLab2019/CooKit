@@ -6,10 +6,8 @@ using CooKit.Mobile.Factories.Page;
 using CooKit.Mobile.Factories.Page.Root;
 using CooKit.Mobile.Factories.Views;
 using CooKit.Mobile.Models.Root;
-using CooKit.Mobile.Pages.Editor;
-using CooKit.Mobile.Pages.Lists;
-using CooKit.Mobile.Pages.Master;
-using CooKit.Mobile.Pages.Recipes;
+using CooKit.Mobile.Pages;
+using CooKit.Mobile.Providers.Categories;
 using CooKit.Mobile.Providers.DatabasePath;
 using CooKit.Mobile.Providers.Page.CurrentRoot;
 using CooKit.Mobile.Providers.Page.Main;
@@ -26,16 +24,14 @@ using CooKit.Mobile.Selectors.Steps;
 using CooKit.Mobile.Services.Alert;
 using CooKit.Mobile.Services.Alert.Loading;
 using CooKit.Mobile.Services.Database;
+using CooKit.Mobile.Services.Feature;
 using CooKit.Mobile.Services.Injector;
 using CooKit.Mobile.Services.Navigation;
 using CooKit.Mobile.Services.Pickers;
 using CooKit.Mobile.Services.Publish;
 using CooKit.Mobile.Services.Resources;
 using CooKit.Mobile.Services.Root;
-using CooKit.Mobile.Viewmodels.Editor;
-using CooKit.Mobile.Viewmodels.Lists;
-using CooKit.Mobile.Viewmodels.Master;
-using CooKit.Mobile.Viewmodels.Recipes;
+using CooKit.Mobile.Viewmodels;
 using CooKit.Mobile.Views.Editor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -101,8 +97,10 @@ namespace CooKit.Mobile
         {
             services.AddTransient<MasterPage>();
             services.AddSingleton<MasterDetailPage>();
-            services.AddTransient<LocalRecipeListPage>();
-            services.AddTransient<EditorSelectionPage>();
+
+            services.AddTransient<TitlePage>();
+            services.AddTransient<AboutPage>();
+            services.AddTransient<RecipeListPage>();
 
             services.AddTransient(serviceProvider =>
             {
@@ -121,11 +119,10 @@ namespace CooKit.Mobile
         private static void AddViewModels(this IServiceCollection services)
         {
             services.AddTransient<MasterViewmodel>();
-
-            services.AddTransient<LocalRecipeListViewmodel>();
+            services.AddTransient<TitleViewmodel>();
+            services.AddTransient<AboutViewmodel>();
+            services.AddTransient<RecipeListViewmodel>();
             services.AddTransient<RecipeDetailViewmodel>();
-
-            services.AddTransient<EditorSelectionViewmodel>();
             services.AddTransient<EditorMainViewmodel>();
         }
 
@@ -140,10 +137,13 @@ namespace CooKit.Mobile
         {
             services.AddTransient<IDatabasePathProvider, DatabasePathProvider>();
             services.AddTransient<IResourcePathProvider, ResourcePathProvider>();
+            services.AddTransient<ICustomResourceProvider, AssemblyCustomResourceProvider>();
 
             services.AddTransient<IMainPageProvider, MainPageProvider>();
             services.AddTransient<ICurrentRootPageProvider, CurrentRootPageProvider>();
             services.AddTransient<IMasterDetailPageProvider, ServiceProviderMasterDetailPageProvider>();
+
+            services.AddTransient<ICategoryProvider, MockCategoryProvider>();
         }
 
         private static void AddRepositories(this IServiceCollection services)
@@ -161,6 +161,7 @@ namespace CooKit.Mobile
             services.AddTransient<IViewModelInjector, PageViewModelInjector>();
             services.AddTransient<IPublishService, LocalPublishService>();
             services.AddTransient<IImagePicker, MediaPluginImagePicker>();
+            services.AddTransient<IFeatureService, MockFeatureService>();
 
             // TODO: rename IResourceExtractor to IEmbeddedResourceExtractor
             services.AddTransient<IResourceExtractor, ResourceExtractor>();
@@ -182,9 +183,10 @@ namespace CooKit.Mobile
                 var registry = new PageViewmodelTypeRegistry();
 
                 registry.Register<MasterPage, MasterViewmodel>();
-                registry.Register<LocalRecipeListPage, LocalRecipeListViewmodel>();
+                registry.Register<TitlePage, TitleViewmodel>();
+                registry.Register<AboutPage, AboutViewmodel>();
+                registry.Register<RecipeListPage, RecipeListViewmodel>();
                 registry.Register<RecipeDetailPage, RecipeDetailViewmodel>();
-                registry.Register<EditorSelectionPage, EditorSelectionViewmodel>();
                 registry.Register<EditorMainPage, EditorMainViewmodel>();
 
                 return registry;
@@ -194,9 +196,8 @@ namespace CooKit.Mobile
             {
                 var registry = new RootEntryRegistry();
 
-                registry.Register(new RootEntry(null, "Recipes", typeof(LocalRecipeListViewmodel)));
-                registry.Register(new RootEntry(null, "Editor", typeof(EditorMainViewmodel)));
-                //registry.Register(new RootEntry(null, "Editor", typeof(EditorSelectionViewmodel)));
+                registry.Register(new RootEntry(null, "Recipes", typeof(TitleViewmodel)));
+                registry.Register(new RootEntry(null, "About", typeof(AboutViewmodel)));
 
                 return registry;
             });

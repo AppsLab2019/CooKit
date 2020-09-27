@@ -14,6 +14,8 @@
         <ImageSource x:Key="Icon.Add">ic_action_add.png</ImageSource>
         <ImageSource x:Key="Icon.Close">ic_action_close.png</ImageSource>
         <ImageSource x:Key="Icon.Time">ic_action_access_time.png</ImageSource>
+        <ImageSource x:Key="Icon.ArrowForward">ic_action_arrow_forward.png</ImageSource>
+        <ImageSource x:Key="Icon.Logo">splash_icon.png</ImageSource>
 
         <Color x:Key="Color.Primary">#6200EE</Color>
         <Color x:Key="Color.OnPrimary">#FFFFFF</Color>

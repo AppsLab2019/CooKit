@@ -5,7 +5,7 @@ using CooKit.Mobile.Factories.Views;
 using CooKit.Mobile.Views.Editor;
 using Xamarin.Forms;
 
-namespace CooKit.Mobile.Pages.Editor
+namespace CooKit.Mobile.Pages
 {
     public partial class EditorMainPage
     {

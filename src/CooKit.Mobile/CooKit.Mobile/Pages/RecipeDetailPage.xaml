@@ -4,7 +4,7 @@
              xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:ingredients="clr-namespace:CooKit.Mobile.Views.Ingredients;assembly=CooKit.Mobile"
-             x:Class="CooKit.Mobile.Pages.Recipes.RecipeDetailPage"
+             x:Class="CooKit.Mobile.Pages.RecipeDetailPage"
              x:Name="Root">
     <ContentPage.Content>
         <ScrollView>

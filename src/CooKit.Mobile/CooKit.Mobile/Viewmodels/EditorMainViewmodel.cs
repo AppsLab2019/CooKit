@@ -14,7 +14,7 @@ using CooKit.Mobile.Services.Publish;
 using Xamarin.Forms;
 using Image = CooKit.Mobile.Models.Images.Image;
 
-namespace CooKit.Mobile.Viewmodels.Editor
+namespace CooKit.Mobile.Viewmodels
 {
     public class EditorMainViewmodel : ParameterBaseViewmodel<Recipe>
     {
@@ -161,6 +161,11 @@ namespace CooKit.Mobile.Viewmodels.Editor
                 Ingredients.Remove(ingredient);
         }
 
+        private async Task NewStepAsync()
+        {
+
+        }
+
         private async Task PublishAsync()
         {
             await using var loadingAlert = await LoadingAlertService.LoadingAlertAsync("Starting publishing!");
@@ -175,7 +180,7 @@ namespace CooKit.Mobile.Viewmodels.Editor
             catch (Exception e)
             {
                 // TODO: format this message based on thrown exception
-                await AlertService.AlertAsync("Failure", $"There was an error publishing your recipe!\n{e.Message}", "Close");
+                await AlertService.AlertAsync("Failure", $"There was an error publishing your recipe: {e.Message}", "Close");
             }
         }
 

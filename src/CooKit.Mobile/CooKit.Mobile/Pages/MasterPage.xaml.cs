@@ -2,7 +2,7 @@
 using CooKit.Mobile.Providers.Page.MasterDetail;
 using Xamarin.Forms;
 
-namespace CooKit.Mobile.Pages.Master
+namespace CooKit.Mobile.Pages
 {
     // HACK: ListView doesn't have a command that is executed when selected item is changed
     // TODO: remove the logic out of this class and replace it with custom behavior

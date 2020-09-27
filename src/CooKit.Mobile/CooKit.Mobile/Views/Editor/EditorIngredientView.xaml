@@ -5,7 +5,6 @@
              xmlns:ingredients="clr-namespace:CooKit.Mobile.Views.Ingredients;assembly=CooKit.Mobile"
              x:Class="CooKit.Mobile.Views.Editor.EditorIngredientView"
              x:Name="Root">
-    <!-- TODO: optimize this view if needed -->
     <ContentView.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -36,30 +35,31 @@
                                              Image="{StaticResource Icon.Add}"
                                              Command="{Binding NewIngredientCommand}"/>
 
-                    <StackLayout Grid.Row="1"
-                                 Grid.Column="0"
-                                 Grid.ColumnSpan="2"
-                                 Padding="10,0"
-                                 BindableLayout.ItemsSource="{Binding Ingredients}">
-                        <BindableLayout.ItemTemplate>
-                            <DataTemplate>
-                                <Grid HeightRequest="32">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="32"/>
-                                    </Grid.ColumnDefinitions>
+                    <ScrollView Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2">
+                        <StackLayout Padding="10,0"
+                                     BindableLayout.ItemsSource="{Binding Ingredients}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid HeightRequest="32">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="32"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <ingredients:IngredientView VerticalOptions="Center"/>
+                                        <ingredients:IngredientView VerticalOptions="Center"/>
 
-                                    <mtrl:MaterialIconButton Grid.Column="1"
-                                                             ButtonType="Text"
-                                                             Image="{StaticResource Icon.Close}"
-                                                             CommandParameter="{Binding}"
-                                                             Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteIngredientCommand}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </BindableLayout.ItemTemplate>
-                    </StackLayout>
+                                        <mtrl:MaterialIconButton Grid.Column="1"
+                                                                 ButtonType="Text"
+                                                                 Image="{StaticResource Icon.Close}"
+                                                                 CommandParameter="{Binding}"
+                                                                 Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteIngredientCommand}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </ScrollView>                    
                 </Grid>
             </mtrl:MaterialCard>
         </Grid>

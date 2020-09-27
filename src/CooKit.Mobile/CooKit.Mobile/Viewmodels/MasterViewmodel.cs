@@ -7,7 +7,7 @@ using CooKit.Mobile.Registries.RootEntry;
 using CooKit.Mobile.Services.Root;
 using Xamarin.Forms;
 
-namespace CooKit.Mobile.Viewmodels.Master
+namespace CooKit.Mobile.Viewmodels
 {
     // TODO: add logging
     public class MasterViewmodel : ParameterlessBaseViewmodel

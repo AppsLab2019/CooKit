@@ -8,7 +8,7 @@ using CooKit.Mobile.Models.Steps;
 using Xamarin.Forms;
 using Image = CooKit.Mobile.Models.Images.Image;
 
-namespace CooKit.Mobile.Viewmodels.Recipes
+namespace CooKit.Mobile.Viewmodels
 {
     public class RecipeDetailViewmodel : ParameterBaseViewmodel<Recipe>
     {

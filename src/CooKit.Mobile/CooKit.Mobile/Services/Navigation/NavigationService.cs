@@ -5,7 +5,6 @@ using CooKit.Mobile.Extensions;
 using CooKit.Mobile.Factories.Page;
 using CooKit.Mobile.Providers.Page.CurrentRoot;
 using CooKit.Mobile.Registries.PageViewmodel;
-using CooKit.Mobile.Viewmodels;
 using Microsoft.Extensions.Logging;
 using Xamarin.Forms;
 
@@ -65,32 +64,10 @@ namespace CooKit.Mobile.Services.Navigation
             return navigationPage;
         }
 
-        // TODO: take one more look at this logic
-        // TODO: trigger viewmodel notification with back button press or remove it
         public async Task PopAsync()
         {
             var rootPage = _rootPageProvider.GetCurrentRootPage();
-            var page = rootPage.CurrentPage;
-
-            if (page.BindingContext is IViewmodel viewModel)
-            {
-                var shouldPop = await viewModel.OnExitAsync();
-
-                // TODO: log this
-                if (!shouldPop)
-                    return;
-
-                if (viewModel is IAsyncDisposable asyncDisposable)
-                {
-                    await asyncDisposable.DisposeAsync();
-                }
-                else if (viewModel is IDisposable disposable)
-                {
-                    disposable.Dispose();
-                }
-            }
-
-            await rootPage.PopAsync();
+            var page = await rootPage.PopAsync();
             _logger.LogDebug($"Successfully popped a page of type {page.GetType().Name}");
         }
     }
