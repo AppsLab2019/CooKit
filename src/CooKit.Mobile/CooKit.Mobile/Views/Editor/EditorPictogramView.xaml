@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             x:Class="CooKit.Mobile.Views.Editor.EditorPictogramView">
+    <ContentView.Content>
+        <mtrl:MaterialCard Margin="10">
+            <StackLayout>
+                <mtrl:MaterialLabel Text="Select pictograms:"/>
+
+                <CollectionView SelectionMode="Multiple"
+                                SelectedItems="{Binding Pictograms}"
+                                ItemsSource="{Binding AvailablePictograms}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Orientation="Horizontal">
+                                <mtrl:MaterialIconButton VerticalOptions="Center"
+                                                         Style="{StaticResource Style.IconSize}"
+                                                         Image="{Binding Icon, Converter={StaticResource Converter.ImageToImageSource}}"/>
+
+                                <mtrl:MaterialLabel VerticalOptions="Center"
+                                                    Text="{Binding Name}"/>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </mtrl:MaterialCard>
+    </ContentView.Content>
+</ContentView>

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="CooKit.Mobile.Pages.TitlePage"
+             x:Name="Root">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="Template.CategoryRecipe">
+                <ContentView WidthRequest="200"
+                             HeightRequest="150">
+                    <mtrl:MaterialCard Elevation="2"
+                                       Padding="0"
+                                       Margin="5"
+                                       CornerRadius="10"
+                                       IsClickable="True"
+                                       ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.OpenRecipeCommand}"
+                                       ClickCommandParameter="{Binding}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <ffimageloading:CachedImage Grid.RowSpan="2"
+                                                        Aspect="AspectFill"
+                                                        DownsampleToViewSize="True"
+                                                        Source="{Binding PreviewImage, Converter={StaticResource Converter.ImageToImageSource}}"/>
+
+                            <ContentView Grid.Row="1"
+                                         BackgroundColor="#C0000000">
+                                <mtrl:MaterialLabel Margin="5"
+                                                    Text="{Binding Name}"
+                                                    TextColor="{StaticResource Color.WhiteText}"/>
+                            </ContentView>
+                        </Grid>
+                    </mtrl:MaterialCard>
+                </ContentView>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <mtrl:MaterialCard Elevation="2"
+                                   IsClickable="True"
+                                   HeightRequest="200"
+                                   Padding="0"
+                                   ClickCommand="{Binding OpenRecipeCommand}"
+                                   ClickCommandParameter="{Binding FeaturedRecipe}"
+                                   Margin="10,10,10,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <ffimageloading:CachedImage Grid.RowSpan="2"
+                                                    Aspect="AspectFill"
+                                                    DownsampleToViewSize="True"
+                                                    Source="{Binding FeaturedRecipe.PreviewImage, Converter={StaticResource Converter.ImageToImageSource}}"/>
+
+                        <AbsoluteLayout Grid.Row="1"
+                                        Padding="10"
+                                        BackgroundColor="#C0000000">
+                            <mtrl:MaterialLabel Text="{Binding FeaturedRecipe.Name}"
+                                                TextColor="{StaticResource Color.WhiteText}"/>
+                        </AbsoluteLayout>
+                    </Grid>
+                </mtrl:MaterialCard>
+
+                <StackLayout BindableLayout.ItemsSource="{Binding Categories}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate>
+                            <mtrl:MaterialCard Elevation="2"
+                                               IsClickable="True"
+                                               ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.OpenCategoryCommand}"
+                                               ClickCommandParameter="{Binding}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <mtrl:MaterialLabel Text="Test Category"
+                                                        VerticalOptions="Center"/>
+
+                                    <!-- TODO: change icon -->
+                                    <mtrl:MaterialIcon Grid.Row="0"
+                                                       Grid.Column="1"
+                                                       VerticalOptions="Center"
+                                                       Source="{StaticResource Icon.ArrowForward}"/>
+
+                                    <CollectionView Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="2"
+                                                    HeightRequest="150"
+                                                    ItemsLayout="HorizontalList"
+                                                    ItemsSource="{Binding PreviewRecipes}"
+                                                    ItemTemplate="{StaticResource Template.CategoryRecipe}"/>
+                                </Grid>
+                            </mtrl:MaterialCard>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

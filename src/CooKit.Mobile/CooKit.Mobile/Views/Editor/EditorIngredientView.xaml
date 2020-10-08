@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:ingredients="clr-namespace:CooKit.Mobile.Views.Ingredients;assembly=CooKit.Mobile"
+             x:Class="CooKit.Mobile.Views.Editor.EditorIngredientView"
+             x:Name="Root">
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <mtrl:MaterialCard Grid.Row="1"
+                               Margin="10,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="32"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="32"/>
+                    </Grid.ColumnDefinitions>
+
+                    <mtrl:MaterialLabel Text="Edit Ingredients:"
+                                        VerticalOptions="Center"/>
+
+                    <mtrl:MaterialIconButton Grid.Row="0"
+                                             Grid.Column="1"
+                                             ButtonType="Text"
+                                             Image="{StaticResource Icon.Add}"
+                                             Command="{Binding NewIngredientCommand}"/>
+
+                    <ScrollView Grid.Row="1"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2">
+                        <StackLayout Padding="10,0"
+                                     BindableLayout.ItemsSource="{Binding Ingredients}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid HeightRequest="32">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="32"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <ingredients:IngredientView VerticalOptions="Center"/>
+
+                                        <mtrl:MaterialIconButton Grid.Column="1"
+                                                                 ButtonType="Text"
+                                                                 Image="{StaticResource Icon.Close}"
+                                                                 CommandParameter="{Binding}"
+                                                                 Command="{Binding Source={x:Reference Root}, Path=BindingContext.DeleteIngredientCommand}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
+                    </ScrollView>                    
+                </Grid>
+            </mtrl:MaterialCard>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

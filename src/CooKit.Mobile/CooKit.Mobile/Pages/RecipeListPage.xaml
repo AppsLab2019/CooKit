@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             x:Class="CooKit.Mobile.Pages.RecipeListPage"
+             x:Name="Root">
+    <ContentPage.Content>
+        <CollectionView ItemsSource="{Binding Recipes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <ContentView HeightRequest="250">
+                        <mtrl:MaterialCard Elevation="2"
+                                           IsClickable="True"
+                                           Margin="20,10"
+                                           Padding="0"
+                                           ClickCommand="{Binding Source={x:Reference Root}, Path=BindingContext.OpenRecipeCommand}"
+                                           ClickCommandParameter="{Binding}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <ffimageloading:CachedImage Aspect="AspectFill" 
+                                                            DownsampleToViewSize="True"
+                                                            Source="{Binding PreviewImage, Converter={StaticResource Converter.ImageToImageSource}}"/>
+
+                                <mtrl:MaterialLabel Grid.Row="1"
+                                                    Margin="5,0,5,5"
+                                                    Text="{Binding Name}"/>
+                            </Grid>
+                        </mtrl:MaterialCard>
+                    </ContentView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,76 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using CooKit.Mobile.Models;
+using CooKit.Mobile.Models.Images;
+using CooKit.Mobile.Providers.ResourcePath;
+using CooKit.Mobile.Repositories.Recipes;
+
+namespace CooKit.Mobile.Services.Publish
+{
+    // TODO: add logging
+    public class LocalPublishService : IPublishService
+    {
+        private readonly IRecipeRepository _recipeRepository;
+        private readonly IResourcePathProvider _pathProvider;
+
+        public LocalPublishService(IRecipeRepository recipeRepository, IResourcePathProvider pathProvider)
+        {
+            _recipeRepository = recipeRepository;
+            _pathProvider = pathProvider;
+        }
+
+        public async Task PublishRecipeAsync(Recipe recipe, IProgress<string> progress)
+        {
+            if (recipe == null)
+                throw new ArgumentNullException(nameof(recipe));
+
+            var localImages = GetLocalImages(recipe);
+
+            foreach (var image in localImages)
+            {
+                progress?.Report($"Copying image {image.Data}.");
+                await CopyImageAsync(image);
+            }
+
+            if (recipe.Id != 0)
+            {
+                progress?.Report("Adding updated recipe to database.");
+                await _recipeRepository.UpdateRecipeAsync(recipe);
+            }
+            else
+            {
+                progress?.Report("Adding recipe to database.");
+                await _recipeRepository.AddRecipeAsync(recipe);
+            }
+        }
+
+        private static IEnumerable<Image> GetLocalImages(Recipe recipe)
+        {
+            IEnumerable<Image> images = recipe.Images;
+
+            if (recipe.PreviewImage != null)
+                images = images.Append(recipe.PreviewImage);
+
+            return images.Where(image => image.Type == ImageType.File);
+        }
+
+        // TODO: clean this up
+        private async Task CopyImageAsync(Image image)
+        {
+            var basePath = _pathProvider.GetResourceFolderPath();
+            var extension = Path.GetExtension(image.Data);
+            var name = $"{Guid.NewGuid():D}{extension}";
+            var path = Path.Combine(basePath, name);
+                
+            await using var sourceStream = File.Open(image.Data!, FileMode.Open, FileAccess.Read);
+            await using var destinationStream = File.Open(path, FileMode.CreateNew, FileAccess.Write);
+            await sourceStream.CopyToAsync(destinationStream);
+
+            image.Type = ImageType.LocalResource;
+            image.Data = name;
+        }
+    }
+}

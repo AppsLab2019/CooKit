@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:ingredients="clr-namespace:CooKit.Mobile.Views.Ingredients;assembly=CooKit.Mobile"
+             x:Class="CooKit.Mobile.Pages.RecipeDetailPage"
+             x:Name="Root">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <mtrl:MaterialCard Padding="0"
+                                   Elevation="2"
+                                   HeightRequest="250"
+                                   BackgroundColor="{StaticResource Color.Surface}">
+                    <AbsoluteLayout>
+                        <CarouselView ItemsSource="{Binding Images}"
+                                      IndicatorView="ImageIndicator">
+                            <CarouselView.ItemTemplate>
+                                <DataTemplate>
+                                    <ffimageloading:CachedImage Source="{Binding Converter={StaticResource Converter.ImageToImageSource}}"
+                                                                Aspect="AspectFill"
+                                                                DownsampleToViewSize="True"/>
+                                </DataTemplate>
+                            </CarouselView.ItemTemplate>
+                        </CarouselView>
+
+                        <IndicatorView x:Name="ImageIndicator"
+                                       AbsoluteLayout.LayoutFlags="All"
+                                       AbsoluteLayout.LayoutBounds="0,1,1,0.1"
+                                       IndicatorColor="LightGray"
+                                       SelectedIndicatorColor="White"/>
+                    </AbsoluteLayout>
+                </mtrl:MaterialCard>
+
+                <Grid Margin="15,0"
+                      HeightRequest="42">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <mtrl:MaterialCard Padding="5">
+                        <StackLayout Orientation="Horizontal">
+                            <mtrl:MaterialIcon Source="{StaticResource Icon.Time}"
+                                               Style="{StaticResource Style.IconSize}"/>
+
+                            <mtrl:MaterialLabel VerticalOptions="Center"
+                                                Text="{Binding EstimatedTime.TotalMinutes, StringFormat='{0} min.'}"/>
+                        </StackLayout>
+                    </mtrl:MaterialCard>
+
+                    <mtrl:MaterialCard Grid.Column="1"
+                                       Padding="5">
+                        <CollectionView IsEnabled="False"
+                                        ItemsLayout="HorizontalList"
+                                        ItemsSource="{Binding Pictograms}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <mtrl:MaterialIconButton BackgroundColor="Transparent"
+                                                             Image="{Binding Icon, Converter={StaticResource Converter.ImageToImageSource}}"
+                                                             Style="{StaticResource Style.IconSize}"
+                                                             Command="{Binding Source={x:Reference Root}, Path=BindingContext.SelectPictogramCommand}"
+                                                             CommandParameter="{Binding}"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </mtrl:MaterialCard>
+                </Grid>
+
+                <mtrl:MaterialCard Margin="15,0">
+                    <StackLayout>
+                        <mtrl:MaterialLabel Text="{Binding Name}"/>
+
+                        <BoxView HeightRequest="2"
+                                 Color="LightGray"/>
+
+                        <mtrl:MaterialLabel Text="{Binding Description}"/>
+                    </StackLayout>
+                </mtrl:MaterialCard>
+
+                <mtrl:MaterialCard Margin="15,0">
+                    <StackLayout>
+                        <mtrl:MaterialLabel Text="You'll need:"/>
+
+                        <StackLayout x:Name="IngredientLayout"
+                                     BindableLayout.ItemsSource="{Binding Ingredients}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate>
+                                    <ingredients:IngredientView/>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+
+                            <BindableLayout.EmptyViewTemplate>
+                                <DataTemplate>
+                                    <StackLayout HeightRequest="50">
+                                        <mtrl:MaterialLabel Text="No ingredients!"
+                                                            VerticalOptions="CenterAndExpand"
+                                                            HorizontalOptions="CenterAndExpand"/>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.EmptyViewTemplate>
+                        </StackLayout>
+                    </StackLayout>
+                </mtrl:MaterialCard>
+
+                <mtrl:MaterialCard Padding="0">
+                    <StackLayout>
+                        <mtrl:MaterialLabel Text="Steps:" 
+                                            Margin="20,20,20,0"/>
+
+                        <CarouselView x:Name="StepCarousel"
+                                      HeightRequest="400"
+                                      IndicatorView="StepIndicator"
+                                      ItemsSource="{Binding Steps}">
+                            <!-- TODO: use template -->
+                            <CarouselView.EmptyView>
+                                <ContentView>
+                                    <mtrl:MaterialCard Margin="10"
+                                                       Elevation="2"
+                                                       CornerRadius="10">
+                                        <StackLayout>
+                                            <mtrl:MaterialLabel VerticalOptions="CenterAndExpand"
+                                                                HorizontalOptions="CenterAndExpand"
+                                                                Text="There are no required steps for this recipe!"/>
+                                        </StackLayout>
+                                    </mtrl:MaterialCard>
+                                </ContentView>
+                            </CarouselView.EmptyView>
+                        </CarouselView>
+
+                        <IndicatorView x:Name="StepIndicator"
+                                       HorizontalOptions="Center"
+                                       IndicatorColor="LightGray"
+                                       SelectedIndicatorColor="DarkGray"/>
+                    </StackLayout>
+                </mtrl:MaterialCard>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mtrl="clr-namespace:XF.Material.Forms.UI;assembly=XF.Material"
+             x:Class="CooKit.Mobile.Views.Editor.EditorNameView">
+    <ContentView.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <mtrl:MaterialCard Grid.Row="1" 
+                               Margin="10,0">
+                <StackLayout>
+                    <mtrl:MaterialLabel Text="Enter name:"/>
+
+                    <Entry Placeholder="Name"
+                           Text="{Binding Name}"
+                           HorizontalOptions="FillAndExpand"/>
+                </StackLayout>
+            </mtrl:MaterialCard>
+        </Grid>
+    </ContentView.Content>
+</ContentView>
